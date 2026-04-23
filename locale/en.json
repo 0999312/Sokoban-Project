@@ -48,11 +48,32 @@
     "volume_master": "Master",
     "volume_music": "Music",
     "volume_sfx": "SFX",
+    "volume_ui": "UI",
     "fullscreen": "Fullscreen",
     "high_contrast": "High Contrast",
     "reduce_motion": "Reduce Motion",
+    "input_section": "Input Bindings",
+    "reset_bindings": "Reset Defaults",
     "back": "Back",
     "apply": "Apply"
+  },
+  "input": {
+    "action": {
+      "move_up":    "Move Up",
+      "move_down":  "Move Down",
+      "move_left":  "Move Left",
+      "move_right": "Move Right",
+      "undo":       "Undo",
+      "redo":       "Redo",
+      "restart":    "Restart",
+      "pause":      "Pause"
+    },
+    "rebind": {
+      "listening":      "Press a key…",
+      "unbound":        "Unbound",
+      "conflict_title": "Binding Conflict",
+      "conflict":       "This input is already bound to \"{0}\". Override?"
+    }
   },
   "common": {
     "ok": "OK",

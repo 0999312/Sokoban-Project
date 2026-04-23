@@ -48,11 +48,32 @@
     "volume_master": "主音量",
     "volume_music": "音樂",
     "volume_sfx": "音效",
+    "volume_ui": "介面音效",
     "fullscreen": "全螢幕",
     "high_contrast": "高對比",
     "reduce_motion": "減弱動畫",
+    "input_section": "鍵位設定",
+    "reset_bindings": "重設預設",
     "back": "返回",
     "apply": "套用"
+  },
+  "input": {
+    "action": {
+      "move_up":    "向上移動",
+      "move_down":  "向下移動",
+      "move_left":  "向左移動",
+      "move_right": "向右移動",
+      "undo":       "撤銷",
+      "redo":       "重做",
+      "restart":    "重玩",
+      "pause":      "暫停"
+    },
+    "rebind": {
+      "listening":      "請按鍵…",
+      "unbound":        "未綁定",
+      "conflict_title": "按鍵衝突",
+      "conflict":       "該按鍵已綁定到「{0}」。是否覆蓋？"
+    }
   },
   "common": {
     "ok": "確定",

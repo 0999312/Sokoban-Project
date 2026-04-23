@@ -8,7 +8,7 @@ extends Node
 const SAVE_DIR := "user://save"
 const SAVE_PATH := "user://save/profile.json"
 const SAVE_TMP := "user://save/profile.json.tmp"
-const CURRENT_VERSION := 1
+const CURRENT_VERSION := 2
 
 const DEFAULT_LOCALE := "zh_CN"
 
@@ -29,6 +29,7 @@ func _default_profile() -> Dictionary:
 		"progress": {},
 		"stats": { "total_steps": 0, "total_time_ms": 0, "completed_levels": 0 },
 		"user_levels_index": [],
+		"input_bindings": {},   # P5-F: 见 InputManager.serialize_bindings()
 	}
 
 func _default_settings() -> Dictionary:
@@ -89,7 +90,10 @@ func save_profile() -> void:
 
 func _migrate(data: Dictionary) -> Dictionary:
 	var v: int = int(data.get("version", 0))
-	# 未来：if v < 2: data = _migrate_v1_to_v2(data)
+	# v1 -> v2: 新增 input_bindings 字段（缺省=默认绑定）
+	if v < 2:
+		if not data.has("input_bindings"):
+			data["input_bindings"] = {}
 	if v != CURRENT_VERSION:
 		data["version"] = CURRENT_VERSION
 	return data
@@ -143,3 +147,12 @@ func set_setting(key: String, value: Variant, autosave: bool = true) -> void:
 	settings_changed.emit(key, value)
 	if autosave:
 		save_profile()
+
+# --- Input bindings (P5-F) ---
+
+func get_input_bindings() -> Dictionary:
+	return profile.get("input_bindings", {})
+
+func set_input_bindings(bindings: Dictionary) -> void:
+	profile["input_bindings"] = bindings
+	save_profile()

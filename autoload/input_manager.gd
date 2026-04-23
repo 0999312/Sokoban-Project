@@ -233,3 +233,80 @@ func _joy_button_name(b: int) -> String:
 		JOY_BUTTON_DPAD_RIGHT: return "→"
 		_:
 			return "Btn%d" % b
+
+# --- Persistence (用于 SaveManager 存档) ---
+
+## 序列化绑定到字典：{ action_name: { 0: {key=K}, 1: {key=K}, 2: {joy=B} } }
+func serialize_bindings() -> Dictionary:
+	var out: Dictionary = {}
+	for am in _ctx.mappings:
+		if am.action == null: continue
+		var ent: Dictionary = {}
+		for slot in am.input_mappings.size():
+			var im: GUIDEInputMapping = am.input_mappings[slot]
+			if im == null or im.input == null: continue
+			if im.input is GUIDEInputKey:
+				var k := (im.input as GUIDEInputKey).key
+				if k == KEY_NONE: continue
+				ent[str(slot)] = { "key": int(k) }
+			elif im.input is GUIDEInputJoyButton:
+				var b := (im.input as GUIDEInputJoyButton).button
+				ent[str(slot)] = { "joy": int(b) }
+		if not ent.is_empty():
+			out[String(am.action.name)] = ent
+	return out
+
+## 从存档字典恢复绑定。未提及的 action 维持默认。
+func deserialize_bindings(data: Dictionary) -> void:
+	if data == null or data.is_empty(): return
+	for action_name in data.keys():
+		var ent: Dictionary = data[action_name]
+		var am := _find_action_mapping(action_name)
+		if am == null: continue
+		for slot_str in ent.keys():
+			var slot := int(slot_str)
+			var spec: Dictionary = ent[slot_str]
+			# 扩容
+			while am.input_mappings.size() <= slot:
+				am.input_mappings.append(_make_key_mapping(KEY_NONE))
+			if spec.has("key"):
+				am.input_mappings[slot] = _make_key_mapping(int(spec.key))
+			elif spec.has("joy"):
+				am.input_mappings[slot] = _make_joy_mapping(int(spec.joy))
+	var guide: Node = get_node_or_null("/root/GUIDE")
+	if guide != null and guide.has_signal("input_mappings_changed"):
+		guide.input_mappings_changed.emit()
+
+## 检查给定 InputEvent 是否已被其他 action 占用，返回占用它的 action 名（或 ""）
+func find_binding_conflict(action_name: String, event: InputEvent) -> String:
+	var probe := _event_to_input_mapping(event)
+	if probe == null: return ""
+	for am in _ctx.mappings:
+		if am.action == null: continue
+		var other := String(am.action.name)
+		if other == action_name: continue
+		for im in am.input_mappings:
+			if im == null or im.input == null: continue
+			if _input_equal(im.input, probe.input):
+				return other
+	return ""
+
+func _input_equal(a: GUIDEInput, b: GUIDEInput) -> bool:
+	if a is GUIDEInputKey and b is GUIDEInputKey:
+		return (a as GUIDEInputKey).key == (b as GUIDEInputKey).key
+	if a is GUIDEInputJoyButton and b is GUIDEInputJoyButton:
+		return (a as GUIDEInputJoyButton).button == (b as GUIDEInputJoyButton).button
+	return false
+
+## 当冲突时强行清除其他 action 该绑定槽
+func clear_event_from_other(action_name: String, event: InputEvent) -> void:
+	var probe := _event_to_input_mapping(event)
+	if probe == null: return
+	for am in _ctx.mappings:
+		if am.action == null: continue
+		if String(am.action.name) == action_name: continue
+		for slot in am.input_mappings.size():
+			var im: GUIDEInputMapping = am.input_mappings[slot]
+			if im == null or im.input == null: continue
+			if _input_equal(im.input, probe.input):
+				am.input_mappings[slot] = _make_key_mapping(KEY_NONE)

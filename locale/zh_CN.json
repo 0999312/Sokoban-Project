@@ -48,11 +48,32 @@
     "volume_master": "主音量",
     "volume_music": "音乐",
     "volume_sfx": "音效",
+    "volume_ui": "界面音效",
     "fullscreen": "全屏",
     "high_contrast": "高对比度",
     "reduce_motion": "减弱动画",
+    "input_section": "键位设置",
+    "reset_bindings": "重置默认",
     "back": "返回",
     "apply": "应用"
+  },
+  "input": {
+    "action": {
+      "move_up":    "向上移动",
+      "move_down":  "向下移动",
+      "move_left":  "向左移动",
+      "move_right": "向右移动",
+      "undo":       "撤销",
+      "redo":       "重做",
+      "restart":    "重玩",
+      "pause":      "暂停"
+    },
+    "rebind": {
+      "listening":      "请按键…",
+      "unbound":        "未绑定",
+      "conflict_title": "按键冲突",
+      "conflict":       "该按键已绑定到「{0}」。是否覆盖？"
+    }
   },
   "common": {
     "ok": "确定",

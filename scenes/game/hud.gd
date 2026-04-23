@@ -77,6 +77,9 @@ func _ready() -> void:
 
 	_refresh_texts()
 	EventBus.subscribe(&"LanguageChangedEvent", Callable(self, "_on_lang_changed"))
+	# 设备切换时刷新键位提示文本
+	if InputManager.has_signal("device_changed"):
+		InputManager.device_changed.connect(_on_device_changed)
 
 func _exit_tree() -> void:
 	EventBus.unsubscribe(&"LanguageChangedEvent", Callable(self, "_on_lang_changed"))
@@ -84,12 +87,25 @@ func _exit_tree() -> void:
 func _on_lang_changed(_e) -> void:
 	_refresh_texts()
 
+func _on_device_changed(_dev: int) -> void:
+	# 仅刷新与键位相关的 tooltip
+	if btn_undo == null: return
+	btn_undo.tooltip_text    = InputHint.with_label("hud.undo",    "undo")
+	btn_redo.tooltip_text    = InputHint.with_label("hud.redo",    "redo")
+	btn_restart.tooltip_text = InputHint.with_label("hud.restart", "restart")
+	btn_pause.tooltip_text   = InputHint.with_label("hud.pause",   "pause")
+
 func _refresh_texts() -> void:
 	if lbl_help == null: return
 	btn_undo.text = tr("hud.undo")
 	btn_redo.text = tr("hud.redo")
 	btn_restart.text = tr("hud.restart")
 	btn_pause.text = tr("hud.pause")
+	# 按钮 tooltip 显示当前设备的键位提示（P5-F）
+	btn_undo.tooltip_text    = InputHint.with_label("hud.undo",    "undo")
+	btn_redo.tooltip_text    = InputHint.with_label("hud.redo",    "redo")
+	btn_restart.tooltip_text = InputHint.with_label("hud.restart", "restart")
+	btn_pause.tooltip_text   = InputHint.with_label("hud.pause",   "pause")
 	lbl_help.text = tr("hud.help")
 	pause_title.text = tr("pause.title")
 	btn_pause_resume.text = tr("pause.resume")
