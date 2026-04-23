@@ -29,6 +29,7 @@ I18NManager="*uid://wj05s0mpoqn"
 UIManager="*uid://b0mn85k3pon1l"
 SoundManager="*uid://c8sghfd0v8moa"
 GUIDE="*uid://p2jwrgjcbexr"
+Sfx="*res://autoload/sfx.gd"
 
 [audio]
 

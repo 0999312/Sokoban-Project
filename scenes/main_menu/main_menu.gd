@@ -21,6 +21,10 @@ func _ready() -> void:
 	_refresh_texts()
 	# 监听语言切换事件
 	EventBus.subscribe(&"LanguageChangedEvent", Callable(self, "_on_language_changed"))
+	# UI 点击音效（递归挂全部 Button）
+	Sfx.attach_ui(self)
+	# 主菜单 BGM
+	Sfx.play_bgm("menu", 1.0)
 
 func _exit_tree() -> void:
 	EventBus.unsubscribe(&"LanguageChangedEvent", Callable(self, "_on_language_changed"))
@@ -53,6 +57,7 @@ func _on_settings() -> void:
 		return
 	var panel := SETTINGS_PANEL_SCENE.instantiate()
 	settings_layer.add_child(panel)
+	Sfx.attach_ui(panel)
 
 func _on_quit() -> void:
 	GameState.quit_game()

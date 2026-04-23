@@ -54,6 +54,9 @@ func _load_current_level() -> void:
 		return
 	board = Board.new(level)
 	board.won.connect(_on_won)
+	board.moved.connect(_on_board_moved)
+	board.undone.connect(_on_board_undone)
+	board.redone.connect(_on_board_redone)
 	if view != null:
 		view.bind(board)
 		_center_view()
@@ -149,9 +152,32 @@ func _on_won() -> void:
 	print("[GameController] WON %s in %d moves / %d pushes / %d ms (stars=%d)" % [
 		level.id, board.move_count, board.push_count, time_ms, stars
 	])
+	Sfx.play("level_complete")
 	level_won.emit(stats)
 	if hud != null and hud.has_method("show_win"):
 		hud.show_win(stats)
+
+# --- SFX hooks ---
+
+func _on_board_moved(cmd: BoardCommand) -> void:
+	if cmd == null:
+		return
+	if cmd.pushed_box:
+		Sfx.play("push")
+		if cmd.became_complete():
+			Sfx.play("crate_done")
+	else:
+		Sfx.play("step")
+
+func _on_board_undone(_cmd: BoardCommand) -> void:
+	Sfx.play("undo")
+
+func _on_board_redone(cmd: BoardCommand) -> void:
+	# Redo 复用 step/push 让玩家清楚知道发生了真实移动；不再触发 crate_done 避免吵
+	if cmd != null and cmd.pushed_box:
+		Sfx.play("push")
+	else:
+		Sfx.play("step")
 
 func _calc_stars(moves: int, optimal: int) -> int:
 	if optimal <= 0:

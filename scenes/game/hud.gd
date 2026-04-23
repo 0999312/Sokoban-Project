@@ -177,6 +177,7 @@ func _on_pause_settings() -> void:
 	var p := SETTINGS_PANEL_SCENE.instantiate()
 	add_child(p)
 	p.process_mode = Node.PROCESS_MODE_ALWAYS  # 暂停时仍可操作
+	Sfx.attach_ui(p)
 	p.tree_exited.connect(func(): _settings_open = false)
 
 # --- Win buttons ---

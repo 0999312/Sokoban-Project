@@ -92,6 +92,8 @@ func _ready() -> void:
 	_build_ui()
 	_refresh_all()
 	EventBus.subscribe(&"LanguageChangedEvent", Callable(self, "_on_lang_changed"))
+	# UI 点击音效（_build_ui 已构建完按钮树）
+	Sfx.attach_ui(self)
 
 func _exit_tree() -> void:
 	EventBus.unsubscribe(&"LanguageChangedEvent", Callable(self, "_on_lang_changed"))
@@ -587,12 +589,14 @@ func _on_import() -> void:
 		set_status(tr("editor.status.imported"))
 	)
 	dialog_layer.add_child(dlg)
+	Sfx.attach_ui(dlg)
 
 func _on_export() -> void:
 	var lvl := model.to_level()
 	var dlg := ExportDialogScene.instantiate()
 	dlg.set_level(lvl, board)
 	dialog_layer.add_child(dlg)
+	Sfx.attach_ui(dlg)
 
 func _on_test_play() -> void:
 	# 验证关卡（玩家+箱目数+连通），通过则进入嵌入 Playtest
@@ -634,6 +638,7 @@ func _on_verify() -> void:
 	)
 	dialog_layer.add_child(dlg)
 	dlg.start(lvl)
+	Sfx.attach_ui(dlg)
 
 func _on_quit() -> void:
 	# 直接返回主菜单（按用户要求；如有未保存修改，请先手动 Ctrl+S）

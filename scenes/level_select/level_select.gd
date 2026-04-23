@@ -40,6 +40,8 @@ func _build_tabs() -> void:
 	var page_user := _build_user_page()
 	page_user.name = tr("level_select.user_levels")
 	tabs.add_child(page_user)
+	# 全部按钮挂 ui_click
+	Sfx.attach_ui(self)
 
 func _build_user_page() -> Control:
 	var page := VBoxContainer.new()
