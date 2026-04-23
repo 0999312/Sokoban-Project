@@ -1,26 +1,33 @@
 {
-  "format_version": 1,
-  "id": "official-w1-04",
-  "name": "level_names.official-w1-04",
-  "author": "Official",
-  "width": 10,
-  "height": 5,
-  "tiles": [
-    "##########",
-    "#      ..#",
-    "#  @$$   #",
-    "#        #",
-    "##########"
-  ],
-  "metadata": {
-    "world": 1,
-    "index": 4,
-    "difficulty": 2,
-    "optimal_steps": 27,
-    "optimal_pushes": 8,
-    "tags": ["tutorial", "ordering", "two-boxes"],
-    "concept": "Pushing two boxes in line — order them onto adjacent goals.",
-    "verified_by_solver": true,
-    "theme": { "wall": "stone", "floor": "grass" }
-  }
+	"author": "Official",
+	"format_version": 1,
+	"height": 5,
+	"id": "official-w1-04",
+	"metadata": {
+		"concept": "Pushing two boxes in line — order them onto adjacent goals.",
+		"difficulty": 2.0,
+		"index": 4.0,
+		"optimal_pushes": 8,
+		"optimal_steps": 27,
+		"tags": [
+			"tutorial",
+			"ordering",
+			"two-boxes"
+		],
+		"theme": {
+			"floor": "grass",
+			"wall": "stone"
+		},
+		"verified_by_solver": true,
+		"world": 1.0
+	},
+	"name": "level_names.official-w1-04",
+	"tiles": [
+		"##########",
+		"#      ..#",
+		"#  @$$   #",
+		"#        #",
+		"##########"
+	],
+	"width": 10
 }

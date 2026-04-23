@@ -1,25 +1,32 @@
 {
-  "format_version": 1,
-  "id": "official-w1-01",
-  "name": "level_names.official-w1-01",
-  "author": "Official",
-  "width": 8,
-  "height": 4,
-  "tiles": [
-	"########",
-	"#      #",
-	"# @$.  #",
-    "########"
-  ],
-  "metadata": {
-	"world": 1,
-	"index": 1,
-	"difficulty": 1,
-	"optimal_steps": 1,
-	"optimal_pushes": 1,
-	"tags": ["tutorial", "movement", "single-box"],
-	"concept": "Push a single box onto a goal in one move.",
-	"verified_by_solver": true,
-	"theme": { "wall": "brick", "floor": "grass" }
-  }
+	"author": "Official",
+	"format_version": 1,
+	"height": 4,
+	"id": "official-w1-01",
+	"metadata": {
+		"concept": "Push a single box onto a goal in one move.",
+		"difficulty": 1.0,
+		"index": 1.0,
+		"optimal_pushes": 1,
+		"optimal_steps": 1,
+		"tags": [
+			"tutorial",
+			"movement",
+			"single-box"
+		],
+		"theme": {
+			"floor": "grass",
+			"wall": "brick"
+		},
+		"verified_by_solver": true,
+		"world": 1.0
+	},
+	"name": "level_names.official-w1-01",
+	"tiles": [
+		"########",
+		"#      #",
+		"# @$.  #",
+		"########"
+	],
+	"width": 8
 }

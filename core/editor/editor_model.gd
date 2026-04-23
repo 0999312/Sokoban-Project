@@ -223,6 +223,12 @@ func to_level() -> Level:
 			"floor": lvl.floor_theme,
 		},
 	}
+	if meta.has("optimal_steps"):
+		md["optimal_steps"] = int(meta.get("optimal_steps", 0))
+	if meta.has("optimal_pushes"):
+		md["optimal_pushes"] = int(meta.get("optimal_pushes", 0))
+	if meta.has("verified_by_solver"):
+		md["verified_by_solver"] = bool(meta.get("verified_by_solver", false))
 	# 颜色统计
 	var seen: Dictionary = {}
 	for c in box_colors:
@@ -264,6 +270,12 @@ func load_from_level(lvl: Level) -> void:
 		"difficulty": int(lvl.metadata.get("difficulty", 1)),
 		"tags": (lvl.metadata.get("tags", []) as Array).duplicate(),
 	}
+	if lvl.metadata.has("optimal_steps"):
+		meta["optimal_steps"] = int(lvl.metadata.get("optimal_steps", 0))
+	if lvl.metadata.has("optimal_pushes"):
+		meta["optimal_pushes"] = int(lvl.metadata.get("optimal_pushes", 0))
+	if lvl.metadata.has("verified_by_solver"):
+		meta["verified_by_solver"] = bool(lvl.metadata.get("verified_by_solver", false))
 
 ## 统计（用于 Meta 面板显示）
 func count_boxes() -> int:

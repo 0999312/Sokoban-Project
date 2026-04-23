@@ -5,11 +5,13 @@
 	"id": "official-w2-115",
 	"metadata": {
 		"import_source": "E:/godot_learning/projects/sokoban/docs/microban_levels/DavidWSkinner Microban.sok",
-		"index": 115,
-		"source_index": 115,
+		"index": 115.0,
+		"optimal_pushes": 29,
+		"optimal_steps": 196,
+		"source_index": 115.0,
 		"source_title": "Microban 115",
-		"verified_by_solver": false,
-		"world": 2
+		"verified_by_solver": true,
+		"world": 2.0
 	},
 	"name": "Microban 115",
 	"tiles": [

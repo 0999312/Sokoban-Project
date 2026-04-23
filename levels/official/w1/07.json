@@ -1,27 +1,42 @@
 {
-  "format_version": 2,
-  "id": "official-w1-07",
-  "name": "level_names.official-w1-07",
-  "author": "Official",
-  "width": 7,
-  "height": 5,
-  "tiles": [
-	"#######",
-	"#@    #",
-	"# $b. #",
-	"#   , #",
-    "#######"
-  ],
-  "metadata": {
-	"world": 1,
-	"index": 7,
-	"difficulty": 2,
-	"optimal_steps": 13,
-	"optimal_pushes": 4,
-	"tags": ["tutorial", "multi_color", "neutral_holder"],
-	"color_count": 3,
-	"concept": "Neutral holders (gray) accept any color. Plan which box uses the neutral slot.",
-	"verified_by_solver": true,
-	"theme": { "wall": "brick", "floor": "grass" }
-  }
+	"author": "Official",
+	"color_overrides": {
+		"crates": {
+			"3,2": 2
+		},
+		"holders": {
+			"4,3": 0
+		}
+	},
+	"format_version": 2,
+	"height": 5,
+	"id": "official-w1-07",
+	"metadata": {
+		"color_count": 3.0,
+		"concept": "Neutral holders (gray) accept any color. Plan which box uses the neutral slot.",
+		"difficulty": 2.0,
+		"index": 7.0,
+		"optimal_pushes": 4,
+		"optimal_steps": 13,
+		"tags": [
+			"tutorial",
+			"multi_color",
+			"neutral_holder"
+		],
+		"theme": {
+			"floor": "grass",
+			"wall": "brick"
+		},
+		"verified_by_solver": true,
+		"world": 1.0
+	},
+	"name": "level_names.official-w1-07",
+	"tiles": [
+		"#######",
+		"#@    #",
+		"# $b. #",
+		"#   , #",
+		"#######"
+	],
+	"width": 7
 }

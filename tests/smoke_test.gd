@@ -13,6 +13,8 @@ extends SceneTree
 ## 任意失败 -> 退出码 1。
 
 const W1_01 := "res://levels/official/w1/01.json"
+const W1_12 := "res://levels/official/w1/12.json"
+const GameControllerScript := preload("res://core/game/game_controller.gd")
 
 func _init() -> void:
 	var failed := 0
@@ -20,6 +22,8 @@ func _init() -> void:
 	failed += _run("board push to win", _t_board_win)
 	failed += _run("undo restores state", _t_undo)
 	failed += _run("xsb roundtrip", _t_xsb_roundtrip)
+	failed += _run("stars without optimal defaults to 3", _t_stars_without_optimal)
+	failed += _run("W1-12 is solvable", _t_w1_12_solvable)
 	# Phase 3.5
 	failed += _run("xsb short row pads outside", _t_xsb_short_row_outside)
 	failed += _run("xsb multi-color roundtrip", _t_xsb_multi_color_roundtrip)
@@ -94,6 +98,44 @@ func _t_xsb_roundtrip() -> bool:
 	if lvl2.box_count() != lvl.box_count(): return false
 	if lvl2.goal_count() != lvl.goal_count(): return false
 	return true
+
+func _t_stars_without_optimal() -> bool:
+	var gc = GameControllerScript.new()
+	return gc._calc_stars(999, 0) == 3
+
+func _t_w1_12_solvable() -> bool:
+	var lvl: Level = LevelLoader.load_json_file(W1_12)
+	if lvl == null:
+		return false
+	var v := LevelValidator.validate(lvl)
+	if not v.ok:
+		printerr(v.format_report())
+		return false
+	var board := Board.new(lvl)
+	var moves := [
+		Vector2i(0, 1),
+		Vector2i(0, 1),
+		Vector2i(0, -1),
+		Vector2i(0, -1),
+		Vector2i(-1, 0),
+		Vector2i(0, 1),
+		Vector2i(-1, 0),
+		Vector2i(0, -1),
+		Vector2i(1, 0),
+		Vector2i(1, 0),
+		Vector2i(1, 0),
+		Vector2i(0, 1),
+		Vector2i(1, 0),
+		Vector2i(0, -1),
+	]
+	for move in moves:
+		if not board.try_move(move):
+			printerr("W1-12 replay step failed: %s" % str(move))
+			return false
+	if not board.is_won():
+		printerr("W1-12 replay finished but not won")
+		return false
+	return board.push_count == 3
 
 func _t_xsb_short_row_outside() -> bool:
 	var lvl: Level = LevelLoader.parse_xsb("#####\n#@  #\n###", "short-row")

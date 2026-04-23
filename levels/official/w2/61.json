@@ -5,11 +5,13 @@
 	"id": "official-w2-61",
 	"metadata": {
 		"import_source": "E:/godot_learning/projects/sokoban/docs/microban_levels/DavidWSkinner Microban.sok",
-		"index": 61,
-		"source_index": 61,
+		"index": 61.0,
+		"optimal_pushes": 21,
+		"optimal_steps": 162,
+		"source_index": 61.0,
 		"source_title": "Microban 61",
-		"verified_by_solver": false,
-		"world": 2
+		"verified_by_solver": true,
+		"world": 2.0
 	},
 	"name": "Microban 61",
 	"tiles": [

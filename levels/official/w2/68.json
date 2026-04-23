@@ -5,11 +5,13 @@
 	"id": "official-w2-68",
 	"metadata": {
 		"import_source": "E:/godot_learning/projects/sokoban/docs/microban_levels/DavidWSkinner Microban.sok",
-		"index": 68,
-		"source_index": 68,
+		"index": 68.0,
+		"optimal_pushes": 28,
+		"optimal_steps": 134,
+		"source_index": 68.0,
 		"source_title": "Microban 68",
-		"verified_by_solver": false,
-		"world": 2
+		"verified_by_solver": true,
+		"world": 2.0
 	},
 	"name": "Microban 68",
 	"tiles": [

@@ -5,11 +5,13 @@
 	"id": "official-w2-52",
 	"metadata": {
 		"import_source": "E:/godot_learning/projects/sokoban/docs/microban_levels/DavidWSkinner Microban.sok",
-		"index": 52,
-		"source_index": 52,
+		"index": 52.0,
+		"optimal_pushes": 8,
+		"optimal_steps": 39,
+		"source_index": 52.0,
 		"source_title": "Microban 52",
-		"verified_by_solver": false,
-		"world": 2
+		"verified_by_solver": true,
+		"world": 2.0
 	},
 	"name": "Microban 52",
 	"tiles": [

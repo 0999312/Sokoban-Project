@@ -1,26 +1,34 @@
 {
-  "format_version": 1,
-  "id": "official-w1-09",
-  "name": "level_names.official-w1-09",
-  "author": "Official",
-  "width": 8,
-  "height": 5,
-  "tiles": [
-    "########",
-    "#.    .#",
-    "#$    $#",
-    "#  @   #",
-    "########"
-  ],
-  "metadata": {
-    "world": 1,
-    "index": 9,
-    "difficulty": 2,
-    "optimal_steps": 14,
-    "optimal_pushes": 4,
-    "tags": ["tutorial", "two-boxes", "symmetric", "single-color"],
-    "concept": "Symmetric layout: order of operations matters less than path planning.",
-    "verified_by_solver": false,
-    "theme": { "wall": "brick", "floor": "stone" }
-  }
+	"author": "Official",
+	"format_version": 1,
+	"height": 5,
+	"id": "official-w1-09",
+	"metadata": {
+		"concept": "Symmetric layout: order of operations matters less than path planning.",
+		"difficulty": 2.0,
+		"index": 9.0,
+		"optimal_pushes": 2,
+		"optimal_steps": 10,
+		"tags": [
+			"tutorial",
+			"two-boxes",
+			"symmetric",
+			"single-color"
+		],
+		"theme": {
+			"floor": "stone",
+			"wall": "brick"
+		},
+		"verified_by_solver": true,
+		"world": 1.0
+	},
+	"name": "level_names.official-w1-09",
+	"tiles": [
+		"########",
+		"#.    .#",
+		"#$    $#",
+		"#  @   #",
+		"########"
+	],
+	"width": 8
 }

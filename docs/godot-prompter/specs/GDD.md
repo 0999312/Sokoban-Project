@@ -1,6 +1,6 @@
 # Sokoban — Game Design Document (GDD)
 
-> 版本：v1.0｜状态：已批准进入实施｜负责人：项目所有者
+> 版本：v1.0｜状态：已进入维护阶段｜负责人：项目所有者
 > 引擎：Godot 4.6（Mobile renderer）｜语言：GDScript｜协议：MIT（代码）+ CC-BY 4.0（关卡数据）
 
 ---
@@ -51,6 +51,7 @@
 
 ### 2.3 评分与挑战
 - 三星：`steps ≤ optimal` ★★★｜`≤ optimal × 1.25` ★★｜完成 ★
+- 若关卡没有 `optimal_steps`，则任意通关默认记为 ★★★
 - 计步、计推、计时（仅显示）
 - 全局统计：累计步数、累计游玩时长、关卡通过率
 
@@ -229,11 +230,12 @@ language_changed(locale)
 
 | 通道 | 用途 |
 |---|---|
-| Music | 主菜单 / 章节 BGM |
-| SFX | 走步、推箱、归位、撤销、胜利、UI |
-| Ambient | v1.1 |
+| Music | 主菜单 / 游戏 BGM |
+| SFX | 走步、推箱、归位、撤销、胜利 |
+| UI | 按钮点击等界面音效 |
+| Ambient | v1.1 预留 |
 
-总线：`Master → Music / SFX / Ambient`。
+总线：`Master → Music / SFX / UI`。
 
 ## 10. 本地化
 

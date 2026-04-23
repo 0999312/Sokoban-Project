@@ -5,11 +5,13 @@
 	"id": "official-w2-104",
 	"metadata": {
 		"import_source": "E:/godot_learning/projects/sokoban/docs/microban_levels/DavidWSkinner Microban.sok",
-		"index": 104,
-		"source_index": 104,
+		"index": 104.0,
+		"optimal_pushes": 27,
+		"optimal_steps": 127,
+		"source_index": 104.0,
 		"source_title": "Microban 104",
-		"verified_by_solver": false,
-		"world": 2
+		"verified_by_solver": true,
+		"world": 2.0
 	},
 	"name": "Microban 104",
 	"tiles": [

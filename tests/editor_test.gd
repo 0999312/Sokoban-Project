@@ -21,6 +21,7 @@ func _init() -> void:
 	failed += _run("EditCommand apply/revert", _t_edit_command_revert)
 	failed += _run("ShareCode roundtrip W1-01", _t_share_w1_01)
 	failed += _run("ShareCode roundtrip W1-06 (multi-color)", _t_share_w1_06)
+	failed += _run("EditorModel preserves solver metadata", _t_model_preserves_solver_metadata)
 	failed += _run("ShareCode tamper detection", _t_share_tamper)
 	failed += _run("UserLevelStore.make_new_id unique", _t_make_id_unique)
 	failed += _run("EditorModel resize preserves cells", _t_resize_preserve)
@@ -170,6 +171,39 @@ func _share_roundtrip(path: String) -> bool:
 		printerr("    box mismatch"); return false
 	if not _set_eq_with_color(lvl.goal_positions, lvl.goal_colors, roundtrip.goal_positions, roundtrip.goal_colors):
 		printerr("    goal mismatch"); return false
+	return true
+
+func _t_model_preserves_solver_metadata() -> bool:
+	var src: Level = LevelLoader.load_json_file(W1_01)
+	if src == null:
+		printerr("    cannot load: " + W1_01)
+		return false
+	var model := EditorModel.new(src.width, src.height)
+	model.load_from_level(src)
+	model.meta["optimal_steps"] = 12
+	model.meta["optimal_pushes"] = 4
+	model.meta["verified_by_solver"] = true
+	var out: Level = model.to_level()
+	if int(out.metadata.get("optimal_steps", -1)) != 12:
+		printerr("    optimal_steps missing from metadata")
+		return false
+	if int(out.metadata.get("optimal_pushes", -1)) != 4:
+		printerr("    optimal_pushes missing from metadata")
+		return false
+	if not bool(out.metadata.get("verified_by_solver", false)):
+		printerr("    verified_by_solver missing from metadata")
+		return false
+	var model2 := EditorModel.new(out.width, out.height)
+	model2.load_from_level(out)
+	if int(model2.meta.get("optimal_steps", -1)) != 12:
+		printerr("    optimal_steps missing after reload")
+		return false
+	if int(model2.meta.get("optimal_pushes", -1)) != 4:
+		printerr("    optimal_pushes missing after reload")
+		return false
+	if not bool(model2.meta.get("verified_by_solver", false)):
+		printerr("    verified_by_solver missing after reload")
+		return false
 	return true
 
 func _t_share_tamper() -> bool:

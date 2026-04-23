@@ -7,22 +7,20 @@
   "height": 7,
   "tiles": [
     "#########",
-    "#a  1  2#",
+    "# 1   2 #",
+    "# a @ b #",
     "#       #",
-    "#  @    #",
-    "#       #",
-    "#b  3  c#",
+    "#   c   #",
+    "#   3   #",
     "#########"
   ],
   "metadata": {
     "world": 1,
     "index": 12,
     "difficulty": 3,
-    "optimal_steps": 28,
-    "optimal_pushes": 10,
     "tags": ["puzzle", "multi_color", "three-colors", "coordination"],
     "color_count": 3,
-    "concept": "Three colored boxes scattered around the room must each reach their matching holder.",
+    "concept": "Three colored boxes each have a matching holder; clear the roomy layout in a clean order.",
     "verified_by_solver": false,
     "theme": { "wall": "stone", "floor": "stone" }
   }

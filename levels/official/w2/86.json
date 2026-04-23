@@ -5,11 +5,13 @@
 	"id": "official-w2-86",
 	"metadata": {
 		"import_source": "E:/godot_learning/projects/sokoban/docs/microban_levels/DavidWSkinner Microban.sok",
-		"index": 86,
-		"source_index": 86,
+		"index": 86.0,
+		"optimal_pushes": 25,
+		"optimal_steps": 133,
+		"source_index": 86.0,
 		"source_title": "Microban 86",
-		"verified_by_solver": false,
-		"world": 2
+		"verified_by_solver": true,
+		"world": 2.0
 	},
 	"name": "Microban 86",
 	"tiles": [

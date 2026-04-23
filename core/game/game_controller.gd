@@ -194,7 +194,7 @@ func _on_board_redone(cmd: BoardCommand) -> void:
 
 func _calc_stars(moves: int, optimal: int) -> int:
 	if optimal <= 0:
-		return 1
+		return 3
 	if moves <= optimal:
 		return 3
 	if moves <= int(ceil(optimal * 1.25)):

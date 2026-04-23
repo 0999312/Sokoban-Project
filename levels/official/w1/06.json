@@ -1,26 +1,41 @@
 {
-  "format_version": 2,
-  "id": "official-w1-06",
-  "name": "level_names.official-w1-06",
-  "author": "Official",
-  "width": 8,
-  "height": 4,
-  "tiles": [
-    "########",
-    "#      #",
-    "#2b@$. #",
-    "########"
-  ],
-  "metadata": {
-    "world": 1,
-    "index": 6,
-    "difficulty": 1,
-    "optimal_steps": 3,
-    "optimal_pushes": 2,
-    "tags": ["tutorial", "multi_color", "two_color"],
-    "color_count": 2,
-    "concept": "Boxes and holders must color-match. Red box → red holder, blue box → blue holder.",
-    "verified_by_solver": true,
-    "theme": { "wall": "brick", "floor": "grass" }
-  }
+	"author": "Official",
+	"color_overrides": {
+		"crates": {
+			"2,2": 2
+		},
+		"holders": {
+			"1,2": 2
+		}
+	},
+	"format_version": 2,
+	"height": 4,
+	"id": "official-w1-06",
+	"metadata": {
+		"color_count": 2.0,
+		"concept": "Boxes and holders must color-match. Red box → red holder, blue box → blue holder.",
+		"difficulty": 1.0,
+		"index": 6.0,
+		"optimal_pushes": 2,
+		"optimal_steps": 3,
+		"tags": [
+			"tutorial",
+			"multi_color",
+			"two_color"
+		],
+		"theme": {
+			"floor": "grass",
+			"wall": "brick"
+		},
+		"verified_by_solver": true,
+		"world": 1.0
+	},
+	"name": "level_names.official-w1-06",
+	"tiles": [
+		"########",
+		"#      #",
+		"#2b@$. #",
+		"########"
+	],
+	"width": 8
 }

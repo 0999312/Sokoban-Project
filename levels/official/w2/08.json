@@ -5,11 +5,13 @@
 	"id": "official-w2-08",
 	"metadata": {
 		"import_source": "E:/godot_learning/projects/sokoban/docs/microban_levels/DavidWSkinner Microban.sok",
-		"index": 8,
-		"source_index": 8,
+		"index": 8.0,
+		"optimal_pushes": 32,
+		"optimal_steps": 103,
+		"source_index": 8.0,
 		"source_title": "Microban 8",
-		"verified_by_solver": false,
-		"world": 2
+		"verified_by_solver": true,
+		"world": 2.0
 	},
 	"name": "Microban 8",
 	"tiles": [

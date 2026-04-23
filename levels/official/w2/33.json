@@ -5,11 +5,13 @@
 	"id": "official-w2-33",
 	"metadata": {
 		"import_source": "E:/godot_learning/projects/sokoban/docs/microban_levels/DavidWSkinner Microban.sok",
-		"index": 33,
-		"source_index": 33,
+		"index": 33.0,
+		"optimal_pushes": 10,
+		"optimal_steps": 41,
+		"source_index": 33.0,
 		"source_title": "Microban 33",
-		"verified_by_solver": false,
-		"world": 2
+		"verified_by_solver": true,
+		"world": 2.0
 	},
 	"name": "Microban 33",
 	"tiles": [

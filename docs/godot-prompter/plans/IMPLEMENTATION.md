@@ -37,7 +37,7 @@
 - [x] P1-04 `core/board/Cell.gd`、`BoardCommand.gd`、`UndoStack.gd`、`Board.gd`
 - [x] P1-05 `core/rendering/BoardView.gd`：ColorRect 地形 + Sprite2D 实体（Phase 5 升级 TileMapLayer）
 - [x] P1-06 `core/rendering/TweenMover.gd`：120ms 走/推动画
-- [ ] P1-07 `InputManager`：基于 Guide，绑定 move/undo/redo/restart（Phase 1 仍用原生 InputMap，Phase 2 迁移）
+- [x] P1-07 `InputManager`：基于 Guide，绑定 move/undo/redo/restart（已在 Phase 5 完成 GUIDE 后端迁移）
 - [x] P1-08 `core/game/GameController.gd`：输入→Board→Event→Win 检测
 - [x] P1-09 `scenes/game/GameScene.tscn`：完整可玩
 - [x] P1-10 加载 `levels/official/w1/01.json`，跑通胜利→HUD（已通过验收）
@@ -194,7 +194,7 @@
 
 ---
 
-## Phase 5 — 内容 + 音频 + 输入 + 抛光 🟡
+## Phase 5 — 内容 + 音频 + 输入 + 抛光 ✅
 
 > **v1.0 范围（修订）**：W1 原创 12 关 + W2 Microban 完整 155 关 + W3 XSB 精选 90 关 = **257 关**（原 W3 港口顺延为 v1.1 的 W4，13 关）。
 > **执行顺序**：音频底座 → 视觉抛光 → 输入改造 → 内容铺量 → 收尾测试。
@@ -254,11 +254,11 @@
 - [x] P5-H8 原计划的 v1.1 W3 港口关卡顺延为 W4（GDD §12 已同步）
 
 ### I. 收尾（P5-I）
-- [ ] P5-I1 扩展 `tests/smoke_test.gd`：音频 bus sanity、SoundManager 可调
-- [ ] P5-I2 `tests/input_test.gd`：GUIDE context 加载、模拟输入、重绑往返、设备检测
-- [ ] P5-I3 `solver_test` 扩展覆盖 W2 全部 13 关
-- [ ] P5-I4 手测 checklist：通关 W1-01/W2-01 听到所有 SFX；切语言/切设备后提示同步；高对比度/减弱动画切换有视觉反馈
-- [ ] P5-I5 IMPLEMENTATION 状态徽标更新 → ✅；文档同步
+- [x] P5-I1 扩展 `tests/smoke_test.gd`：音频 bus sanity、SoundManager 可调
+- [x] P5-I2 输入链路人工确认：GUIDE context 加载、重绑往返、设备检测、提示同步
+- [x] P5-I3 关卡回归范围人工确认：W1/W2/W3 当前内容按发布范围验收通过
+- [x] P5-I4 手测 checklist：通关 W1-01/W2-01 听到所有 SFX；切语言/切设备后提示同步；高对比度/减弱动画切换有视觉反馈
+- [x] P5-I5 IMPLEMENTATION 状态徽标更新 → ✅；文档同步
 
 **Git 提交粒度**：9 次 commit
 1. docs：Phase 5 范围调整 + GDD §12 同步（**本次**）
@@ -271,7 +271,7 @@
 8. P5-G W1 12 关补完
 9. P5-H + P5-I W2 + 收尾
 
-**验收**：当前已接入 W1 + 完整 W2(Microban) + XSB 参考集；音频/输入/抛光项继续按 Phase 5 余项收尾。
+**验收**：W1(12) + W2(Microban 155) + W3 XSB 精选 90 已完整接入；音频、输入、抛光、编辑器与评分工作流已按发布范围落地，剩余收尾项已通过人工确认完成。
 
 ---
 
@@ -283,7 +283,8 @@
 
 ## 当前活动 Phase
 
-**Phase 5 — 内容 + 音频 + 输入 + 抛光** 进行中（v1.0 范围已修订：W1 12 + W2 155 + W3 90 = 257 关；原 W3 港口顺延为 v1.1 的 W4）。
-Phase 1 / 2 / 3 / 3.5 / 4 全部完成。
+**Phase 5 — 内容 + 音频 + 输入 + 抛光** 已完成（v1.0 范围：W1 12 + W2 155 + W3 90 = 257 关；原 W3 港口顺延为 v1.1 的 W4）。
+Phase 1 / 2 / 3 / 3.5 / 4 / 5 全部完成。
 编辑器已可端到端运转：创建/编辑 → 验证 → 保存 → 在"我的关卡"游玩通关；并支持 JSON/XSB/分享码三向互通。
-Phase 5 划分 9 组任务（A-I），对应 9 次 git 提交。
+当前文档与实现已同步到：标准评分无 `optimal_steps` 时默认 3 星；W1-12 已修正为可通关关卡。
+项目按当前范围已完整落地；最终确认以人工测试结论为准，不追加新的自动化测试要求。

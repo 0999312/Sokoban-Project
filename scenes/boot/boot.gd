@@ -77,7 +77,7 @@ func _build_splash() -> Control:
 	v.alignment = BoxContainer.ALIGNMENT_CENTER
 	v.add_theme_constant_override("separation", 16)
 	# Icon
-	var icon_tex: Texture2D = load("res://icon.svg") as Texture2D
+	var icon_tex: Texture2D = load("res://icon_new.png") as Texture2D
 	if icon_tex != null:
 		var icon := TextureRect.new()
 		icon.texture = icon_tex

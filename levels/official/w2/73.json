@@ -5,11 +5,13 @@
 	"id": "official-w2-73",
 	"metadata": {
 		"import_source": "E:/godot_learning/projects/sokoban/docs/microban_levels/DavidWSkinner Microban.sok",
-		"index": 73,
-		"source_index": 73,
+		"index": 73.0,
+		"optimal_pushes": 25,
+		"optimal_steps": 201,
+		"source_index": 73.0,
 		"source_title": "Microban 73",
-		"verified_by_solver": false,
-		"world": 2
+		"verified_by_solver": true,
+		"world": 2.0
 	},
 	"name": "Microban 73",
 	"tiles": [
