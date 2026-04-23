@@ -83,13 +83,13 @@ func _process(_dt: float) -> void:
 	if dir != Vector2i.ZERO:
 		_try_move(dir)
 		return
-	if Input.is_action_just_pressed(InputManager.UNDO):
+	if InputManager.is_action_just_pressed(InputManager.UNDO):
 		_on_undo()
-	elif Input.is_action_just_pressed(InputManager.REDO):
+	elif InputManager.is_action_just_pressed(InputManager.REDO):
 		_on_redo()
-	elif Input.is_action_just_pressed(InputManager.RESTART):
+	elif InputManager.is_action_just_pressed(InputManager.RESTART):
 		_on_restart()
-	elif Input.is_action_just_pressed(InputManager.PAUSE):
+	elif InputManager.is_action_just_pressed(InputManager.PAUSE):
 		if hud != null and hud.has_method("show_pause"):
 			hud.show_pause()
 

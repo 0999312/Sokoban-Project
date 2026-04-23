@@ -97,11 +97,11 @@ func _process(_dt: float) -> void:
 	if dir != Vector2i.ZERO:
 		board.try_move(dir)
 		return
-	if Input.is_action_just_pressed(InputManager.UNDO):
+	if InputManager.is_action_just_pressed(InputManager.UNDO):
 		board.undo()
-	elif Input.is_action_just_pressed(InputManager.REDO):
+	elif InputManager.is_action_just_pressed(InputManager.REDO):
 		board.redo()
-	elif Input.is_action_just_pressed(InputManager.RESTART):
+	elif InputManager.is_action_just_pressed(InputManager.RESTART):
 		_on_restart()
 
 func _input(event: InputEvent) -> void:
