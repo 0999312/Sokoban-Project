@@ -75,6 +75,11 @@ var _box_sprites: Dictionary = {}   ## key: Vector2i (current pos) -> Sprite2D
 
 func _ready() -> void:
 	_ensure_layers()
+	_apply_high_contrast()
+	# 监听 settings 变化（高对比度切换实时生效）
+	var sm := get_node_or_null("/root/SaveManager")
+	if sm != null and sm.has_signal("settings_changed"):
+		sm.settings_changed.connect(_on_settings_changed)
 
 func _ensure_layers() -> void:
 	if _tile_layer != null:
@@ -217,10 +222,13 @@ func _on_board_moved(cmd: BoardCommand) -> void:
 			# 更新着色器 complete 参数（v2：考虑颜色匹配，含中性槽）
 			var complete: bool = _board.is_box_complete_at(cmd.box_to)
 			_tween_complete(box, 1.0 if complete else 0.0)
-	# 玩家：朝向 + 行走帧
+			# 归位特效：仅在本次推动使箱子从未完成 → 完成
+			if cmd.became_complete() and A11y.particles_enabled():
+				_emit_complete_burst(cmd.box_to, _get_box_color_at(cmd.box_to))
+	# 玩家：朝向 + 行走帧 + 走步抖动
 	_update_player_facing(cmd.direction)
 	_advance_walk_frame()
-	TweenMover.move(_player_sprite, _grid_to_world(cmd.player_to))
+	TweenMover.move_with_shake(_player_sprite, _grid_to_world(cmd.player_to))
 
 func _tween_complete(box: Sprite2D, target: float) -> void:
 	var mat := box.material as ShaderMaterial
@@ -274,3 +282,69 @@ func get_pixel_size() -> Vector2:
 	if _board == null:
 		return Vector2.ZERO
 	return Vector2(_board.level.width * TILE_SIZE, _board.level.height * TILE_SIZE)
+
+# --- Phase 5 P5-C: accessibility ---
+
+func _on_settings_changed(key: String, _value) -> void:
+	if key == "high_contrast":
+		_apply_high_contrast()
+
+func _apply_high_contrast() -> void:
+	# 最简实现：开启时整体提亮 + 微饱和，让墙/箱/地板对比更强
+	if A11y.is_high_contrast():
+		modulate = Color(1.15, 1.15, 1.15, 1.0)
+	else:
+		modulate = Color.WHITE
+
+# --- Phase 5 P5-C: 归位粒子特效 ---
+
+## 各 color_id 的粒子色相
+const _COMPLETE_BURST_COLORS := {
+	0: Color(1.0, 1.0, 1.0),      # 中性槽 → 白
+	1: Color(1.0, 0.85, 0.4),     # crate_1 暖黄
+	2: Color(0.55, 0.85, 1.0),    # crate_2 蓝
+	3: Color(0.7, 1.0, 0.55),     # crate_3 绿
+	4: Color(1.0, 0.55, 0.55),    # crate_4 红
+	5: Color(0.85, 0.6, 1.0),     # crate_5 紫
+}
+
+## 在指定格子中心一次性发射 8-10 个上升小颗粒，0.6s 后自动 free。
+func _emit_complete_burst(grid_pos: Vector2i, color_id: int) -> void:
+	var p := GPUParticles2D.new()
+	p.one_shot = true
+	p.amount = 10
+	p.lifetime = 0.6
+	p.explosiveness = 0.95   # 一次性炸开
+	p.position = _grid_to_world(grid_pos) + Vector2(TILE_SIZE * 0.5, TILE_SIZE * 0.5)
+	p.z_index = 50
+
+	var mat := ParticleProcessMaterial.new()
+	mat.emission_shape = ParticleProcessMaterial.EMISSION_SHAPE_SPHERE
+	mat.emission_sphere_radius = 6.0
+	mat.direction = Vector3(0, -1, 0)
+	mat.spread = 60.0
+	mat.gravity = Vector3(0, 200.0, 0)   # 微重力使粒子先升后落
+	mat.initial_velocity_min = 80.0
+	mat.initial_velocity_max = 160.0
+	mat.scale_min = 1.0
+	mat.scale_max = 2.0
+	# 粒子颜色随时间淡出
+	var tint: Color = _COMPLETE_BURST_COLORS.get(color_id, Color.WHITE)
+	mat.color = tint
+	var ramp := Gradient.new()
+	ramp.add_point(0.0, Color(tint.r, tint.g, tint.b, 1.0))
+	ramp.set_color(0, Color(tint.r, tint.g, tint.b, 1.0))
+	ramp.set_color(1, Color(tint.r, tint.g, tint.b, 0.0))
+	var grad_tex := GradientTexture1D.new()
+	grad_tex.gradient = ramp
+	mat.color_ramp = grad_tex
+	p.process_material = mat
+
+	add_child(p)
+	p.emitting = true
+	# 自销毁
+	var t := get_tree().create_timer(p.lifetime + 0.15)
+	t.timeout.connect(func():
+		if is_instance_valid(p):
+			p.queue_free()
+	)
