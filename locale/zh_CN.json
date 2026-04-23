@@ -1,12 +1,13 @@
 {
   "menu": {
-    "title": "SOKOBAN",
+    "title": "搬箱计划",
     "play": "开始游戏",
     "levels": "关卡选择",
     "editor": "关卡编辑器",
     "settings": "设置",
     "quit": "退出游戏",
-    "version_status": "v{0} · 已索引 {1} 关"
+    "version_status": "v{0} · 已索引 {1} 关",
+    "help_dynamic": "导航：{0} {1}    确定：{2}    返回：{3}"
   },
   "level_select": {
     "title": "关卡选择",
@@ -16,7 +17,8 @@
     "no_record": "未挑战",
     "user_levels": "我的关卡",
     "user_progress": "已保存 {0} 关",
-    "user_empty_hint": "暂无自建关卡。返回主菜单 → 关卡编辑器 创建你的第一关吧！"
+    "user_empty_hint": "暂无自建关卡。返回主菜单 → 关卡编辑器 创建你的第一关吧！",
+    "help_dynamic": "导航：{0} {1} {2} {3}    确定：{4}    返回：{5}"
   },
   "hud": {
     "moves": "步数：{0}",
@@ -26,14 +28,16 @@
     "redo": "重做",
     "restart": "重玩",
     "pause": "暂停",
-    "help": "WASD/方向键 = 移动    Z = 撤销    Y = 重做    R = 重玩    Esc = 暂停"
+    "help": "WASD/方向键 = 移动    Z = 撤销    Y = 重做    R = 重玩    Esc = 暂停",
+    "help_dynamic": "移动：{0} {1} {2} {3}    撤销：{4}    重做：{5}    重玩：{6}    暂停：{7}"
   },
   "pause": {
     "title": "已暂停",
     "resume": "继续",
     "restart": "重玩",
     "settings": "设置",
-    "menu": "返回主菜单"
+    "menu": "返回主菜单",
+    "help_dynamic": "导航：{0} {1}    确定：{2}    返回/继续：{3}"
   },
   "complete": {
     "title": "通关！",
@@ -55,7 +59,21 @@
     "input_section": "键位设置",
     "reset_bindings": "重置默认",
     "back": "返回",
-    "apply": "应用"
+    "apply": "应用",
+    "tab": {
+      "game": "游戏设置",
+      "audio": "音量设置",
+      "input": "按键设置"
+    },
+    "input_col": {
+      "action": "操作",
+      "keyboard": "键盘",
+      "gamepad": "手柄"
+    },
+    "input_group": {
+      "gameplay": "游戏内操作（推箱时）",
+      "ui": "界面操作（菜单中）"
+    }
   },
   "input": {
     "action": {
@@ -66,7 +84,13 @@
       "undo":       "撤销",
       "redo":       "重做",
       "restart":    "重玩",
-      "pause":      "暂停"
+      "pause":      "暂停",
+      "ui_up":      "界面 ↑",
+      "ui_down":    "界面 ↓",
+      "ui_left":    "界面 ←",
+      "ui_right":   "界面 →",
+      "ui_accept":  "确定",
+      "ui_cancel":  "取消"
     },
     "rebind": {
       "listening":      "请按键…",
@@ -195,10 +219,14 @@
     "language_changed": "语言已切换"
   },
   "chapter_names": {
-    "official-w1": "第一章 · 仓库入门"
+    "official-w1": "第一章 · 仓库入门",
+    "official-w2": "第二章 · Microban",
+    "official-w3": "第三章 · XSB 精选"
   },
   "chapter_descriptions": {
-    "official-w1": "教学章节：移动、推箱、目标点、避免角落死锁。"
+    "official-w1": "教学章节：移动、推箱、目标点、避免角落死锁。",
+    "official-w2": "完整收录 David W Skinner 的 Microban 关卡集（155 关）。",
+    "official-w3": "经典 XSB 关卡参考集（90 关），尺寸更大、解法更长。"
   },
   "level_names": {
     "official-w1-01": "第一步",

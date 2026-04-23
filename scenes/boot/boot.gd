@@ -25,8 +25,9 @@ func _ready() -> void:
 	# 等一帧，确保 SaveManager 完成 load_profile()
 	await get_tree().process_frame
 	SettingsApplier.apply_all()
-	# 应用持久化的输入绑定（P5-F）
+	# 应用持久化的输入绑定（gameplay + UI）
 	InputManager.deserialize_bindings(SaveManager.get_input_bindings())
+	InputManager.deserialize_ui_bindings(SaveManager.get_ui_input_bindings())
 	# 替换默认 Label 为 Splash 画面
 	var splash_root := _build_splash()
 	await _animate_splash(splash_root)
@@ -85,11 +86,11 @@ func _build_splash() -> Control:
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		icon.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		v.add_child(icon)
-	# Title
+	# Title — 与 i18n 解耦，启动 splash 阶段还未应用语言，固定显示中英联名
 	var title := Label.new()
-	title.text = "SOKOBAN"
+	title.text = "Sokoban Project · 搬箱计划"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.add_theme_font_size_override("font_size", 48)
+	title.add_theme_font_size_override("font_size", 40)
 	title.add_theme_color_override("font_color", Color(0.95, 0.85, 0.6))
 	title.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.6))
 	title.add_theme_constant_override("shadow_offset_x", 2)

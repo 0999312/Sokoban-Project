@@ -207,10 +207,11 @@ static func parse_xsb(text: String, id: String = "user-level") -> Level:
 	lvl.width = width
 	lvl.height = height
 	lvl.format_version = 2
-	# 用字符行喂入解码器
+	# 用原始字符行喂入解码器。
+	# 短行缺失部分由 _decode_tile_rows 视为 OUTSIDE，避免把地图轮廓外误当成可走地板。
 	var rows: Array = []
 	for l in lines:
-		rows.append(l.rpad(width))
+		rows.append(l)
 	var decoded := _decode_tile_rows(rows, width, height)
 	lvl.tiles = decoded.tiles
 	lvl.player_start = decoded.player
@@ -239,7 +240,7 @@ static func _decode_tile_rows(rows: Array, width: int, height: int) -> Dictionar
 		var row: Array = []
 		row.resize(width)
 		for x in width:
-			var ch := " " if x >= line.length() else line.substr(x, 1)
+			var ch := CHAR_OUTSIDE if x >= line.length() else line.substr(x, 1)
 			var p := Vector2i(x, y)
 			# 优先识别"箱在目标"复合字符
 			if XSB_BOX_ON_GOAL_CHARS.has(ch):

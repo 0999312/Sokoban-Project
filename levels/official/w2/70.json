@@ -1,0 +1,28 @@
+{
+	"author": "David W Skinner",
+	"format_version": 2,
+	"height": 10,
+	"id": "official-w2-70",
+	"metadata": {
+		"import_source": "E:/godot_learning/projects/sokoban/docs/microban_levels/DavidWSkinner Microban.sok",
+		"index": 70,
+		"source_index": 70,
+		"source_title": "Microban 70",
+		"verified_by_solver": false,
+		"world": 2
+	},
+	"name": "Microban 70",
+	"tiles": [
+		"#####   ",
+		"# @ ####",
+		"#      #",
+		"# $ $$ #",
+		"##$##  #",
+		"#   ####",
+		"# ..  # ",
+		"##..  # ",
+		" ###  # ",
+		"   #### "
+	],
+	"width": 8
+}

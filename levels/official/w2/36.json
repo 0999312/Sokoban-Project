@@ -1,0 +1,23 @@
+{
+	"author": "David W Skinner",
+	"format_version": 2,
+	"height": 5,
+	"id": "official-w2-36",
+	"metadata": {
+		"import_source": "E:/godot_learning/projects/sokoban/docs/microban_levels/DavidWSkinner Microban.sok",
+		"index": 36,
+		"source_index": 36,
+		"source_title": "Microban 36",
+		"verified_by_solver": false,
+		"world": 2
+	},
+	"name": "Microban 36",
+	"tiles": [
+		"####           ",
+		"#  ############",
+		"# $ $ $ $ $ @ #",
+		"# .....       #",
+		"###############"
+	],
+	"width": 15
+}

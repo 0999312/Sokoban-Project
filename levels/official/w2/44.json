@@ -1,0 +1,21 @@
+{
+	"author": "David W Skinner",
+	"format_version": 2,
+	"height": 3,
+	"id": "official-w2-44",
+	"metadata": {
+		"import_source": "E:/godot_learning/projects/sokoban/docs/microban_levels/DavidWSkinner Microban.sok",
+		"index": 44,
+		"source_index": 44,
+		"source_title": "Microban 44",
+		"verified_by_solver": false,
+		"world": 2
+	},
+	"name": "Microban 44",
+	"tiles": [
+		"#####",
+		"#@$.#",
+		"#####"
+	],
+	"width": 5
+}

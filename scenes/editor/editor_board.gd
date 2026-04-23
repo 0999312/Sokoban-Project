@@ -55,6 +55,8 @@ func _gui_to_cell(local_pos: Vector2) -> Vector2i:
 func _input(event: InputEvent) -> void:
 	if model == null:
 		return
+	if editor != null and editor.has_method("has_blocking_overlay") and editor.has_blocking_overlay():
+		return
 	if event is InputEventMouseButton:
 		var mb := event as InputEventMouseButton
 		var local: Vector2 = get_local_mouse_position()

@@ -29,7 +29,8 @@ func _default_profile() -> Dictionary:
 		"progress": {},
 		"stats": { "total_steps": 0, "total_time_ms": 0, "completed_levels": 0 },
 		"user_levels_index": [],
-		"input_bindings": {},   # P5-F: 见 InputManager.serialize_bindings()
+		"input_bindings": {},      # P5-F: gameplay 绑定，见 InputManager.serialize_bindings()
+		"ui_input_bindings": {},   # UI 绑定，见 InputManager.serialize_ui_bindings()
 	}
 
 func _default_settings() -> Dictionary:
@@ -155,4 +156,11 @@ func get_input_bindings() -> Dictionary:
 
 func set_input_bindings(bindings: Dictionary) -> void:
 	profile["input_bindings"] = bindings
+	save_profile()
+
+func get_ui_input_bindings() -> Dictionary:
+	return profile.get("ui_input_bindings", {})
+
+func set_ui_input_bindings(bindings: Dictionary) -> void:
+	profile["ui_input_bindings"] = bindings
 	save_profile()

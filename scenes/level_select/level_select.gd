@@ -5,14 +5,23 @@ extends Control
 @onready var lbl_title: Label = %LblTitle
 @onready var btn_back: Button = %BtnBack
 @onready var tabs: TabContainer = %Tabs
+@onready var lbl_help: Label = %LblHelp
 
 const LEVEL_BTN_SIZE := Vector2(120, 120)
+
+var _first_level_button: Button = null
 
 func _ready() -> void:
 	btn_back.pressed.connect(GameState.goto_main_menu)
 	_refresh_texts()
 	_build_tabs()
+	if _first_level_button != null:
+		_first_level_button.grab_focus.call_deferred()
+	else:
+		btn_back.grab_focus.call_deferred()
 	EventBus.subscribe(&"LanguageChangedEvent", Callable(self, "_on_lang_changed"))
+	if InputManager.has_signal("device_changed"):
+		InputManager.device_changed.connect(_on_device_changed)
 
 func _exit_tree() -> void:
 	EventBus.unsubscribe(&"LanguageChangedEvent", Callable(self, "_on_lang_changed"))
@@ -25,11 +34,20 @@ func _on_lang_changed(_e) -> void:
 		child.queue_free()
 	_build_tabs()
 
+func _on_device_changed(_device: int) -> void:
+	_refresh_input_hints()
+
+func _refresh_input_hints() -> void:
+	btn_back.tooltip_text = InputHint.with_label("level_select.back", "ui_cancel")
+	lbl_help.text = InputHint.level_select_help_text()
+
 func _refresh_texts() -> void:
 	lbl_title.text = tr("level_select.title")
 	btn_back.text = tr("level_select.back")
+	_refresh_input_hints()
 
 func _build_tabs() -> void:
+	_first_level_button = null
 	var chapters := LevelLibrary.get_chapters()
 	for ch in chapters:
 		var ch_name := _resolve_name(ch.get("name", ""), str(ch.get("id", "?")))
@@ -62,6 +80,7 @@ func _build_user_page() -> Control:
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.follow_focus = true
 	page.add_child(scroll)
 	var grid := GridContainer.new()
 	grid.columns = 6
@@ -82,6 +101,7 @@ func _build_chapter_page(ch: Dictionary) -> Control:
 	var root := ScrollContainer.new()
 	root.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	root.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	root.follow_focus = true
 	var grid := GridContainer.new()
 	grid.columns = 6
 	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -121,6 +141,8 @@ func _make_level_button(level_id: String, display_idx: int) -> Control:
 	card.custom_minimum_size = LEVEL_BTN_SIZE
 	card.toggle_mode = false
 	card.pressed.connect(func(): _on_level_picked(level_id))
+	if _first_level_button == null:
+		_first_level_button = card
 
 	var box := VBoxContainer.new()
 	box.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)

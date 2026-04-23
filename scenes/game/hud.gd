@@ -44,6 +44,7 @@ signal resume_pressed()
 # Pause
 @onready var pause_panel: Control = %PausePanel
 @onready var pause_title: Label = %PauseTitle
+@onready var pause_help: Label = %PauseHelp
 @onready var btn_pause_resume: Button = %BtnPauseResume
 @onready var btn_pause_restart: Button = %BtnPauseRestart
 @onready var btn_pause_settings: Button = %BtnPauseSettings
@@ -88,12 +89,20 @@ func _on_lang_changed(_e) -> void:
 	_refresh_texts()
 
 func _on_device_changed(_dev: int) -> void:
-	# 仅刷新与键位相关的 tooltip
+	_refresh_input_hints()
+
+func _refresh_input_hints() -> void:
 	if btn_undo == null: return
 	btn_undo.tooltip_text    = InputHint.with_label("hud.undo",    "undo")
 	btn_redo.tooltip_text    = InputHint.with_label("hud.redo",    "redo")
 	btn_restart.tooltip_text = InputHint.with_label("hud.restart", "restart")
 	btn_pause.tooltip_text   = InputHint.with_label("hud.pause",   "pause")
+	lbl_help.text = InputHint.gameplay_help_text()
+	btn_pause_resume.tooltip_text = InputHint.with_label("pause.resume", "ui_cancel")
+	btn_pause_restart.tooltip_text = InputHint.with_label("pause.restart", "ui_accept")
+	btn_pause_settings.tooltip_text = InputHint.with_label("pause.settings", "ui_accept")
+	btn_pause_menu.tooltip_text = InputHint.with_label("pause.menu", "ui_cancel")
+	pause_help.text = InputHint.pause_menu_help_text()
 
 func _refresh_texts() -> void:
 	if lbl_help == null: return
@@ -101,12 +110,7 @@ func _refresh_texts() -> void:
 	btn_redo.text = tr("hud.redo")
 	btn_restart.text = tr("hud.restart")
 	btn_pause.text = tr("hud.pause")
-	# 按钮 tooltip 显示当前设备的键位提示（P5-F）
-	btn_undo.tooltip_text    = InputHint.with_label("hud.undo",    "undo")
-	btn_redo.tooltip_text    = InputHint.with_label("hud.redo",    "redo")
-	btn_restart.tooltip_text = InputHint.with_label("hud.restart", "restart")
-	btn_pause.tooltip_text   = InputHint.with_label("hud.pause",   "pause")
-	lbl_help.text = tr("hud.help")
+	_refresh_input_hints()
 	pause_title.text = tr("pause.title")
 	btn_pause_resume.text = tr("pause.resume")
 	btn_pause_restart.text = tr("pause.restart")
@@ -147,6 +151,7 @@ func show_win(stats: Dictionary) -> void:
 	])
 	win_stars.text = ""
 	win_panel.show()
+	btn_win_next.grab_focus.call_deferred()
 	# 星级逐颗弹出动画
 	_animate_stars(stars)
 
@@ -174,6 +179,7 @@ func show_pause() -> void:
 		return
 	pause_panel.show()
 	get_tree().paused = true
+	btn_pause_resume.grab_focus.call_deferred()
 
 func _close_pause() -> void:
 	pause_panel.hide()
@@ -194,7 +200,12 @@ func _on_pause_settings() -> void:
 	add_child(p)
 	p.process_mode = Node.PROCESS_MODE_ALWAYS  # 暂停时仍可操作
 	Sfx.attach_ui(p)
-	p.tree_exited.connect(func(): _settings_open = false)
+	p.tree_exited.connect(func():
+		_settings_open = false
+		_refresh_input_hints()
+		if pause_panel.visible:
+			btn_pause_resume.grab_focus.call_deferred()
+	)
 
 # --- Win buttons ---
 

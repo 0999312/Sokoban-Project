@@ -36,6 +36,7 @@ signal imported(level: Level)
 @onready var edit_code: LineEdit = %EditCode
 @onready var btn_cancel: Button = %BtnCancel
 @onready var btn_ok: Button = %BtnOk
+@onready var dim: ColorRect = $Dim
 
 var _file_dialog: FileDialog
 
@@ -45,6 +46,12 @@ func _ready() -> void:
 	btn_browse.pressed.connect(_on_browse)
 	btn_ok.pressed.connect(_on_ok)
 	btn_cancel.pressed.connect(_on_cancel)
+	dim.gui_input.connect(_on_dim_input)
+	btn_browse.grab_focus.call_deferred()
+
+func _on_dim_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		_on_cancel()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:

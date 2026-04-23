@@ -21,6 +21,7 @@ func _init() -> void:
 	failed += _run("undo restores state", _t_undo)
 	failed += _run("xsb roundtrip", _t_xsb_roundtrip)
 	# Phase 3.5
+	failed += _run("xsb short row pads outside", _t_xsb_short_row_outside)
 	failed += _run("xsb multi-color roundtrip", _t_xsb_multi_color_roundtrip)
 	failed += _run("multi-color: same-color wins", _t_multi_same_color_win)
 	failed += _run("multi-color: mismatch does not win", _t_multi_mismatch_no_win)
@@ -92,6 +93,26 @@ func _t_xsb_roundtrip() -> bool:
 	if lvl2.player_start != lvl.player_start: return false
 	if lvl2.box_count() != lvl.box_count(): return false
 	if lvl2.goal_count() != lvl.goal_count(): return false
+	return true
+
+func _t_xsb_short_row_outside() -> bool:
+	var lvl: Level = LevelLoader.parse_xsb("#####\n#@  #\n###", "short-row")
+	if lvl == null:
+		return false
+	if lvl.width != 5 or lvl.height != 3:
+		return false
+	# 第 3 行缺失的两格应视为 OUTSIDE，而不是可走地板。
+	if lvl.get_tile(3, 2) != Cell.Type.OUTSIDE:
+		printerr("expected short-row padding at (3,2) to be OUTSIDE")
+		return false
+	if lvl.get_tile(4, 2) != Cell.Type.OUTSIDE:
+		printerr("expected short-row padding at (4,2) to be OUTSIDE")
+		return false
+	var board := Board.new(lvl)
+	board.player_pos = Vector2i(3, 1)
+	if board.try_move(Vector2i(0, 1)):
+		printerr("player should not move into short-row OUTSIDE padding")
+		return false
 	return true
 
 # ---------- Phase 3.5 ----------

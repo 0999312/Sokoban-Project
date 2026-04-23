@@ -76,13 +76,10 @@ func play_bgm(key: String, crossfade: float = 1.0) -> void:
 	if path == "":
 		push_warning("[Sfx] unknown bgm key: %s" % key)
 		return
-	var stream: AudioStream = _cache.get(path) as AudioStream
+	var stream := _load_sfx(key, _BGM_PATHS)
 	if stream == null:
-		stream = load(path) as AudioStream
-		if stream == null:
-			push_warning("[Sfx] failed to load bgm: %s" % path)
-			return
-		_cache[path] = stream
+		return
+	_ensure_bgm_loops(stream)
 	_sm.play_music(stream, crossfade)
 	_current_bgm_key = key
 
@@ -106,6 +103,19 @@ func _load_sfx(name: String, table: Dictionary) -> AudioStream:
 			return null
 		_cache[path] = stream
 	return stream
+
+func _ensure_bgm_loops(stream: AudioStream) -> void:
+	if stream == null:
+		return
+	for prop_name in [&"loop", &"looping"]:
+		if _has_property(stream, prop_name):
+			stream.set(prop_name, true)
+
+func _has_property(obj: Object, prop_name: StringName) -> bool:
+	for prop in obj.get_property_list():
+		if StringName(prop.get("name", "")) == prop_name:
+			return true
+	return false
 
 # --- UI auto-binding ---
 

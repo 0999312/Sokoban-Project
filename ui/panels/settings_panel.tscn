@@ -7,6 +7,7 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 1
 script = ExtResource("1_settings")
 
 [node name="Dim" type="ColorRect" parent="."]
@@ -20,65 +21,123 @@ mouse_filter = 0
 
 [node name="Card" type="Panel" parent="."]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(720, 520)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -260.0
+offset_left = -360.0
 offset_top = -260.0
-offset_right = 260.0
+offset_right = 360.0
 offset_bottom = 260.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBox" type="VBoxContainer" parent="Card"]
+[node name="Margin" type="MarginContainer" parent="Card"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 24.0
-offset_top = 24.0
-offset_right = -24.0
-offset_bottom = -24.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 14
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
 
-[node name="LblTitle" type="Label" parent="Card/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Settings"
-horizontal_alignment = 1
-theme_override_font_sizes/font_size = 28
-
-[node name="RowLang" type="HBoxContainer" parent="Card/VBox"]
+[node name="VBox" type="VBoxContainer" parent="Card/Margin"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="LblLang" type="Label" parent="Card/VBox/RowLang"]
+[node name="Header" type="HBoxContainer" parent="Card/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="LblTitle" type="Label" parent="Card/Margin/VBox/Header"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Settings"
+theme_override_font_sizes/font_size = 26
+
+[node name="BtnBack" type="Button" parent="Card/Margin/VBox/Header"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 0)
+layout_mode = 2
+text = "Back"
+
+[node name="Tabs" type="TabContainer" parent="Card/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+clip_tabs = false
+
+[node name="TabGame" type="ScrollContainer" parent="Card/Margin/VBox/Tabs"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+follow_focus = true
+
+[node name="VBoxGame" type="VBoxContainer" parent="Card/Margin/VBox/Tabs/TabGame"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 14
+
+[node name="RowLang" type="HBoxContainer" parent="Card/Margin/VBox/Tabs/TabGame/VBoxGame"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LblLang" type="Label" parent="Card/Margin/VBox/Tabs/TabGame/VBoxGame/RowLang"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 text = "Language"
 
-[node name="OptLang" type="OptionButton" parent="Card/VBox/RowLang"]
+[node name="OptLang" type="OptionButton" parent="Card/Margin/VBox/Tabs/TabGame/VBoxGame/RowLang"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="RowMaster" type="HBoxContainer" parent="Card/VBox"]
+[node name="ChkFullscreen" type="CheckBox" parent="Card/Margin/VBox/Tabs/TabGame/VBoxGame"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="ChkHighContrast" type="CheckBox" parent="Card/Margin/VBox/Tabs/TabGame/VBoxGame"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "High Contrast"
+
+[node name="ChkReduceMotion" type="CheckBox" parent="Card/Margin/VBox/Tabs/TabGame/VBoxGame"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reduce Motion"
+
+[node name="TabAudio" type="ScrollContainer" parent="Card/Margin/VBox/Tabs"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+follow_focus = true
+
+[node name="VBoxAudio" type="VBoxContainer" parent="Card/Margin/VBox/Tabs/TabAudio"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 14
+
+[node name="RowMaster" type="HBoxContainer" parent="Card/Margin/VBox/Tabs/TabAudio/VBoxAudio"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="LblMaster" type="Label" parent="Card/VBox/RowMaster"]
+[node name="LblMaster" type="Label" parent="Card/Margin/VBox/Tabs/TabAudio/VBoxAudio/RowMaster"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(140, 0)
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 text = "Master"
 
-[node name="SlMaster" type="HSlider" parent="Card/VBox/RowMaster"]
+[node name="SlMaster" type="HSlider" parent="Card/Margin/VBox/Tabs/TabAudio/VBoxAudio/RowMaster"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -86,17 +145,17 @@ max_value = 1.0
 step = 0.05
 value = 1.0
 
-[node name="RowMusic" type="HBoxContainer" parent="Card/VBox"]
+[node name="RowMusic" type="HBoxContainer" parent="Card/Margin/VBox/Tabs/TabAudio/VBoxAudio"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="LblMusic" type="Label" parent="Card/VBox/RowMusic"]
+[node name="LblMusic" type="Label" parent="Card/Margin/VBox/Tabs/TabAudio/VBoxAudio/RowMusic"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(140, 0)
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 text = "Music"
 
-[node name="SlMusic" type="HSlider" parent="Card/VBox/RowMusic"]
+[node name="SlMusic" type="HSlider" parent="Card/Margin/VBox/Tabs/TabAudio/VBoxAudio/RowMusic"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -104,17 +163,17 @@ max_value = 1.0
 step = 0.05
 value = 0.8
 
-[node name="RowSfx" type="HBoxContainer" parent="Card/VBox"]
+[node name="RowSfx" type="HBoxContainer" parent="Card/Margin/VBox/Tabs/TabAudio/VBoxAudio"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="LblSfx" type="Label" parent="Card/VBox/RowSfx"]
+[node name="LblSfx" type="Label" parent="Card/Margin/VBox/Tabs/TabAudio/VBoxAudio/RowSfx"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(140, 0)
+custom_minimum_size = Vector2(180, 0)
 layout_mode = 2
 text = "SFX"
 
-[node name="SlSfx" type="HSlider" parent="Card/VBox/RowSfx"]
+[node name="SlSfx" type="HSlider" parent="Card/Margin/VBox/Tabs/TabAudio/VBoxAudio/RowSfx"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -122,26 +181,78 @@ max_value = 1.0
 step = 0.05
 value = 1.0
 
-[node name="ChkFullscreen" type="CheckBox" parent="Card/VBox"]
+[node name="RowUi" type="HBoxContainer" parent="Card/Margin/VBox/Tabs/TabAudio/VBoxAudio"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LblUi" type="Label" parent="Card/Margin/VBox/Tabs/TabAudio/VBoxAudio/RowUi"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "UI"
+
+[node name="SlUi" type="HSlider" parent="Card/Margin/VBox/Tabs/TabAudio/VBoxAudio/RowUi"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Fullscreen"
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+value = 1.0
 
-[node name="ChkHighContrast" type="CheckBox" parent="Card/VBox"]
+[node name="TabInput" type="ScrollContainer" parent="Card/Margin/VBox/Tabs"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+follow_focus = true
+
+[node name="VBoxInput" type="VBoxContainer" parent="Card/Margin/VBox/Tabs/TabInput"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "High Contrast"
-
-[node name="ChkReduceMotion" type="CheckBox" parent="Card/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Reduce Motion"
-
-[node name="Spacer" type="Control" parent="Card/VBox"]
-layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 8
 
-[node name="BtnBack" type="Button" parent="Card/VBox"]
+[node name="HeaderInput" type="HBoxContainer" parent="Card/Margin/VBox/Tabs/TabInput/VBoxInput"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LblInputHeader" type="Label" parent="Card/Margin/VBox/Tabs/TabInput/VBoxInput/HeaderInput"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Back"
+size_flags_horizontal = 3
+text = "Input Bindings"
+theme_override_font_sizes/font_size = 18
+
+[node name="BtnResetBindings" type="Button" parent="Card/Margin/VBox/Tabs/TabInput/VBoxInput/HeaderInput"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reset"
+
+[node name="ColumnHeader" type="HBoxContainer" parent="Card/Margin/VBox/Tabs/TabInput/VBoxInput"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LblColAction" type="Label" parent="Card/Margin/VBox/Tabs/TabInput/VBoxInput/ColumnHeader"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+text = "Action"
+modulate = Color(1, 1, 1, 0.6)
+
+[node name="LblColKb" type="Label" parent="Card/Margin/VBox/Tabs/TabInput/VBoxInput/ColumnHeader"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+text = "Keyboard"
+modulate = Color(1, 1, 1, 0.6)
+
+[node name="LblColPad" type="Label" parent="Card/Margin/VBox/Tabs/TabInput/VBoxInput/ColumnHeader"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+text = "Gamepad"
+modulate = Color(1, 1, 1, 0.6)
+
+[node name="RebindList" type="VBoxContainer" parent="Card/Margin/VBox/Tabs/TabInput/VBoxInput"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 4

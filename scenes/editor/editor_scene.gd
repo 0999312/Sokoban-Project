@@ -94,6 +94,7 @@ func _ready() -> void:
 	EventBus.subscribe(&"LanguageChangedEvent", Callable(self, "_on_lang_changed"))
 	# UI 点击音效（_build_ui 已构建完按钮树）
 	Sfx.attach_ui(self)
+	Sfx.play_bgm("menu", 1.0)
 
 func _exit_tree() -> void:
 	EventBus.unsubscribe(&"LanguageChangedEvent", Callable(self, "_on_lang_changed"))
@@ -701,7 +702,13 @@ func close_playtest() -> void:
 		c.queue_free()
 	set_status(tr("editor.status.idle"))
 
+func has_blocking_overlay() -> bool:
+	return (dialog_layer != null and dialog_layer.get_child_count() > 0) \
+		or (playtest_layer != null and playtest_layer.get_child_count() > 0)
+
 func _unhandled_input(event: InputEvent) -> void:
+	if has_blocking_overlay():
+		return
 	# 全局快捷键：ctrl-z / ctrl-y
 	if event is InputEventKey and event.pressed and not event.echo:
 		var k := event as InputEventKey

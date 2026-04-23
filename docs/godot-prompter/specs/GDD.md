@@ -16,7 +16,7 @@
 | 商业模式 | 免费开源 |
 | 语言 | 简中 / 繁中 / 英文 |
 | 存档 | 本地 `user://` JSON + Steam Cloud 兼容路径 |
-| 内容量 | v1.0 首发：25 关（W1 仓库入门 12 + W2 工厂 13）；W3/W4 留 v1.1 |
+| 内容量 | v1.0 实际：W1 仓库入门 12 关（原创）+ W2 Microban 完整 155 关（David W Skinner，致谢）+ W3 XSB 精选 90 关（致谢）；原 v1.1 港口/储藏所合并为 W4 |
 | UGC | 阶段 1：玩家编辑器 + 本地保存 + 分享码（Base64+CRC） |
 | 阶段 2 预留 | Steam Workshop 接入（GodotSteam，后置不阻塞 v1.0） |
 
@@ -268,16 +268,16 @@ language_changed(locale)
 | 世界 | 主题 | 关卡数 | 教学要点 | 来源 |
 |---|---|---|---|---|
 | W1 仓库入门 | 教学 | 12 | 移动、推箱、目标、撤销、多色配对、中性槽 | 原创 |
-| W2 工厂 | 进阶 | 13 | 多箱协作、避免死锁；致敬经典 | David Holland Microban (public domain) |
+| W2 Microban | 进阶 | 155 | 完整收录小尺寸经典；多箱协作、避免死锁 | David W Skinner Microban (public domain) |
+| W3 XSB 精选 | 挑战 | 90 | 大尺寸、长解；经典 XSB 关卡参考集 | 经典 XSB 题集 (致谢原作者) |
 
 ### v1.1 路线图（预留）
 
 | 世界 | 主题 | 关卡数 | 教学要点 |
 |---|---|---|---|
-| W3 港口 | 精选 | 13 | 经典名题改编（致谢原作者） |
-| W4 储藏所 | 挑战 | 12 | 大尺寸 + 长解 |
+| W4 储藏所（原 W3 港口） | 原创精选 | 13 | 原计划的港口章节，原创关卡，留待 v1.1 |
 
-注：W2 关卡来自 David W. Holland 的 Microban 集合（public domain），导入时按章节难度由浅入深选取，每关 metadata 写入 `author` / `source` 字段；项目根 `LICENSES.md` 列出致谢清单。
+注：W2 关卡来自 David W Skinner 的 Microban 集合（public domain），完整 155 关；W3 关卡来自经典 XSB 题集参考导入（90 关），统一通过 `scripts/import_levelset.gd` 转入项目格式，每关 metadata 写入 `author` / `import_source` / `source_title` 字段；项目根 `LICENSES.md` 列出致谢清单。
 
 ## 13. 非功能需求
 

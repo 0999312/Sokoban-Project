@@ -1,0 +1,62 @@
+{
+	"author": "David W Skinner",
+	"format_version": 2,
+	"height": 17,
+	"id": "official-w2-155",
+	"metadata": {
+		"import_source": "E:/godot_learning/projects/sokoban/docs/microban_levels/DavidWSkinner Microban.sok",
+		"import_validation": {
+			"errors": [
+				"goal at (5, 1) unreachable from player",
+				"goal at (1, 5) unreachable from player",
+				"goal at (1, 6) unreachable from player",
+				"goal at (8, 8) unreachable from player",
+				"goal at (10, 11) unreachable from player",
+				"goal at (11, 11) unreachable from player",
+				"goal at (10, 12) unreachable from player",
+				"goal at (11, 12) unreachable from player",
+				"goal at (28, 14) unreachable from player",
+				"goal at (28, 15) unreachable from player"
+			],
+			"ok": false,
+			"warnings": [
+				"box at (5, 1) unreachable from player initially",
+				"box at (1, 5) unreachable from player initially",
+				"box at (1, 6) unreachable from player initially",
+				"box at (8, 8) unreachable from player initially",
+				"box at (10, 11) unreachable from player initially",
+				"box at (11, 11) unreachable from player initially",
+				"box at (10, 12) unreachable from player initially",
+				"box at (11, 12) unreachable from player initially",
+				"box at (28, 14) unreachable from player initially",
+				"box at (28, 15) unreachable from player initially"
+			]
+		},
+		"index": 155,
+		"source_index": 155,
+		"source_title": "Microban 155",
+		"verified_by_solver": false,
+		"world": 2
+	},
+	"name": "Microban 155",
+	"tiles": [
+		"    ######               #### ",
+		"#####*#  #################  ##",
+		"#   ###                      #",
+		"#        ########  ####  ##  #",
+		"### ####     #  ####  ####  ##",
+		"#*# # .# # # #     #     #   #",
+		"#*# #  #     # ##  # ##  ##  #",
+		"###    ### ###  # ##  # ##  ##",
+		" #   # #*#      #     # #    #",
+		" #   # ###  #####  #### #    #",
+		" #####   #####  ####### ######",
+		" #   # # #**#               # ",
+		"## # #   #**#  #######  ##  # ",
+		"#    #########  #    ##### ###",
+		"# #             # $        #*#",
+		"#   #########  ### @#####  #*#",
+		"#####       #### ####   ######"
+	],
+	"width": 30
+}

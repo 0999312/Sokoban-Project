@@ -10,30 +10,30 @@ config_version=5
 
 [application]
 
-config/name="Sokoban"
-config/description="Classic Sokoban with a built-in level editor."
+config/name="Sokoban Project"
+config/description="Sokoban Project / 搬箱计划 — Classic sokoban with a built-in level editor."
 config/version="0.1.0-phase0"
 run/main_scene="res://scenes/boot/Boot.tscn"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
+
+[audio]
+
+buses/default_bus_layout="res://resources/audio/default_bus_layout.tres"
 
 [autoload]
 
 GameState="*res://autoload/game_state.gd"
 LevelLibrary="*res://autoload/level_library.gd"
 SaveManager="*res://autoload/save_manager.gd"
-InputManager="*res://autoload/input_manager.gd"
 RegistryManager="*uid://djenx0rf18ew7"
 EventBus="*uid://dqjaimeyl43vd"
 I18NManager="*uid://wj05s0mpoqn"
 UIManager="*uid://b0mn85k3pon1l"
 SoundManager="*uid://c8sghfd0v8moa"
 GUIDE="*uid://p2jwrgjcbexr"
+InputManager="*res://autoload/input_manager.gd"
 Sfx="*res://autoload/sfx.gd"
-
-[audio]
-
-buses/default_bus_layout="res://resources/audio/default_bus_layout.tres"
 
 [display]
 

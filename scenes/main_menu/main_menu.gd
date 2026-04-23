@@ -8,6 +8,7 @@ extends Control
 @onready var btn_settings: Button = %BtnSettings
 @onready var btn_quit: Button = %BtnQuit
 @onready var lbl_status: Label = %LblStatus
+@onready var lbl_help: Label = %LblHelp
 @onready var settings_layer: CanvasLayer = $SettingsLayer
 
 const SETTINGS_PANEL_SCENE := preload("res://ui/panels/settings_panel.tscn")
@@ -32,16 +33,31 @@ func _ready() -> void:
 	_refresh_texts()
 	# 监听语言切换事件
 	EventBus.subscribe(&"LanguageChangedEvent", Callable(self, "_on_language_changed"))
+	if InputManager.has_signal("device_changed"):
+		InputManager.device_changed.connect(_on_device_changed)
 	# UI 点击音效（递归挂全部 Button）
 	Sfx.attach_ui(self)
 	# 主菜单 BGM
 	Sfx.play_bgm("menu", 1.0)
+	# 让键盘 / 手柄能立刻在主菜单导航
+	btn_play.grab_focus.call_deferred()
 
 func _exit_tree() -> void:
 	EventBus.unsubscribe(&"LanguageChangedEvent", Callable(self, "_on_language_changed"))
 
 func _on_language_changed(_event) -> void:
 	_refresh_texts()
+
+func _on_device_changed(_device: int) -> void:
+	_refresh_input_hints()
+
+func _refresh_input_hints() -> void:
+	btn_play.tooltip_text = InputHint.with_label("menu.play", "ui_accept")
+	btn_levels.tooltip_text = InputHint.with_label("menu.levels", "ui_accept")
+	btn_editor.tooltip_text = InputHint.with_label("menu.editor", "ui_accept")
+	btn_settings.tooltip_text = InputHint.with_label("menu.settings", "ui_accept")
+	btn_quit.tooltip_text = InputHint.with_label("menu.quit", "ui_cancel")
+	lbl_help.text = InputHint.main_menu_help_text()
 
 func _refresh_texts() -> void:
 	lbl_title.text = tr("menu.title")
@@ -52,6 +68,7 @@ func _refresh_texts() -> void:
 	btn_quit.text = tr("menu.quit")
 	var ver: String = ProjectSettings.get_setting("application/config/version", "?")
 	lbl_status.text = tr("menu.version_status").format([ver, LevelLibrary.get_level_count()])
+	_refresh_input_hints()
 
 func _on_play() -> void:
 	GameState.goto_level_select()
@@ -69,6 +86,7 @@ func _on_settings() -> void:
 	var panel := SETTINGS_PANEL_SCENE.instantiate()
 	settings_layer.add_child(panel)
 	Sfx.attach_ui(panel)
+	panel.tree_exited.connect(func(): _refresh_input_hints())
 
 func _on_quit() -> void:
 	GameState.quit_game()

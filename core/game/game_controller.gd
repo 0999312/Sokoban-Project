@@ -7,11 +7,13 @@ signal level_won(stats: Dictionary)
 
 @export var board_view_path: NodePath
 @export var hud_path: NodePath
+@export var camera_path: NodePath
 
 var board: Board
 var level: Level
 var view: BoardView
 var hud: Node
+var camera: GameCamera
 
 var _start_time_ms: int = 0
 var _accum_time_ms: int = 0   ## 暂停前累计时长
@@ -21,6 +23,8 @@ const MOVE_LOCK_MS := 60
 func _ready() -> void:
 	view = get_node_or_null(board_view_path) as BoardView
 	hud = get_node_or_null(hud_path)
+	camera = get_node_or_null(camera_path) as GameCamera
+	get_viewport().size_changed.connect(_layout_world)
 	await get_tree().process_frame
 	_load_current_level()
 	_connect_hud()
@@ -59,19 +63,26 @@ func _load_current_level() -> void:
 	board.redone.connect(_on_board_redone)
 	if view != null:
 		view.bind(board)
-		_center_view()
+		_layout_world()
+		if camera != null:
+			camera.bind_board_view(view)
 	_start_time_ms = Time.get_ticks_msec()
 	_accum_time_ms = 0
 	_emit_hud_update()
 	level_loaded.emit(level)
 	print("[GameController] loaded %s (%dx%d, %d boxes)" % [level.id, level.width, level.height, level.box_count()])
 
-func _center_view() -> void:
+func _layout_world() -> void:
 	if view == null:
 		return
 	var vp_size := get_viewport().get_visible_rect().size
 	var board_size := view.get_pixel_size()
-	view.position = (vp_size - board_size) * 0.5
+	view.position = Vector2(
+		maxf((vp_size.x - board_size.x) * 0.5, 0.0),
+		maxf((vp_size.y - board_size.y) * 0.5, 0.0)
+	)
+	if camera != null:
+		camera.snap_to_target()
 
 func _process(_dt: float) -> void:
 	if _input_locked or board == null:
@@ -120,6 +131,8 @@ func _on_restart() -> void:
 	var world := get_node_or_null("../World")
 	if world != null:
 		world.visible = true
+	if camera != null:
+		camera.snap_to_target()
 	_emit_hud_update()
 
 func _emit_hud_update() -> void:

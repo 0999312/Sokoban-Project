@@ -1,12 +1,13 @@
 {
   "menu": {
-    "title": "SOKOBAN",
+    "title": "Sokoban Project",
     "play": "Play",
     "levels": "Levels",
     "editor": "Level Editor",
     "settings": "Settings",
     "quit": "Quit",
-    "version_status": "v{0} · {1} levels indexed"
+    "version_status": "v{0} · {1} levels indexed",
+    "help_dynamic": "Navigate: {0} {1}    Confirm: {2}    Back: {3}"
   },
   "level_select": {
     "title": "Level Select",
@@ -16,7 +17,8 @@
     "no_record": "Not played",
     "user_levels": "My Levels",
     "user_progress": "{0} saved",
-    "user_empty_hint": "No user levels yet. Go back to Main Menu → Level Editor to create one!"
+    "user_empty_hint": "No user levels yet. Go back to Main Menu → Level Editor to create one!",
+    "help_dynamic": "Navigate: {0} {1} {2} {3}    Confirm: {4}    Back: {5}"
   },
   "hud": {
     "moves": "Moves: {0}",
@@ -26,14 +28,16 @@
     "redo": "Redo",
     "restart": "Restart",
     "pause": "Pause",
-    "help": "WASD/Arrows = Move    Z = Undo    Y = Redo    R = Restart    Esc = Pause"
+    "help": "WASD/Arrows = Move    Z = Undo    Y = Redo    R = Restart    Esc = Pause",
+    "help_dynamic": "Move: {0} {1} {2} {3}    Undo: {4}    Redo: {5}    Restart: {6}    Pause: {7}"
   },
   "pause": {
     "title": "Paused",
     "resume": "Resume",
     "restart": "Restart",
     "settings": "Settings",
-    "menu": "Main Menu"
+    "menu": "Main Menu",
+    "help_dynamic": "Navigate: {0} {1}    Confirm: {2}    Back/Resume: {3}"
   },
   "complete": {
     "title": "Level Complete!",
@@ -55,7 +59,21 @@
     "input_section": "Input Bindings",
     "reset_bindings": "Reset Defaults",
     "back": "Back",
-    "apply": "Apply"
+    "apply": "Apply",
+    "tab": {
+      "game": "Game",
+      "audio": "Audio",
+      "input": "Input"
+    },
+    "input_col": {
+      "action": "Action",
+      "keyboard": "Keyboard",
+      "gamepad": "Gamepad"
+    },
+    "input_group": {
+      "gameplay": "Gameplay (during a level)",
+      "ui": "UI (in menus)"
+    }
   },
   "input": {
     "action": {
@@ -66,7 +84,13 @@
       "undo":       "Undo",
       "redo":       "Redo",
       "restart":    "Restart",
-      "pause":      "Pause"
+      "pause":      "Pause",
+      "ui_up":      "UI ↑",
+      "ui_down":    "UI ↓",
+      "ui_left":    "UI ←",
+      "ui_right":   "UI →",
+      "ui_accept":  "Accept",
+      "ui_cancel":  "Cancel"
     },
     "rebind": {
       "listening":      "Press a key…",
@@ -195,10 +219,14 @@
     "language_changed": "Language changed"
   },
   "chapter_names": {
-    "official-w1": "Chapter 1 · Warehouse Basics"
+    "official-w1": "Chapter 1 · Warehouse Basics",
+    "official-w2": "Chapter 2 · Microban",
+    "official-w3": "Chapter 3 · XSB Classics"
   },
   "chapter_descriptions": {
-    "official-w1": "Tutorial chapter: movement, pushing, goals, corner deadlock awareness."
+    "official-w1": "Tutorial chapter: movement, pushing, goals, corner deadlock awareness.",
+    "official-w2": "Full Microban collection by David W Skinner (155 levels).",
+    "official-w3": "Classic XSB reference set (90 levels) with larger boards and longer solutions."
   },
   "level_names": {
     "official-w1-01": "First Step",
@@ -214,5 +242,4 @@
     "official-w1-11": "Three Colors, One Slot",
     "official-w1-12": "Triangle Run"
   }
-}
 }

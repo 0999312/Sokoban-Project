@@ -36,6 +36,7 @@ extends Control
 @onready var btn_copy_code: Button = %BtnCopyCode
 @onready var btn_save_thumb: Button = %BtnSaveThumb
 @onready var btn_close: Button = %BtnClose
+@onready var dim: ColorRect = $Dim
 
 var _level: Level
 var _board_node: Node2D    # 用于截图的源（EditorBoard，可空 → 缩略图按钮禁用）
@@ -56,9 +57,15 @@ func _ready() -> void:
 	btn_copy_code.pressed.connect(func(): DisplayServer.clipboard_set(edit_code.text))
 	btn_save_thumb.pressed.connect(_on_save_thumbnail)
 	btn_close.pressed.connect(_on_close)
+	dim.gui_input.connect(_on_dim_input)
+	btn_close.grab_focus.call_deferred()
 
 	if _board_node == null:
 		btn_save_thumb.disabled = true
+
+func _on_dim_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		_on_close()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -148,11 +155,18 @@ func _render_board_to_image() -> Image:
 	const TILE := 48
 	var w: int = _level.width * TILE
 	var h: int = _level.height * TILE
+	# SubViewport 必须挂在 SubViewportContainer 内才能保持稳定的渲染目标关系。
+	# 直接挂到 Control 下会出现 ViewportTexture 解析失败 / "Path to node is invalid" 报错。
+	var container := SubViewportContainer.new()
+	container.stretch = false
+	container.visible = false   # 不要显示在导出对话框里
+	container.size = Vector2(w, h)
+	add_child(container)
 	var vp := SubViewport.new()
 	vp.size = Vector2i(w, h)
 	vp.transparent_bg = false
 	vp.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-	add_child(vp)
+	container.add_child(vp)
 	const EditorBoardScript = preload("res://scenes/editor/editor_board.gd")
 	var model := EditorModel.new(_level.width, _level.height)
 	model.load_from_level(_level)
@@ -166,5 +180,5 @@ func _render_board_to_image() -> Image:
 	await RenderingServer.frame_post_draw
 	var tex := vp.get_texture()
 	var img: Image = tex.get_image()
-	vp.queue_free()
+	container.queue_free()
 	return img

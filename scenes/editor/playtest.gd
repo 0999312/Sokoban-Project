@@ -60,6 +60,7 @@ func _build_ui() -> void:
 	btn_exit.text = tr("editor.playtest.exit")
 	btn_exit.pressed.connect(_exit)
 	top.add_child(btn_exit)
+	btn_restart.grab_focus.call_deferred()
 
 	# Board host (中央)
 	board_host = Control.new()

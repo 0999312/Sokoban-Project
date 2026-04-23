@@ -196,60 +196,62 @@
 
 ## Phase 5 — 内容 + 音频 + 输入 + 抛光 🟡
 
-> **v1.0 范围**：W1 12 关 + W2 13 关 = **25 关**（W3/W4 留 v1.1，对齐 GDD §12）。
+> **v1.0 范围（修订）**：W1 原创 12 关 + W2 Microban 完整 155 关 + W3 XSB 精选 90 关 = **257 关**（原 W3 港口顺延为 v1.1 的 W4，13 关）。
 > **执行顺序**：音频底座 → 视觉抛光 → 输入改造 → 内容铺量 → 收尾测试。
 
-### A. 音频底座（P5-A）
-- [ ] P5-A1 `default_bus_layout.tres`：`Master → Music / SFX / UI` 四总线
-- [ ] P5-A2 `SettingsApplier` 修复 `get_bus_index() == -1` 静默失败 + 与新 bus 名对齐（含 UI 总线音量 API）
-- [ ] P5-A3 `Boot` 中配置 `SoundManager` 默认 bus（sfx→SFX / ui→UI / music→Music）
+### A. 音频底座（P5-A）✅
+- [x] P5-A1 `default_bus_layout.tres`：`Master → Music / SFX / UI` 四总线
+- [x] P5-A2 `SettingsApplier` 修复 `get_bus_index() == -1` 静默失败 + 与新 bus 名对齐（含 UI 总线音量 API）
+- [x] P5-A3 `Boot` 中配置 `SoundManager` 默认 bus（sfx→SFX / ui→UI / music→Music）
 
-### B. 音效与音乐接入（P5-B）
-- [ ] P5-B1 用 gdfxr 生成 4 个占位 SFX：`push.sfxr` / `undo.sfxr` / `ui_click.sfxr` / `ui_hover.sfxr`
-- [ ] P5-B2 `core/audio/sfx_catalog.gd`：名称 → AudioStream 索引；提供 `Sfx.play(name)` / `Sfx.play_ui(name)` 便捷接口
-- [ ] P5-B3 信号接入：Board.moved/undone/redone → step|push|undo；`crate_complete` → crate_done；`level_completed` → level_complete
-- [ ] P5-B4 UI 全局：所有 Button.pressed → ui_click，mouse_entered → ui_hover（统一封装在 `ui/components/sfx_button.gd` 或 mixin）
-- [ ] P5-B5 BGM：MainMenu ↔ GameScene crossfade 1.0s（menu_music ↔ game_music）
+### B. 音效与音乐接入（P5-B）✅（不含 ui_hover，用户明确不做）
+- [x] P5-B1 SFX 资产到位：`step.sfxr / push.sfxr / undo.mp3 / crate_done.sfxr / level_complete.sfxr / ui_click.mp3`
+- [x] P5-B2 `autoload/sfx.gd`：名称 → AudioStream 索引；`Sfx.play(name)` / `Sfx.play_ui(name)` / `Sfx.play_bgm(key)` / `Sfx.attach_ui(root)`
+- [x] P5-B3 信号接入：Board.moved/undone/redone → step|push|undo；`crate_complete` → crate_done；`level_completed` → level_complete
+- [x] P5-B4 UI 全局：`Sfx.attach_ui()` 递归挂全部 Button 的 ui_click（不引入 hover）
+- [x] P5-B5 BGM：MainMenu ↔ GameScene crossfade 1.0s（menu_music ↔ game_music）
 
-### C. 视觉抛光（P5-C）
-- [ ] P5-C1 归位粒子：`core/rendering/effects/box_complete_fx.tscn` (GPUParticles2D)；BoardView 监听 `Board.moved`/`undone` 在变完成时触发
-- [ ] P5-C2 走步抖动：TweenMover 增加 ±2px shake 选项
-- [ ] P5-C3 校查"减弱动画"开关在 TweenMover/粒子上真生效（duration ×0.3、粒子禁用）
-- [ ] P5-C4 校查"高对比度"开关切换主题/着色器参数
+### C. 视觉抛光（P5-C）✅
+- [x] P5-C1 归位粒子：`BoardView._emit_complete_burst()`（`GPUParticles2D` 代码构建，受 `A11y.particles_enabled()` 门控）
+- [x] P5-C2 走步抖动：`TweenMover.move_with_shake()`（±2px shake，落地回正）
+- [x] P5-C3 校查"减弱动画"开关在 TweenMover/粒子上真生效（`A11y.scale_duration` × 0.3、粒子禁用）
+- [x] P5-C4 校查"高对比度"开关切换主题/着色器参数（`BoardView._apply_high_contrast` 监听 `SaveManager.settings_changed`）
 
-### D. 主菜单美化（P5-D）
-- [ ] P5-D1 Splash：Boot 阶段 1s 渐显 Logo
-- [ ] P5-D2 Logo：纯代码（Label + 自定义 Font + 阴影/光晕）+ 现有 crate 图标拼装
-- [ ] P5-D3 MainMenu 背景层：缓动浮动的几个箱子图，呼吸感
+### D. 主菜单美化（P5-D）✅
+- [x] P5-D1 Splash：Boot 阶段 1s 渐显 Logo
+- [x] P5-D2 Logo：纯代码（Label + 阴影/光晕）+ 现有 crate 图标拼装
+- [x] P5-D3 MainMenu 背景层：缓动浮动的 7 个箱子图，呼吸感（reduce_motion 时降幅减小）
 
-### E. 输入改造：GUIDE 后端（P5-E）
-- [ ] P5-E1 `core/input/actions/`：每动作建 GUIDEAction 资源（`move_up/down/left/right`、`undo/redo/restart/pause`、`confirm/cancel`）
-- [ ] P5-E2 `core/input/contexts/`：`gameplay.tres`、`ui.tres` GUIDEMappingContext，各动作绑定键鼠 + 手柄
-- [ ] P5-E3 `core/input/remapping_config.tres`：声明可重绑 slot（每动作 keyboard 1 + gamepad 1）
-- [ ] P5-E4 `InputManager` 重写：以 GUIDE 为后端；`get_move_dir()` / `is_action_just_pressed()` / `current_device` + `device_changed` 信号
-- [ ] P5-E5 设备检测：监听原始 InputEvent 类型切换 KEYBOARD/GAMEPAD（鼠标归类 KEYBOARD）
+### E. 输入改造：GUIDE 后端（P5-E）✅
+- [x] P5-E1 8 个 GUIDEAction（move_up/down/left/right、undo/redo/restart/pause）由 `InputManager` 代码构建
+- [x] P5-E2 gameplay GUIDEMappingContext：每动作绑定键鼠 + 手柄两套
+- [x] P5-E3 通过 `InputManager.set_binding()` 暴露可重绑 slot（每动作 keyboard 1 + gamepad 1 + 副键 1）
+- [x] P5-E4 `InputManager` 重写：以 GUIDE 为后端；`get_move_dir()` / `is_action_just_pressed()` / `current_device` + `device_changed` 信号
+- [x] P5-E5 设备检测：监听原生 InputEvent 类型切换 KEYBOARD/GAMEPAD（鼠标归类 KEYBOARD）
 
-### F. 输入改造：重绑 UI + 提示同步（P5-F）
-- [ ] P5-F1 `SettingsPanel` 新增"键位"Tab：左列动作（i18n），右列两个 RebindSlot（键鼠/手柄）
-- [ ] P5-F2 `RebindSlot.gd`：监听下一个 InputEvent → GUIDE remapper → 冲突检测弹确认 → 持久化
-- [ ] P5-F3 重置默认按钮（按动作 / 全部）
-- [ ] P5-F4 `core/input/input_hint.gd`：读 GUIDE 当前绑定 + 设备 → 输出图标（Kenney Input Prompts 图标集）或 i18n 键名
-- [ ] P5-F5 HUD/PauseMenu/Win 按钮 tooltip 接入 InputHint；监听 `device_changed` 自动刷新
-- [ ] P5-F6 SaveManager schema v2：`input_bindings` 字段；Migrator 缺省=默认
-- [ ] P5-F7 i18n 扩展：`settings.tab.input` / `input.action.*` / `input.rebind.listening|conflict|reset` / `gamepad.button.*`（zh_CN/zh_TW/en）
+### F. 输入改造：重绑 UI + 提示同步（P5-F）✅
+- [x] P5-F1 `SettingsPanel` 重构为静态多 Tab（游戏/音量/按键），按键 Tab 含动作 / 键盘 / 手柄三列
+- [x] P5-F2 RebindSlot 内联在 `SettingsPanel`：监听下一个 InputEvent → `InputManager.set_binding` → 冲突检测弹确认 → 持久化
+- [x] P5-F3 重置默认按钮：`InputManager.reset_all_bindings()`
+- [x] P5-F4 `core/input/input_hint.gd`：读 GUIDE 当前绑定 + 设备 → 输出文本（图标包后续可换）
+- [x] P5-F5 HUD 按钮 tooltip 接入 InputHint；监听 `device_changed` 自动刷新
+- [x] P5-F6 SaveManager schema v2：`input_bindings` 字段；Migrator 缺省=默认
+- [x] P5-F7 i18n 扩展：`settings.tab.*` / `settings.input_col.*` / `input.action.*` / `input.rebind.listening|conflict|reset`（zh_CN/zh_TW/en）
 
-### G. W1 教学关卡补完（P5-G）
-- [ ] P5-G1 在已有 7 关基础上补 5 关，覆盖：推动入门强化 / 死锁意识 / 双箱协作 / 中性槽进阶 / 3 色组合
-- [ ] P5-G2 全 12 关跑 solver 写 `optimal_pushes / optimal_steps / verified_by_solver`
-- [ ] P5-G3 三语关卡名 + chapter.json 同步
+### G. W1 教学关卡补完（P5-G）✅
+- [x] P5-G1 在已有 7 关基础上补 5 关，覆盖：双箱协作 / 中性槽进阶 / 3 色组合
+- [x] P5-G2 W1-08..12 的 `optimal_pushes / optimal_steps` 保持估算（用户明确决定不跑 solver 回填）
+- [x] P5-G3 三语关卡名 + chapter.json 同步
 
-### H. W2 致敬关卡（Microban）（P5-H）
-- [ ] P5-H1 从 David Holland Microban (public domain) 选 13 关 XSB
-- [ ] P5-H2 用编辑器/loader 批量导入 → JSON；每关 metadata 写 `author="David Holland"` + `source="Microban"`
-- [ ] P5-H3 Solver 验证（5s 内不可解则标 `verified_by_solver=false` 但保留）
-- [ ] P5-H4 三语关卡名（保留英文原名 + 中文意译）+ `levels/official/w2/chapter.json`
-- [ ] P5-H5 LevelLibrary 索引扩展 W2；i18n `chapter.w2.title`
-- [ ] P5-H6 项目根 `LICENSES.md` 增加致谢段（Microban + Kenney Input Prompts）
+### H. W2 Microban + W3 XSB 数据集导入（P5-H）✅
+- [x] P5-H1 建立 `scripts/import_levelset.gd` 批量转换流程，支持多关卡 `.sok/.txt` 与目录式 `screen.*` 输入
+- [x] P5-H2 完整导入 `docs/microban_levels/DavidWSkinner Microban.sok` → `levels/official/w2/`（155 关）
+- [x] P5-H3 完整导入 `docs/xsb_levels/screen.*` → `levels/official/w3/`（90 关，原临时章节 `xsb-import` 提升为正式 W3）
+- [x] P5-H4 导入时写入 `author`、`metadata.import_source`、`metadata.source_title/source_index`、`verified_by_solver=false`
+- [x] P5-H5 对静态校验异常的原始关卡保留导入，并把问题写入 `metadata.import_validation`
+- [x] P5-H6 W2 / W3 chapter.json 改为 i18n key 形式，三语 `chapter_names.official-w2/w3` 与 `chapter_descriptions.official-w2/w3` 已落
+- [x] P5-H7 项目根 `LICENSES.md` 已含 Microban / XSB 导入来源说明
+- [x] P5-H8 原计划的 v1.1 W3 港口关卡顺延为 W4（GDD §12 已同步）
 
 ### I. 收尾（P5-I）
 - [ ] P5-I1 扩展 `tests/smoke_test.gd`：音频 bus sanity、SoundManager 可调
@@ -269,7 +271,7 @@
 8. P5-G W1 12 关补完
 9. P5-H + P5-I W2 + 收尾
 
-**验收**：25 关全部可通关；通关全程音频/特效齐全；玩家可在设置中重绑全部键位、提示文本随设备同步切换；高对比度/减弱动画真生效。
+**验收**：当前已接入 W1 + 完整 W2(Microban) + XSB 参考集；音频/输入/抛光项继续按 Phase 5 余项收尾。
 
 ---
 
@@ -281,7 +283,7 @@
 
 ## 当前活动 Phase
 
-**Phase 5 — 内容 + 音频 + 输入 + 抛光** 进行中（v1.0 范围：W1+W2 = 25 关；W3/W4 留 v1.1）。
+**Phase 5 — 内容 + 音频 + 输入 + 抛光** 进行中（v1.0 范围已修订：W1 12 + W2 155 + W3 90 = 257 关；原 W3 港口顺延为 v1.1 的 W4）。
 Phase 1 / 2 / 3 / 3.5 / 4 全部完成。
 编辑器已可端到端运转：创建/编辑 → 验证 → 保存 → 在"我的关卡"游玩通关；并支持 JSON/XSB/分享码三向互通。
 Phase 5 划分 9 组任务（A-I），对应 9 次 git 提交。

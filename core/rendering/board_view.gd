@@ -283,6 +283,16 @@ func get_pixel_size() -> Vector2:
 		return Vector2.ZERO
 	return Vector2(_board.level.width * TILE_SIZE, _board.level.height * TILE_SIZE)
 
+func get_world_rect() -> Rect2:
+	return Rect2(global_position, get_pixel_size())
+
+func get_player_visual_center() -> Vector2:
+	if _player_sprite != null:
+		return to_global(_player_sprite.position + Vector2(TILE_SIZE * 0.5, TILE_SIZE * 0.5))
+	if _board != null:
+		return to_global(_grid_to_world(_board.player_pos) + Vector2(TILE_SIZE * 0.5, TILE_SIZE * 0.5))
+	return global_position
+
 # --- Phase 5 P5-C: accessibility ---
 
 func _on_settings_changed(key: String, _value) -> void:

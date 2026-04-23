@@ -1,0 +1,27 @@
+{
+	"author": "David W Skinner",
+	"format_version": 2,
+	"height": 9,
+	"id": "official-w2-141",
+	"metadata": {
+		"import_source": "E:/godot_learning/projects/sokoban/docs/microban_levels/DavidWSkinner Microban.sok",
+		"index": 141,
+		"source_index": 141,
+		"source_title": "Microban 141",
+		"verified_by_solver": false,
+		"world": 2
+	},
+	"name": "Microban 141",
+	"tiles": [
+		"  ########",
+		"  #  # . #",
+		"  #   .*.#",
+		"  #  # * #",
+		"####$##.##",
+		"#      $ #",
+		"# $ ## $ #",
+		"#   @#   #",
+		"##########"
+	],
+	"width": 10
+}

@@ -51,3 +51,10 @@ text = "Back"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="LblHelp" type="Label" parent="Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Arrows/WASD = Navigate    Enter = Confirm    Esc = Back"
+horizontal_alignment = 1
+modulate = Color(1, 1, 1, 0.7)

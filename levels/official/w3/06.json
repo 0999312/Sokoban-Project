@@ -1,0 +1,29 @@
+{
+	"author": "",
+	"format_version": 2,
+	"height": 11,
+	"id": "official-w3-06",
+	"metadata": {
+		"import_source": "E:/godot_learning/projects/sokoban/docs/xsb_levels",
+		"index": 6,
+		"source_index": 6,
+		"source_title": "screen.6",
+		"verified_by_solver": false,
+		"world": 3
+	},
+	"name": "screen.6",
+	"tiles": [
+		"######  ### ",
+		"#..  # ##@##",
+		"#..  ###   #",
+		"#..     $$ #",
+		"#..  # # $ #",
+		"#..### # $ #",
+		"#### $ #$  #",
+		"   #  $# $ #",
+		"   # $  $  #",
+		"   #  ##   #",
+		"   #########"
+	],
+	"width": 12
+}

@@ -1,0 +1,33 @@
+{
+	"author": "",
+	"format_version": 2,
+	"height": 15,
+	"id": "official-w3-44",
+	"metadata": {
+		"import_source": "E:/godot_learning/projects/sokoban/docs/xsb_levels",
+		"index": 44,
+		"source_index": 44,
+		"source_title": "screen.44",
+		"verified_by_solver": false,
+		"world": 3
+	},
+	"name": "screen.44",
+	"tiles": [
+		" #####             ",
+		" #   #             ",
+		" # # #######       ",
+		" #      $@######   ",
+		" # $ ##$ ###   #   ",
+		" # #### $    $ #   ",
+		" # ##### #  #$ ####",
+		"##  #### ##$      #",
+		"#  $#  $  # ## ## #",
+		"#         # #...# #",
+		"######  ###  ...  #",
+		"     #### # #...# #",
+		"          # ### # #",
+		"          #       #",
+		"          #########"
+	],
+	"width": 19
+}
