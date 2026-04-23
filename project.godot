@@ -12,10 +12,10 @@ config_version=5
 
 config/name="Sokoban Project"
 config/description="Sokoban Project / 搬箱计划 — Classic sokoban with a built-in level editor."
-config/version="0.1.0-phase0"
+config/version="0.1.0"
 run/main_scene="res://scenes/boot/Boot.tscn"
 config/features=PackedStringArray("4.6", "Mobile")
-config/icon="res://icon.svg"
+config/icon="uid://c5atf0g1jvv7a"
 
 [audio]
 
