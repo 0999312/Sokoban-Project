@@ -1,0 +1,29 @@
+{
+  "format_version": 2,
+  "id": "official-w1-12",
+  "name": "level_names.official-w1-12",
+  "author": "Official",
+  "width": 9,
+  "height": 7,
+  "tiles": [
+    "#########",
+    "#a  1  2#",
+    "#       #",
+    "#  @    #",
+    "#       #",
+    "#b  3  c#",
+    "#########"
+  ],
+  "metadata": {
+    "world": 1,
+    "index": 12,
+    "difficulty": 3,
+    "optimal_steps": 28,
+    "optimal_pushes": 10,
+    "tags": ["puzzle", "multi_color", "three-colors", "coordination"],
+    "color_count": 3,
+    "concept": "Three colored boxes scattered around the room must each reach their matching holder.",
+    "verified_by_solver": false,
+    "theme": { "wall": "stone", "floor": "stone" }
+  }
+}

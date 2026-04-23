@@ -1,0 +1,27 @@
+{
+  "format_version": 1,
+  "id": "official-w1-08",
+  "name": "level_names.official-w1-08",
+  "author": "Official",
+  "width": 8,
+  "height": 6,
+  "tiles": [
+    "########",
+    "#  ..  #",
+    "#  $$  #",
+    "#      #",
+    "#  @   #",
+    "########"
+  ],
+  "metadata": {
+    "world": 1,
+    "index": 8,
+    "difficulty": 2,
+    "optimal_steps": 10,
+    "optimal_pushes": 4,
+    "tags": ["tutorial", "two-boxes", "single-color"],
+    "concept": "Two boxes, two goals. Plan which box to push first to avoid blocking yourself.",
+    "verified_by_solver": false,
+    "theme": { "wall": "stone", "floor": "grass" }
+  }
+}

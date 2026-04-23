@@ -1,0 +1,28 @@
+{
+  "format_version": 2,
+  "id": "official-w1-11",
+  "name": "level_names.official-w1-11",
+  "author": "Official",
+  "width": 9,
+  "height": 6,
+  "tiles": [
+    "#########",
+    "#  a 1  #",
+    "#  b 2  #",
+    "#  c ,  #",
+    "#@      #",
+    "#########"
+  ],
+  "metadata": {
+    "world": 1,
+    "index": 11,
+    "difficulty": 3,
+    "optimal_steps": 22,
+    "optimal_pushes": 9,
+    "tags": ["puzzle", "multi_color", "neutral_holder", "three-colors"],
+    "color_count": 3,
+    "concept": "Three colors but only two color-specific holders; the third color must use the neutral slot.",
+    "verified_by_solver": false,
+    "theme": { "wall": "brick", "floor": "grass" }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "format_version": 1,
+  "id": "official-w1-10",
+  "name": "level_names.official-w1-10",
+  "author": "Official",
+  "width": 10,
+  "height": 6,
+  "tiles": [
+    "##########",
+    "#  .     #",
+    "#  $    .#",
+    "#      $ #",
+    "#@       #",
+    "##########"
+  ],
+  "metadata": {
+    "world": 1,
+    "index": 10,
+    "difficulty": 3,
+    "optimal_steps": 18,
+    "optimal_pushes": 7,
+    "tags": ["puzzle", "deadlock-awareness", "two-boxes", "single-color"],
+    "concept": "One box risks being pushed into a wall corner away from its goal. Choose carefully.",
+    "verified_by_solver": false,
+    "theme": { "wall": "wood", "floor": "dirt" }
+  }
+}
