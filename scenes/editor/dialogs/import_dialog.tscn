@@ -1,0 +1,137 @@
+[gd_scene format=3 uid="uid://dddha6hjrdddh"]
+
+[ext_resource type="Script" uid="uid://bll8v5435hqfv" path="res://scenes/editor/dialogs/import_dialog.gd" id="1_import"]
+
+[node name="ImportDialog" type="Control" unique_id=1200102706]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_import")
+
+[node name="Dim" type="ColorRect" parent="." unique_id=1079694173]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.65)
+
+[node name="Card" type="PanelContainer" parent="." unique_id=185373516]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(480, 320)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -160.0
+offset_right = 240.0
+offset_bottom = 160.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="Card" unique_id=1321577192]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="Body" type="VBoxContainer" parent="Card/Margin" unique_id=938993598]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LblTitle" type="Label" parent="Card/Margin/Body" unique_id=1370137212]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Import Level"
+horizontal_alignment = 1
+
+[node name="HSep1" type="HSeparator" parent="Card/Margin/Body" unique_id=872571984]
+layout_mode = 2
+
+[node name="Tabs" type="TabContainer" parent="Card/Margin/Body" unique_id=1516100092]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(440, 170)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+current_tab = 0
+
+[node name="File" type="VBoxContainer" parent="Card/Margin/Body/Tabs" unique_id=1004340379]
+layout_mode = 2
+theme_override_constants/separation = 6
+metadata/_tab_index = 0
+
+[node name="PickRow" type="HBoxContainer" parent="Card/Margin/Body/Tabs/File" unique_id=834242212]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="LblPath" type="LineEdit" parent="Card/Margin/Body/Tabs/File/PickRow" unique_id=937561743]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "(no file)"
+editable = false
+
+[node name="BtnBrowse" type="Button" parent="Card/Margin/Body/Tabs/File/PickRow" unique_id=2001733421]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Browse..."
+
+[node name="LblHint" type="Label" parent="Card/Margin/Body/Tabs/File" unique_id=1094805466]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Accepts .json or .xsb / .txt"
+autowrap_mode = 3
+
+[node name="Code" type="VBoxContainer" parent="Card/Margin/Body/Tabs" unique_id=543487649]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 6
+metadata/_tab_index = 1
+
+[node name="LblHintCode" type="Label" parent="Card/Margin/Body/Tabs/Code" unique_id=1045364453]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Paste share code:"
+autowrap_mode = 3
+
+[node name="EditCode" type="LineEdit" parent="Card/Margin/Body/Tabs/Code" unique_id=587601399]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "H4sIAA...-deadbeef"
+
+[node name="HSep2" type="HSeparator" parent="Card/Margin/Body" unique_id=1865070277]
+layout_mode = 2
+
+[node name="ButtonRow" type="HBoxContainer" parent="Card/Margin/Body" unique_id=798665652]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Spacer" type="Control" parent="Card/Margin/Body/ButtonRow" unique_id=1229083142]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="BtnCancel" type="Button" parent="Card/Margin/Body/ButtonRow" unique_id=1004408910]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+text = "Cancel"
+
+[node name="BtnOk" type="Button" parent="Card/Margin/Body/ButtonRow" unique_id=1111638423]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+text = "OK"

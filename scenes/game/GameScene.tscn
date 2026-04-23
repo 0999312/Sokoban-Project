@@ -1,0 +1,300 @@
+[gd_scene load_steps=5 format=3 uid="uid://gamescene_sokoban_p1"]
+
+[ext_resource type="Script" path="res://scenes/game/game_scene.gd" id="1_game"]
+[ext_resource type="Script" path="res://core/rendering/board_view.gd" id="2_view"]
+[ext_resource type="Script" path="res://core/game/game_controller.gd" id="3_ctrl"]
+[ext_resource type="Script" path="res://scenes/game/hud.gd" id="4_hud"]
+
+[node name="GameScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_game")
+
+[node name="Bg" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.0588, 0.1059, 0.1804, 1)
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="BoardView" type="Node2D" parent="World"]
+script = ExtResource("2_view")
+
+[node name="GameController" type="Node" parent="."]
+script = ExtResource("3_ctrl")
+board_view_path = NodePath("../World/BoardView")
+hud_path = NodePath("../HudLayer/HUD")
+
+[node name="HudLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="HUD" type="Control" parent="HudLayer"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+script = ExtResource("4_hud")
+
+[node name="TopBar" type="HBoxContainer" parent="HudLayer/HUD"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 56.0
+theme_override_constants/separation = 24
+
+[node name="LblName" type="Label" parent="HudLayer/HUD/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Level"
+theme_override_font_sizes/font_size = 24
+
+[node name="LblMoves" type="Label" parent="HudLayer/HUD/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Moves: 0"
+theme_override_font_sizes/font_size = 20
+
+[node name="LblPushes" type="Label" parent="HudLayer/HUD/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Pushes: 0"
+theme_override_font_sizes/font_size = 20
+
+[node name="LblTime" type="Label" parent="HudLayer/HUD/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Time: 0.00s"
+theme_override_font_sizes/font_size = 20
+
+[node name="ButtonBar" type="HBoxContainer" parent="HudLayer/HUD"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -460.0
+offset_top = 64.0
+offset_right = -16.0
+offset_bottom = 104.0
+grow_horizontal = 0
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="BtnUndo" type="Button" parent="HudLayer/HUD/ButtonBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 36)
+layout_mode = 2
+text = "Undo"
+
+[node name="BtnRedo" type="Button" parent="HudLayer/HUD/ButtonBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 36)
+layout_mode = 2
+text = "Redo"
+
+[node name="BtnRestart" type="Button" parent="HudLayer/HUD/ButtonBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 36)
+layout_mode = 2
+text = "Restart"
+
+[node name="BtnPause" type="Button" parent="HudLayer/HUD/ButtonBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 36)
+layout_mode = 2
+text = "Pause"
+
+[node name="LblHelp" type="Label" parent="HudLayer/HUD"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -40.0
+offset_right = -16.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "WASD/Arrows = Move    Z = Undo    Y = Redo    R = Restart    Esc = Pause"
+horizontal_alignment = 1
+modulate = Color(1, 1, 1, 0.7)
+
+[node name="WinPanel" type="Control" parent="HudLayer/HUD"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="WinDim" type="ColorRect" parent="HudLayer/HUD/WinPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.0314, 0.0588, 0.1059, 0.94)
+mouse_filter = 0
+
+[node name="WinCard" type="Panel" parent="HudLayer/HUD/WinPanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -180.0
+offset_right = 260.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="HudLayer/HUD/WinPanel/WinCard"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="WinTitle" type="Label" parent="HudLayer/HUD/WinPanel/WinCard/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Level Complete!"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 30
+
+[node name="WinStars" type="Label" parent="HudLayer/HUD/WinPanel/WinCard/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = ""
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 48
+
+[node name="WinStats" type="Label" parent="HudLayer/HUD/WinPanel/WinCard/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = ""
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 18
+
+[node name="Spacer" type="Control" parent="HudLayer/HUD/WinPanel/WinCard/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Buttons" type="HBoxContainer" parent="HudLayer/HUD/WinPanel/WinCard/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="BtnWinRetry" type="Button" parent="HudLayer/HUD/WinPanel/WinCard/VBox/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Retry"
+
+[node name="BtnWinNext" type="Button" parent="HudLayer/HUD/WinPanel/WinCard/VBox/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Next"
+
+[node name="BtnWinMenu" type="Button" parent="HudLayer/HUD/WinPanel/WinCard/VBox/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Menu"
+
+[node name="PausePanel" type="Control" parent="HudLayer/HUD"]
+unique_name_in_owner = true
+process_mode = 3
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="PauseDim" type="ColorRect" parent="HudLayer/HUD/PausePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.0314, 0.0588, 0.1059, 0.85)
+mouse_filter = 0
+
+[node name="PauseCard" type="Panel" parent="HudLayer/HUD/PausePanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -200.0
+offset_right = 200.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="HudLayer/HUD/PausePanel/PauseCard"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 14
+
+[node name="PauseTitle" type="Label" parent="HudLayer/HUD/PausePanel/PauseCard/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Paused"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 28
+
+[node name="Spacer" type="Control" parent="HudLayer/HUD/PausePanel/PauseCard/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BtnPauseResume" type="Button" parent="HudLayer/HUD/PausePanel/PauseCard/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Resume"
+
+[node name="BtnPauseRestart" type="Button" parent="HudLayer/HUD/PausePanel/PauseCard/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Restart"
+
+[node name="BtnPauseSettings" type="Button" parent="HudLayer/HUD/PausePanel/PauseCard/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Settings"
+
+[node name="BtnPauseMenu" type="Button" parent="HudLayer/HUD/PausePanel/PauseCard/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+text = "Menu"

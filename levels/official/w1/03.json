@@ -1,0 +1,30 @@
+{
+  "format_version": 1,
+  "id": "official-w1-03",
+  "name": "level_names.official-w1-03",
+  "author": "Official",
+  "width": 11,
+  "height": 9,
+  "tiles": [
+    "###########",
+    "#         #",
+    "#  $   .  #",
+    "#         #",
+    "#  @      #",
+    "#         #",
+    "#  $   .  #",
+    "#         #",
+    "###########"
+  ],
+  "metadata": {
+    "world": 1,
+    "index": 3,
+    "difficulty": 1,
+    "optimal_steps": 43,
+    "optimal_pushes": 8,
+    "tags": ["tutorial", "two-boxes"],
+    "concept": "Two independent boxes to two independent goals — order doesn't matter.",
+    "verified_by_solver": true,
+    "theme": { "wall": "stone", "floor": "grass" }
+  }
+}

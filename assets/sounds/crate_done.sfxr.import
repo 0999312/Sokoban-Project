@@ -1,0 +1,17 @@
+[remap]
+
+importer="com.timothyqiu.gdfxr.importer"
+type="AudioStreamWAV"
+uid="uid://b56c6vaksntn8"
+path="res://.godot/imported/crate_done.sfxr-adb8edc1226225f47d65b12fb744d791.sample"
+
+[deps]
+
+source_file="res://assets/sounds/crate_done.sfxr"
+dest_files=["res://.godot/imported/crate_done.sfxr-adb8edc1226225f47d65b12fb744d791.sample"]
+
+[params]
+
+loop=false
+bit_depth=0
+sample_rate=0

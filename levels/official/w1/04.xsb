@@ -1,0 +1,9 @@
+; W1-04 走廊 / The Hallway
+; Author: Official
+; Difficulty: 2
+; Concept: 引入"必须按顺序推"——把里面的箱子先推完
+##########
+#      ..#
+#  @$$   #
+#        #
+##########

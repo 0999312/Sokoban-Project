@@ -1,0 +1,191 @@
+{
+  "menu": {
+    "title": "SOKOBAN",
+    "play": "开始游戏",
+    "levels": "关卡选择",
+    "editor": "关卡编辑器",
+    "settings": "设置",
+    "quit": "退出游戏",
+    "version_status": "v{0} · 已索引 {1} 关"
+  },
+  "level_select": {
+    "title": "关卡选择",
+    "back": "返回",
+    "chapter_progress": "进度 {0}/{1}",
+    "best_steps": "最佳：{0} 步",
+    "no_record": "未挑战",
+    "user_levels": "我的关卡",
+    "user_progress": "已保存 {0} 关",
+    "user_empty_hint": "暂无自建关卡。返回主菜单 → 关卡编辑器 创建你的第一关吧！"
+  },
+  "hud": {
+    "moves": "步数：{0}",
+    "pushes": "推数：{0}",
+    "time": "时间：{0}",
+    "undo": "撤销",
+    "redo": "重做",
+    "restart": "重玩",
+    "pause": "暂停",
+    "help": "WASD/方向键 = 移动    Z = 撤销    Y = 重做    R = 重玩    Esc = 暂停"
+  },
+  "pause": {
+    "title": "已暂停",
+    "resume": "继续",
+    "restart": "重玩",
+    "settings": "设置",
+    "menu": "返回主菜单"
+  },
+  "complete": {
+    "title": "通关！",
+    "stats": "步数：{0}    推数：{1}    时间：{2}",
+    "next": "下一关",
+    "retry": "重玩",
+    "menu": "返回菜单"
+  },
+  "settings": {
+    "title": "设置",
+    "language": "语言",
+    "volume_master": "主音量",
+    "volume_music": "音乐",
+    "volume_sfx": "音效",
+    "fullscreen": "全屏",
+    "high_contrast": "高对比度",
+    "reduce_motion": "减弱动画",
+    "back": "返回",
+    "apply": "应用"
+  },
+  "common": {
+    "ok": "确定",
+    "cancel": "取消",
+    "yes": "是",
+    "no": "否",
+    "close": "关闭",
+    "coming_soon": "即将推出",
+    "error": "错误",
+    "info": "提示"
+  },
+  "editor": {
+    "tool": {
+      "select": "选择",
+      "eraser": "橡皮",
+      "wall": "墙",
+      "floor": "地板",
+      "goal": "目标",
+      "box": "箱子",
+      "player": "玩家"
+    },
+    "shape": {
+      "single": "单格",
+      "rect": "矩形",
+      "line": "直线"
+    },
+    "palette": {
+      "tools": "工具",
+      "shapes": "形状",
+      "colors": "颜色（0=中性槽）",
+      "size": "尺寸",
+      "theme": "主题"
+    },
+    "top": {
+      "new": "新建",
+      "open": "打开",
+      "save": "保存",
+      "import": "导入",
+      "export": "导出",
+      "test": "测试",
+      "verify": "求解验证",
+      "undo": "撤销",
+      "redo": "重做",
+      "quit": "退出"
+    },
+    "meta": {
+      "title": "关卡信息",
+      "name": "名称",
+      "author": "作者",
+      "difficulty": "难度（1-5）",
+      "tags": "标签（英文逗号分隔）",
+      "tags_placeholder": "标签1,标签2,标签3",
+      "stats": "统计",
+      "stats_fmt": "箱子：{0}    目标：{1}    玩家：{2}"
+    },
+    "color": {
+      "neutral": "颜色 {0}（中性槽，可放任意色箱子）",
+      "colored": "颜色 {0}"
+    },
+    "status": {
+      "idle": "就绪",
+      "new": "已新建空白关卡",
+      "loaded": "已打开：{0}",
+      "saved": "已保存：{0}",
+      "load_failed": "加载失败",
+      "import_failed": "导入失败",
+      "imported": "导入成功",
+      "playtest": "测试中（按 ESC 退出）",
+      "verified": "已验证：最优 {0} 推 / {1} 步",
+      "unsolvable": "无解或超时",
+      "cancelled": "已取消",
+      "undone": "已撤销",
+      "redone": "已重做"
+    },
+    "dialog": {
+      "import": "导入关卡",
+      "export": "导出关卡",
+      "verify": "求解验证",
+      "open": "打开我的关卡",
+      "open_hint": "选择一个本地用户关卡：",
+      "confirm": "确认",
+      "discard_changes": "未保存的修改将丢失，确定继续？",
+      "saved_hint": "关卡已保存到：{0}",
+      "verified": "求解成功：{0} 推 / {1} 步（展开 {2} 节点）",
+      "unsolvable": "求解未成功（无解或超时）",
+      "solving": "求解中…",
+      "solving_progress": "求解中… 节点={0}  深度={1}  ({2}ms)",
+      "cancelling": "正在取消…"
+    },
+    "import": {
+      "file": "从文件",
+      "code": "分享码",
+      "browse": "浏览…",
+      "file_path_placeholder": "尚未选择文件",
+      "file_hint": "支持 .json（本作格式）或 .xsb / .txt（标准 Sokoban 文本）。点 浏览… 选择文件。",
+      "code_hint": "粘贴分享码（Base64-CRC32）："
+    },
+    "export": {
+      "copy": "复制",
+      "save_file": "保存为文件…",
+      "share": "分享码",
+      "share_hint": "把这串字符复制给朋友，对方在编辑器里 导入→分享码 即可加载本关卡：",
+      "thumbnail": "缩略图",
+      "thumbnail_hint": "导出当前关卡的 PNG 缩略图（与编辑器视图一致）。",
+      "save_thumbnail": "保存 PNG…"
+    },
+    "playtest": {
+      "title": "[测试] {0}",
+      "exit": "退出测试 (Esc)",
+      "won": "✔ 通关 · 步数={0}  推数={1}"
+    },
+    "error": {
+      "invalid": "关卡校验失败：",
+      "save_failed": "保存失败"
+    }
+  },
+  "toast": {
+    "saved": "已保存",
+    "language_changed": "语言已切换"
+  },
+  "chapter_names": {
+    "official-w1": "第一章 · 仓库入门"
+  },
+  "chapter_descriptions": {
+    "official-w1": "教学章节：移动、推箱、目标点、避免角落死锁。"
+  },
+  "level_names": {
+    "official-w1-01": "第一步",
+    "official-w1-02": "转弯",
+    "official-w1-03": "双子",
+    "official-w1-04": "走廊",
+    "official-w1-05": "角落陷阱",
+    "official-w1-06": "色彩配对",
+    "official-w1-07": "中性之槽"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "format_version": 1,
+  "id": "official-w1-02",
+  "name": "level_names.official-w1-02",
+  "author": "Official",
+  "width": 10,
+  "height": 7,
+  "tiles": [
+	"##########",
+	"#        #",
+	"#  .     #",
+	"#  $     #",
+	"#  @     #",
+	"#        #",
+    "##########"
+  ],
+  "metadata": {
+	"world": 1,
+	"index": 2,
+	"difficulty": 1,
+	"optimal_steps": 1,
+	"optimal_pushes": 1,
+	"tags": ["tutorial", "movement", "single-box"],
+	"concept": "Walk around the box to push it from the opposite side.",
+	"verified_by_solver": true,
+	"theme": { "wall": "stone", "floor": "grass" }
+  }
+}

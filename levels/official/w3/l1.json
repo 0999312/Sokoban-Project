@@ -1,0 +1,38 @@
+{
+	"author": "SyameimaruZheng",
+	"color_overrides": {
+		"crates": {
+			"3,4": 2
+		},
+		"holders": {
+			"8,4": 0
+		}
+	},
+	"format_version": 2,
+	"height": 8,
+	"id": "user-150954-a0c2",
+	"metadata": {
+		"color_count": 3,
+		"difficulty": 1,
+		"tags": [
+			"official",
+			"multi_color"
+		],
+		"theme": {
+			"floor": "grass",
+			"wall": "brick"
+		}
+	},
+	"name": "test_1",
+	"tiles": [
+		"########--",
+		"#@    .###",
+		"#  $     #",
+		"# $      #",
+		"#  b #  ,#",
+		"#    #####",
+		"#.   #----",
+		"######----"
+	],
+	"width": 10
+}

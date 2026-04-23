@@ -1,0 +1,25 @@
+{
+  "format_version": 1,
+  "id": "official-w1-01",
+  "name": "level_names.official-w1-01",
+  "author": "Official",
+  "width": 8,
+  "height": 4,
+  "tiles": [
+	"########",
+	"#      #",
+	"# @$.  #",
+    "########"
+  ],
+  "metadata": {
+	"world": 1,
+	"index": 1,
+	"difficulty": 1,
+	"optimal_steps": 1,
+	"optimal_pushes": 1,
+	"tags": ["tutorial", "movement", "single-box"],
+	"concept": "Push a single box onto a goal in one move.",
+	"verified_by_solver": true,
+	"theme": { "wall": "brick", "floor": "grass" }
+  }
+}

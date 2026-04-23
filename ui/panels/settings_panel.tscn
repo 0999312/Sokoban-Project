@@ -1,0 +1,147 @@
+[gd_scene load_steps=2 format=3 uid="uid://sokoban_settings_panel"]
+
+[ext_resource type="Script" path="res://ui/panels/settings_panel.gd" id="1_settings"]
+
+[node name="SettingsPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_settings")
+
+[node name="Dim" type="ColorRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.0314, 0.0588, 0.1059, 0.85)
+mouse_filter = 0
+
+[node name="Card" type="Panel" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -260.0
+offset_right = 260.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Card"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 14
+
+[node name="LblTitle" type="Label" parent="Card/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Settings"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 28
+
+[node name="RowLang" type="HBoxContainer" parent="Card/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LblLang" type="Label" parent="Card/VBox/RowLang"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+text = "Language"
+
+[node name="OptLang" type="OptionButton" parent="Card/VBox/RowLang"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RowMaster" type="HBoxContainer" parent="Card/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LblMaster" type="Label" parent="Card/VBox/RowMaster"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+text = "Master"
+
+[node name="SlMaster" type="HSlider" parent="Card/VBox/RowMaster"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="RowMusic" type="HBoxContainer" parent="Card/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LblMusic" type="Label" parent="Card/VBox/RowMusic"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+text = "Music"
+
+[node name="SlMusic" type="HSlider" parent="Card/VBox/RowMusic"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+value = 0.8
+
+[node name="RowSfx" type="HBoxContainer" parent="Card/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LblSfx" type="Label" parent="Card/VBox/RowSfx"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+text = "SFX"
+
+[node name="SlSfx" type="HSlider" parent="Card/VBox/RowSfx"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="ChkFullscreen" type="CheckBox" parent="Card/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="ChkHighContrast" type="CheckBox" parent="Card/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "High Contrast"
+
+[node name="ChkReduceMotion" type="CheckBox" parent="Card/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reduce Motion"
+
+[node name="Spacer" type="Control" parent="Card/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BtnBack" type="Button" parent="Card/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Back"

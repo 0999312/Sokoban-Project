@@ -1,0 +1,29 @@
+{
+  "format_version": 1,
+  "id": "official-w1-05",
+  "name": "level_names.official-w1-05",
+  "author": "Official",
+  "width": 11,
+  "height": 8,
+  "tiles": [
+    "###########",
+    "#.        #",
+    "#         #",
+    "#    $    #",
+    "#    @    #",
+    "#         #",
+    "#         #",
+    "###########"
+  ],
+  "metadata": {
+    "world": 1,
+    "index": 5,
+    "difficulty": 2,
+    "optimal_steps": 8,
+    "optimal_pushes": 6,
+    "tags": ["tutorial", "deadlock-awareness", "single-box"],
+    "concept": "Teaches that pushing a box into a corner (other than the goal corner) is irreversible.",
+    "verified_by_solver": true,
+    "theme": { "wall": "stone", "floor": "grass" }
+  }
+}

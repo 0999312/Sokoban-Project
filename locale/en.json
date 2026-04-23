@@ -1,0 +1,191 @@
+{
+  "menu": {
+    "title": "SOKOBAN",
+    "play": "Play",
+    "levels": "Levels",
+    "editor": "Level Editor",
+    "settings": "Settings",
+    "quit": "Quit",
+    "version_status": "v{0} · {1} levels indexed"
+  },
+  "level_select": {
+    "title": "Level Select",
+    "back": "Back",
+    "chapter_progress": "Progress {0}/{1}",
+    "best_steps": "Best: {0} moves",
+    "no_record": "Not played",
+    "user_levels": "My Levels",
+    "user_progress": "{0} saved",
+    "user_empty_hint": "No user levels yet. Go back to Main Menu → Level Editor to create one!"
+  },
+  "hud": {
+    "moves": "Moves: {0}",
+    "pushes": "Pushes: {0}",
+    "time": "Time: {0}",
+    "undo": "Undo",
+    "redo": "Redo",
+    "restart": "Restart",
+    "pause": "Pause",
+    "help": "WASD/Arrows = Move    Z = Undo    Y = Redo    R = Restart    Esc = Pause"
+  },
+  "pause": {
+    "title": "Paused",
+    "resume": "Resume",
+    "restart": "Restart",
+    "settings": "Settings",
+    "menu": "Main Menu"
+  },
+  "complete": {
+    "title": "Level Complete!",
+    "stats": "Moves: {0}    Pushes: {1}    Time: {2}",
+    "next": "Next",
+    "retry": "Retry",
+    "menu": "Menu"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "volume_master": "Master",
+    "volume_music": "Music",
+    "volume_sfx": "SFX",
+    "fullscreen": "Fullscreen",
+    "high_contrast": "High Contrast",
+    "reduce_motion": "Reduce Motion",
+    "back": "Back",
+    "apply": "Apply"
+  },
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "yes": "Yes",
+    "no": "No",
+    "close": "Close",
+    "coming_soon": "Coming Soon",
+    "error": "Error",
+    "info": "Info"
+  },
+  "editor": {
+    "tool": {
+      "select": "Select",
+      "eraser": "Eraser",
+      "wall": "Wall",
+      "floor": "Floor",
+      "goal": "Goal",
+      "box": "Box",
+      "player": "Player"
+    },
+    "shape": {
+      "single": "Single",
+      "rect": "Rect",
+      "line": "Line"
+    },
+    "palette": {
+      "tools": "Tools",
+      "shapes": "Shapes",
+      "colors": "Colors (0=neutral)",
+      "size": "Size",
+      "theme": "Theme"
+    },
+    "top": {
+      "new": "New",
+      "open": "Open",
+      "save": "Save",
+      "import": "Import",
+      "export": "Export",
+      "test": "Test",
+      "verify": "Verify (Solver)",
+      "undo": "Undo",
+      "redo": "Redo",
+      "quit": "Quit"
+    },
+    "meta": {
+      "title": "Level Info",
+      "name": "Name",
+      "author": "Author",
+      "difficulty": "Difficulty (1-5)",
+      "tags": "Tags (comma separated)",
+      "tags_placeholder": "tag1,tag2,tag3",
+      "stats": "Stats",
+      "stats_fmt": "Boxes: {0}    Goals: {1}    Player: {2}"
+    },
+    "color": {
+      "neutral": "Color {0} (neutral slot, accepts any color)",
+      "colored": "Color {0}"
+    },
+    "status": {
+      "idle": "Ready",
+      "new": "Created blank level",
+      "loaded": "Opened: {0}",
+      "saved": "Saved: {0}",
+      "load_failed": "Load failed",
+      "import_failed": "Import failed",
+      "imported": "Imported successfully",
+      "playtest": "Playtesting (press ESC to exit)",
+      "verified": "Verified: {0} pushes / {1} moves (optimal)",
+      "unsolvable": "Unsolvable or timed out",
+      "cancelled": "Cancelled",
+      "undone": "Undone",
+      "redone": "Redone"
+    },
+    "dialog": {
+      "import": "Import Level",
+      "export": "Export Level",
+      "verify": "Verify with Solver",
+      "open": "Open My Level",
+      "open_hint": "Pick a local user level:",
+      "confirm": "Confirm",
+      "discard_changes": "Unsaved changes will be lost. Continue?",
+      "saved_hint": "Level saved at: {0}",
+      "verified": "Solved: {0} pushes / {1} moves ({2} nodes expanded)",
+      "unsolvable": "Could not solve (no solution or timeout)",
+      "solving": "Solving...",
+      "solving_progress": "Solving... nodes={0}  bound={1}  ({2}ms)",
+      "cancelling": "Cancelling..."
+    },
+    "import": {
+      "file": "From File",
+      "code": "Share Code",
+      "browse": "Browse...",
+      "file_path_placeholder": "No file selected",
+      "file_hint": "Accepts .json (this game's format) or .xsb / .txt (standard Sokoban text). Click Browse... to pick a file.",
+      "code_hint": "Paste share code (Base64-CRC32):"
+    },
+    "export": {
+      "copy": "Copy",
+      "save_file": "Save as file...",
+      "share": "Share Code",
+      "share_hint": "Copy this string to share. The recipient pastes it under Import → Share Code in their editor:",
+      "thumbnail": "Thumbnail",
+      "thumbnail_hint": "Export the current level as a PNG thumbnail (matches the editor view).",
+      "save_thumbnail": "Save PNG..."
+    },
+    "playtest": {
+      "title": "[Playtest] {0}",
+      "exit": "Exit (Esc)",
+      "won": "✔ Won · moves={0}  pushes={1}"
+    },
+    "error": {
+      "invalid": "Level validation failed:",
+      "save_failed": "Save failed"
+    }
+  },
+  "toast": {
+    "saved": "Saved",
+    "language_changed": "Language changed"
+  },
+  "chapter_names": {
+    "official-w1": "Chapter 1 · Warehouse Basics"
+  },
+  "chapter_descriptions": {
+    "official-w1": "Tutorial chapter: movement, pushing, goals, corner deadlock awareness."
+  },
+  "level_names": {
+    "official-w1-01": "First Step",
+    "official-w1-02": "Around the Corner",
+    "official-w1-03": "Twins",
+    "official-w1-04": "The Hallway",
+    "official-w1-05": "Corner Trap",
+    "official-w1-06": "Color Match",
+    "official-w1-07": "Neutral Slot"
+  }
+}

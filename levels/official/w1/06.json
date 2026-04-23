@@ -1,0 +1,26 @@
+{
+  "format_version": 2,
+  "id": "official-w1-06",
+  "name": "level_names.official-w1-06",
+  "author": "Official",
+  "width": 8,
+  "height": 4,
+  "tiles": [
+    "########",
+    "#      #",
+    "#2b@$. #",
+    "########"
+  ],
+  "metadata": {
+    "world": 1,
+    "index": 6,
+    "difficulty": 1,
+    "optimal_steps": 3,
+    "optimal_pushes": 2,
+    "tags": ["tutorial", "multi_color", "two_color"],
+    "color_count": 2,
+    "concept": "Boxes and holders must color-match. Red box → red holder, blue box → blue holder.",
+    "verified_by_solver": true,
+    "theme": { "wall": "brick", "floor": "grass" }
+  }
+}

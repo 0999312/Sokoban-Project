@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://d0qlgqxqpqlyq"]
+
+[ext_resource type="Script" uid="uid://brrq8g8uh8bjf" path="res://scenes/boot/boot.gd" id="1_boot"]
+
+[node name="Boot" type="Node" unique_id=737622371]
+script = ExtResource("1_boot")
+
+[node name="Label" type="Label" parent="." unique_id=1399920465]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -10.0
+offset_right = 100.0
+offset_bottom = 10.0
+text = "Sokoban — booting..."
+horizontal_alignment = 1

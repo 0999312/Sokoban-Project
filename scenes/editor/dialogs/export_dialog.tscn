@@ -1,0 +1,189 @@
+[gd_scene load_steps=2 format=3 uid="uid://sokoban_export_dialog"]
+
+[ext_resource type="Script" path="res://scenes/editor/dialogs/export_dialog.gd" id="1_export"]
+
+[node name="ExportDialog" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+script = ExtResource("1_export")
+
+[node name="Dim" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.65)
+mouse_filter = 0
+
+[node name="Card" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(560, 460)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -230.0
+offset_right = 280.0
+offset_bottom = 230.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Margin" type="MarginContainer" parent="Card"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="Body" type="VBoxContainer" parent="Card/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LblTitle" type="Label" parent="Card/Margin/Body"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Export Level"
+horizontal_alignment = 1
+
+[node name="HSep1" type="HSeparator" parent="Card/Margin/Body"]
+layout_mode = 2
+
+[node name="Tabs" type="TabContainer" parent="Card/Margin/Body"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(520, 320)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="JSON" type="VBoxContainer" parent="Card/Margin/Body/Tabs"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="EditJson" type="TextEdit" parent="Card/Margin/Body/Tabs/JSON"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 240)
+layout_mode = 2
+size_flags_horizontal = 3
+editable = false
+wrap_mode = 0
+scroll_fit_content_height = false
+
+[node name="JsonRow" type="HBoxContainer" parent="Card/Margin/Body/Tabs/JSON"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="BtnCopyJson" type="Button" parent="Card/Margin/Body/Tabs/JSON/JsonRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 28)
+layout_mode = 2
+text = "Copy"
+
+[node name="BtnSaveJson" type="Button" parent="Card/Margin/Body/Tabs/JSON/JsonRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 28)
+layout_mode = 2
+text = "Save..."
+
+[node name="XSB" type="VBoxContainer" parent="Card/Margin/Body/Tabs"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="EditXsb" type="TextEdit" parent="Card/Margin/Body/Tabs/XSB"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 240)
+layout_mode = 2
+size_flags_horizontal = 3
+editable = false
+wrap_mode = 0
+scroll_fit_content_height = false
+
+[node name="XsbRow" type="HBoxContainer" parent="Card/Margin/Body/Tabs/XSB"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="BtnCopyXsb" type="Button" parent="Card/Margin/Body/Tabs/XSB/XsbRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 28)
+layout_mode = 2
+text = "Copy"
+
+[node name="BtnSaveXsb" type="Button" parent="Card/Margin/Body/Tabs/XSB/XsbRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 28)
+layout_mode = 2
+text = "Save..."
+
+[node name="Code" type="VBoxContainer" parent="Card/Margin/Body/Tabs"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="LblHintCode" type="Label" parent="Card/Margin/Body/Tabs/Code"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Share this code:"
+autowrap_mode = 3
+
+[node name="EditCode" type="TextEdit" parent="Card/Margin/Body/Tabs/Code"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+editable = false
+wrap_mode = 1
+scroll_fit_content_height = false
+
+[node name="CodeRow" type="HBoxContainer" parent="Card/Margin/Body/Tabs/Code"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="BtnCopyCode" type="Button" parent="Card/Margin/Body/Tabs/Code/CodeRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 28)
+layout_mode = 2
+text = "Copy"
+
+[node name="Thumb" type="VBoxContainer" parent="Card/Margin/Body/Tabs"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="LblHintThumb" type="Label" parent="Card/Margin/Body/Tabs/Thumb"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Export thumbnail PNG."
+autowrap_mode = 3
+
+[node name="ThumbRow" type="HBoxContainer" parent="Card/Margin/Body/Tabs/Thumb"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="BtnSaveThumb" type="Button" parent="Card/Margin/Body/Tabs/Thumb/ThumbRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 28)
+layout_mode = 2
+text = "Save PNG..."
+
+[node name="HSep2" type="HSeparator" parent="Card/Margin/Body"]
+layout_mode = 2
+
+[node name="ButtonRow" type="HBoxContainer" parent="Card/Margin/Body"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Spacer" type="Control" parent="Card/Margin/Body/ButtonRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="BtnClose" type="Button" parent="Card/Margin/Body/ButtonRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+text = "Close"

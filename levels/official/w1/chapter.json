@@ -1,0 +1,17 @@
+{
+  "format_version": 1,
+  "id": "official-w1",
+  "name": "chapter_names.official-w1",
+  "description": "chapter_descriptions.official-w1",
+  "order": 1,
+  "levels": [
+	"official-w1-01",
+	"official-w1-02",
+	"official-w1-03",
+	"official-w1-04",
+	"official-w1-05",
+	"official-w1-06",
+	"official-w1-07"
+  ],
+  "planned_total": 12
+}

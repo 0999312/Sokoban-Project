@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://h3x3pu2tgjaa"]
+
+[ext_resource type="Script" uid="uid://jypnb56ovemo" path="res://scenes/editor/editor_scene.gd" id="1_editor"]
+
+[node name="EditorScene" type="Control" unique_id=1738460655]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_editor")
