@@ -194,18 +194,82 @@
 
 ---
 
-## Phase 5 — 内容 + 音频 + 抛光 ⬜
+## Phase 5 — 内容 + 音频 + 输入 + 抛光 🟡
 
-- [ ] P5-01 W1 示例关卡 12 关（在已有 5 关 + Phase 3.5 新增 2 关多色教学基础上扩展并打磨；覆盖移动/推/撤销/2 色配对/中性槽/3+ 色协作）
-- [ ] P5-02 W2 致敬原作 13 关（精选/复刻经典 Sokoban 原作关卡，标注致谢来源；以单色为主）
-- [ ] P5-03 W3 开发者自行设计 13 关（原创设计，覆盖中高难度与多色机制深度组合，最高 5 色 + 中性槽混合）
-- [ ] P5-04 全部 38 关 Solver 验证 + 三星基线写入
-- [ ] P5-05 BGM × 2、SFX × 7（走步/推/归位/撤销/胜利/UI 点击/UI 悬停）
-- [ ] P5-06 粒子：归位 ✨；动画：走步轻微抖动
-- [ ] P5-07 主菜单美化、Logo、Splash
-- [ ] P5-08 辅助功能：高对比度、减弱动画
+> **v1.0 范围**：W1 12 关 + W2 13 关 = **25 关**（W3/W4 留 v1.1，对齐 GDD §12）。
+> **执行顺序**：音频底座 → 视觉抛光 → 输入改造 → 内容铺量 → 收尾测试。
 
-**验收**：38 关全部可通；通关全程无明显观感缺陷。
+### A. 音频底座（P5-A）
+- [ ] P5-A1 `default_bus_layout.tres`：`Master → Music / SFX / UI` 四总线
+- [ ] P5-A2 `SettingsApplier` 修复 `get_bus_index() == -1` 静默失败 + 与新 bus 名对齐（含 UI 总线音量 API）
+- [ ] P5-A3 `Boot` 中配置 `SoundManager` 默认 bus（sfx→SFX / ui→UI / music→Music）
+
+### B. 音效与音乐接入（P5-B）
+- [ ] P5-B1 用 gdfxr 生成 4 个占位 SFX：`push.sfxr` / `undo.sfxr` / `ui_click.sfxr` / `ui_hover.sfxr`
+- [ ] P5-B2 `core/audio/sfx_catalog.gd`：名称 → AudioStream 索引；提供 `Sfx.play(name)` / `Sfx.play_ui(name)` 便捷接口
+- [ ] P5-B3 信号接入：Board.moved/undone/redone → step|push|undo；`crate_complete` → crate_done；`level_completed` → level_complete
+- [ ] P5-B4 UI 全局：所有 Button.pressed → ui_click，mouse_entered → ui_hover（统一封装在 `ui/components/sfx_button.gd` 或 mixin）
+- [ ] P5-B5 BGM：MainMenu ↔ GameScene crossfade 1.0s（menu_music ↔ game_music）
+
+### C. 视觉抛光（P5-C）
+- [ ] P5-C1 归位粒子：`core/rendering/effects/box_complete_fx.tscn` (GPUParticles2D)；BoardView 监听 `Board.moved`/`undone` 在变完成时触发
+- [ ] P5-C2 走步抖动：TweenMover 增加 ±2px shake 选项
+- [ ] P5-C3 校查"减弱动画"开关在 TweenMover/粒子上真生效（duration ×0.3、粒子禁用）
+- [ ] P5-C4 校查"高对比度"开关切换主题/着色器参数
+
+### D. 主菜单美化（P5-D）
+- [ ] P5-D1 Splash：Boot 阶段 1s 渐显 Logo
+- [ ] P5-D2 Logo：纯代码（Label + 自定义 Font + 阴影/光晕）+ 现有 crate 图标拼装
+- [ ] P5-D3 MainMenu 背景层：缓动浮动的几个箱子图，呼吸感
+
+### E. 输入改造：GUIDE 后端（P5-E）
+- [ ] P5-E1 `core/input/actions/`：每动作建 GUIDEAction 资源（`move_up/down/left/right`、`undo/redo/restart/pause`、`confirm/cancel`）
+- [ ] P5-E2 `core/input/contexts/`：`gameplay.tres`、`ui.tres` GUIDEMappingContext，各动作绑定键鼠 + 手柄
+- [ ] P5-E3 `core/input/remapping_config.tres`：声明可重绑 slot（每动作 keyboard 1 + gamepad 1）
+- [ ] P5-E4 `InputManager` 重写：以 GUIDE 为后端；`get_move_dir()` / `is_action_just_pressed()` / `current_device` + `device_changed` 信号
+- [ ] P5-E5 设备检测：监听原始 InputEvent 类型切换 KEYBOARD/GAMEPAD（鼠标归类 KEYBOARD）
+
+### F. 输入改造：重绑 UI + 提示同步（P5-F）
+- [ ] P5-F1 `SettingsPanel` 新增"键位"Tab：左列动作（i18n），右列两个 RebindSlot（键鼠/手柄）
+- [ ] P5-F2 `RebindSlot.gd`：监听下一个 InputEvent → GUIDE remapper → 冲突检测弹确认 → 持久化
+- [ ] P5-F3 重置默认按钮（按动作 / 全部）
+- [ ] P5-F4 `core/input/input_hint.gd`：读 GUIDE 当前绑定 + 设备 → 输出图标（Kenney Input Prompts 图标集）或 i18n 键名
+- [ ] P5-F5 HUD/PauseMenu/Win 按钮 tooltip 接入 InputHint；监听 `device_changed` 自动刷新
+- [ ] P5-F6 SaveManager schema v2：`input_bindings` 字段；Migrator 缺省=默认
+- [ ] P5-F7 i18n 扩展：`settings.tab.input` / `input.action.*` / `input.rebind.listening|conflict|reset` / `gamepad.button.*`（zh_CN/zh_TW/en）
+
+### G. W1 教学关卡补完（P5-G）
+- [ ] P5-G1 在已有 7 关基础上补 5 关，覆盖：推动入门强化 / 死锁意识 / 双箱协作 / 中性槽进阶 / 3 色组合
+- [ ] P5-G2 全 12 关跑 solver 写 `optimal_pushes / optimal_steps / verified_by_solver`
+- [ ] P5-G3 三语关卡名 + chapter.json 同步
+
+### H. W2 致敬关卡（Microban）（P5-H）
+- [ ] P5-H1 从 David Holland Microban (public domain) 选 13 关 XSB
+- [ ] P5-H2 用编辑器/loader 批量导入 → JSON；每关 metadata 写 `author="David Holland"` + `source="Microban"`
+- [ ] P5-H3 Solver 验证（5s 内不可解则标 `verified_by_solver=false` 但保留）
+- [ ] P5-H4 三语关卡名（保留英文原名 + 中文意译）+ `levels/official/w2/chapter.json`
+- [ ] P5-H5 LevelLibrary 索引扩展 W2；i18n `chapter.w2.title`
+- [ ] P5-H6 项目根 `LICENSES.md` 增加致谢段（Microban + Kenney Input Prompts）
+
+### I. 收尾（P5-I）
+- [ ] P5-I1 扩展 `tests/smoke_test.gd`：音频 bus sanity、SoundManager 可调
+- [ ] P5-I2 `tests/input_test.gd`：GUIDE context 加载、模拟输入、重绑往返、设备检测
+- [ ] P5-I3 `solver_test` 扩展覆盖 W2 全部 13 关
+- [ ] P5-I4 手测 checklist：通关 W1-01/W2-01 听到所有 SFX；切语言/切设备后提示同步；高对比度/减弱动画切换有视觉反馈
+- [ ] P5-I5 IMPLEMENTATION 状态徽标更新 → ✅；文档同步
+
+**Git 提交粒度**：9 次 commit
+1. docs：Phase 5 范围调整 + GDD §12 同步（**本次**）
+2. P5-A 音频底座
+3. P5-B 音效/音乐接入
+4. P5-C 视觉抛光
+5. P5-D 主菜单美化
+6. P5-E 输入 GUIDE 后端
+7. P5-F 重绑 UI + 提示同步
+8. P5-G W1 12 关补完
+9. P5-H + P5-I W2 + 收尾
+
+**验收**：25 关全部可通关；通关全程音频/特效齐全；玩家可在设置中重绑全部键位、提示文本随设备同步切换；高对比度/减弱动画真生效。
 
 ---
 
@@ -217,5 +281,7 @@
 
 ## 当前活动 Phase
 
-**Phase 5 — 内容 + 音频 + 抛光** 准备就绪。Phase 1 / 2 / 3 / 3.5 / 4 全部完成。
+**Phase 5 — 内容 + 音频 + 输入 + 抛光** 进行中（v1.0 范围：W1+W2 = 25 关；W3/W4 留 v1.1）。
+Phase 1 / 2 / 3 / 3.5 / 4 全部完成。
 编辑器已可端到端运转：创建/编辑 → 验证 → 保存 → 在"我的关卡"游玩通关；并支持 JSON/XSB/分享码三向互通。
+Phase 5 划分 9 组任务（A-I），对应 9 次 git 提交。
