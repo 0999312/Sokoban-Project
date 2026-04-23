@@ -37,6 +37,7 @@ func _default_settings() -> Dictionary:
 		"volume_master": 1.0,
 		"volume_music": 0.8,
 		"volume_sfx": 1.0,
+		"volume_ui": 1.0,
 		"fullscreen": false,
 		"high_contrast": false,
 		"reduce_motion": false,

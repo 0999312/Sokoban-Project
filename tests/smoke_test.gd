@@ -27,6 +27,9 @@ func _init() -> void:
 	failed += _run("multi-color: neutral holder accepts any", _t_neutral_holder)
 	failed += _run("validator: color count enforced", _t_validator_color_count)
 	failed += _run("BoardCommand carries color info", _t_command_color_info)
+	# Phase 5 P5-A — audio bus sanity
+	failed += _run("audio buses: Master/Music/SFX/UI exist", _t_audio_buses)
+	failed += _run("SettingsApplier.apply_volume tolerates missing bus", _t_applier_safe)
 	if failed > 0:
 		printerr("[SmokeTest] %d test(s) failed" % failed)
 		quit(1)
@@ -276,4 +279,20 @@ func _t_command_color_info() -> bool:
 	if not cmd.became_complete():
 		printerr("expected became_complete=true")
 		return false
+	return true
+
+# --- Phase 5 P5-A: audio bus sanity ---
+
+func _t_audio_buses() -> bool:
+	for bus_name in ["Master", "Music", "SFX", "UI"]:
+		if AudioServer.get_bus_index(bus_name) < 0:
+			printerr("audio bus '%s' not found" % bus_name)
+			return false
+	return true
+
+func _t_applier_safe() -> bool:
+	# 已存在的总线：不应抛错
+	SettingsApplier.apply_volume("Music", 0.5)
+	# 不存在的总线：必须静默忽略
+	SettingsApplier.apply_volume("__nonexistent_bus__", 0.5)
 	return true

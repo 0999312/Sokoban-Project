@@ -30,6 +30,10 @@ UIManager="*uid://b0mn85k3pon1l"
 SoundManager="*uid://c8sghfd0v8moa"
 GUIDE="*uid://p2jwrgjcbexr"
 
+[audio]
+
+buses/default_bus_layout="res://resources/audio/default_bus_layout.tres"
+
 [display]
 
 window/size/viewport_width=1280
