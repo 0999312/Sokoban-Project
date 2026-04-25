@@ -114,8 +114,10 @@ jobs:
         run: |
           case "${{ matrix.preset }}" in
             "Web")
-              cd "build/${{ matrix.export_dir }}"
-              zip -r "../${{ matrix.asset_name }}" .
+              (
+                cd "build/${{ matrix.export_dir }}"
+                zip -r "../${{ matrix.asset_name }}" .
+              )
               ;;
             *)
               cp "build/${{ matrix.export_dir }}/${{ matrix.export_path }}" "build/${{ matrix.asset_name }}"
