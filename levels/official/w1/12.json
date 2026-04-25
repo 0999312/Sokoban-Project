@@ -1,27 +1,35 @@
 {
-  "format_version": 2,
-  "id": "official-w1-12",
-  "name": "level_names.official-w1-12",
-  "author": "Official",
-  "width": 9,
-  "height": 7,
-  "tiles": [
-    "#########",
-    "# 1   2 #",
-    "# a @ b #",
-    "#       #",
-    "#   c   #",
-    "#   3   #",
-    "#########"
-  ],
-  "metadata": {
-    "world": 1,
-    "index": 12,
-    "difficulty": 3,
-    "tags": ["puzzle", "multi_color", "three-colors", "coordination"],
-    "color_count": 3,
-    "concept": "Three colored boxes each have a matching holder; clear the roomy layout in a clean order.",
-    "verified_by_solver": false,
-    "theme": { "wall": "stone", "floor": "stone" }
-  }
+	"format_version": 2,
+	"id": "official-w1-12",
+	"name": "level_names.official-w1-12",
+	"author": "Official",
+	"width": 9,
+	"height": 7,
+	"tiles": [
+		"#########",
+		"# 1   2 #",
+		"# a @ b #",
+		"#       #",
+		"#   c   #",
+		"#   3   #",
+		"#########"
+	],
+	"metadata": {
+		"world": 1,
+		"index": 12,
+		"difficulty": 3,
+		"tags": [
+			"puzzle",
+			"multi_color",
+			"three-colors",
+			"coordination"
+		],
+		"color_count": 3,
+		"concept": "Three colored boxes each have a matching holder; clear the roomy layout in a clean order.",
+		"verified_by_solver": false,
+		"theme": {
+			"wall": "stone",
+			"floor": "grass"
+		}
+	}
 }

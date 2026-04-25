@@ -10,6 +10,12 @@ extends Node
 ##   Sfx.play_bgm("game", 1.0)      # 切歌带 1s crossfade
 ##   Sfx.attach_ui(some_control)    # 把节点子树内全部 Button 自动挂上 ui_click
 
+## BGM 来源：甘茶の音楽工房 (https://amachamusic.chagasi.com/)
+##   game_music.mp3, menu_music.mp3
+## SFX 来源：gdfxr（sfxr 生成工具）
+##   step.sfxr, push.sfxr, crate_done.sfxr, level_complete.sfxr
+## UI SFX 来源：
+##   undo.mp3, ui_click.mp3
 const _SFX_PATHS := {
 	"step":           "res://assets/sounds/step.sfxr",
 	"push":           "res://assets/sounds/push.sfxr",

@@ -108,11 +108,16 @@ static func _looks_like_level_header(line: String) -> bool:
 	return normalized.is_valid_int()
 
 
+const VALID_GRID_CHARS := {
+	"#": true, " ": true, "-": true, ".": true, "$": true, "*": true,
+	"@": true, "+": true, ",": true, "1": true, "2": true, "3": true, "4": true,
+	"a": true, "b": true, "c": true, "d": true, "A": true, "B": true, "C": true, "D": true,
+}
+
 static func _looks_like_grid_line(line: String) -> bool:
 	if line.strip_edges().is_empty():
 		return false
 	for i in line.length():
-		var ch := line.substr(i, 1)
-		if ch not in ["#", " ", "-", ".", "$", "*", "@", "+", ",", "1", "2", "3", "4", "a", "b", "c", "d", "A", "B", "C", "D"]:
+		if not VALID_GRID_CHARS.has(line[i]):
 			return false
 	return true

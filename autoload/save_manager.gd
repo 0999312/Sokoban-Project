@@ -8,6 +8,7 @@ extends Node
 const SAVE_DIR := "user://save"
 const SAVE_PATH := "user://save/profile.json"
 const SAVE_TMP := "user://save/profile.json.tmp"
+const SAVE_BACKUP := "user://save/profile.json.corrupted_backup"
 const CURRENT_VERSION := 2
 
 const DEFAULT_LOCALE := "zh_CN"
@@ -59,19 +60,46 @@ func load_profile() -> void:
 		push_warning("[SaveManager] failed to open save file")
 		return
 	var data: Variant = JSON.parse_string(f.get_as_text())
-	if typeof(data) != TYPE_DICTIONARY:
-		push_warning("[SaveManager] save file corrupted, using defaults")
+	if typeof(data) != TYPE_DICTIONARY or data == null:
+		_backup_corrupted()
+		push_warning("[SaveManager] save file corrupted, backed up & using defaults")
 		return
 	profile = _migrate(data)
-	# 合并默认 settings（兼容老存档新增字段）
-	var defaults := _default_settings()
-	var s: Dictionary = profile.get("settings", {})
-	for k in defaults.keys():
-		if not s.has(k):
-			s[k] = defaults[k]
-	profile["settings"] = s
+	if typeof(profile) != TYPE_DICTIONARY:
+		profile = _default_profile()
+		_backup_corrupted()
+		push_warning("[SaveManager] save migration failed, using defaults")
+		return
+	var settings: Variant = profile.get("settings")
+	if typeof(settings) != TYPE_DICTIONARY:
+		profile["settings"] = _default_settings()
+	else:
+		var defaults := _default_settings()
+		var s: Dictionary = settings
+		for k in defaults.keys():
+			if not s.has(k):
+				s[k] = defaults[k]
+		profile["settings"] = s
+	if typeof(profile.get("progress")) != TYPE_DICTIONARY:
+		profile["progress"] = {}
+	if typeof(profile.get("stats")) != TYPE_DICTIONARY:
+		profile["stats"] = { "total_steps": 0, "total_time_ms": 0, "completed_levels": 0 }
+	if typeof(profile.get("input_bindings")) != TYPE_DICTIONARY:
+		profile["input_bindings"] = {}
+	if typeof(profile.get("ui_input_bindings")) != TYPE_DICTIONARY:
+		profile["ui_input_bindings"] = {}
+	if typeof(profile.get("user_levels_index")) != TYPE_ARRAY:
+		profile["user_levels_index"] = []
 	print("[SaveManager] loaded version=%s" % profile.get("version"))
 	save_loaded.emit(profile)
+
+func _backup_corrupted() -> void:
+	if FileAccess.file_exists(SAVE_PATH):
+		var d := DirAccess.open(SAVE_DIR)
+		if d != null:
+			if FileAccess.file_exists(SAVE_BACKUP):
+				d.remove(SAVE_BACKUP.get_file())
+			d.rename(SAVE_PATH.get_file(), SAVE_BACKUP.get_file())
 
 func save_profile() -> void:
 	_ensure_dir()
@@ -102,11 +130,13 @@ func _migrate(data: Dictionary) -> Dictionary:
 # --- Progress API ---
 
 func record_level_complete(level_id: String, stars: int, steps: int, time_ms: int) -> void:
-	var p: Dictionary = profile.get("progress", {})
-	var prev: Dictionary = p.get(level_id, {})
-	var best_steps: int = prev.get("best_steps", 999999)
-	var best_time: int = prev.get("best_time_ms", 999999999)
-	var was_completed: bool = prev.has("stars")
+	var p_raw: Variant = profile.get("progress")
+	var p: Dictionary = p_raw if typeof(p_raw) == TYPE_DICTIONARY else {}
+	var prev_raw: Variant = p.get(level_id)
+	var prev: Dictionary = prev_raw if typeof(prev_raw) == TYPE_DICTIONARY else {}
+	var best_steps: int = prev.get("best_steps", 999999) if typeof(prev.get("best_steps")) == TYPE_INT else 999999
+	var best_time: int = prev.get("best_time_ms", 999999999) if typeof(prev.get("best_time_ms")) == TYPE_INT else 999999999
+	var was_completed: bool = prev.has("stars") if typeof(prev_raw) == TYPE_DICTIONARY else false
 	p[level_id] = {
 		"stars": maxi(stars, prev.get("stars", 0)),
 		"best_steps": mini(steps, best_steps),
@@ -114,8 +144,8 @@ func record_level_complete(level_id: String, stars: int, steps: int, time_ms: in
 		"completed_at": Time.get_datetime_string_from_system(),
 	}
 	profile["progress"] = p
-	# 全局统计
-	var stats: Dictionary = profile.get("stats", {})
+	var stats_raw: Variant = profile.get("stats")
+	var stats: Dictionary = stats_raw if typeof(stats_raw) == TYPE_DICTIONARY else { "total_steps": 0, "total_time_ms": 0, "completed_levels": 0 }
 	stats["total_steps"] = int(stats.get("total_steps", 0)) + steps
 	stats["total_time_ms"] = int(stats.get("total_time_ms", 0)) + time_ms
 	if not was_completed:

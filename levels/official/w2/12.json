@@ -11,7 +11,11 @@
 		"source_index": 12.0,
 		"source_title": "Microban 12",
 		"verified_by_solver": true,
-		"world": 2.0
+		"world": 2.0,
+		"theme": {
+			"wall": "stone",
+			"floor": "dirt"
+		}
 	},
 	"name": "Microban 12",
 	"tiles": [

@@ -15,8 +15,8 @@
 			"single-box"
 		],
 		"theme": {
-			"floor": "grass",
-			"wall": "brick"
+			"wall": "stone",
+			"floor": "grass"
 		},
 		"verified_by_solver": true,
 		"world": 1.0

@@ -25,8 +25,8 @@ const _DIRS: Array[Vector2i] = [
 	Vector2i(-1, 0),
 ]
 
-var max_pushes: int = 200          ## IDA* 上界，超过即放弃
-var node_limit: int = 2_000_000    ## 总展开节点上限，防爆
+var max_pushes: int = 800          ## IDA* 上界，超过即放弃
+var node_limit: int = 5_000_000    ## 总展开节点上限，防爆
 var report_every: int = 50_000     ## 每展开 N 节点回调一次进度
 
 signal progress(nodes_expanded: int, current_bound: int)

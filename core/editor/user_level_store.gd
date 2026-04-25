@@ -65,7 +65,7 @@ static func save_level(level: Level) -> bool:
 	f.store_string(json)
 	f.close()
 	# 更新 profile 索引
-	var sm := Engine.get_singleton("SaveManager") if Engine.has_singleton("SaveManager") else null
+	var _sm := Engine.get_singleton("SaveManager") if Engine.has_singleton("SaveManager") else null
 	# 在 Godot 中 autoload 不通过 Engine.get_singleton 暴露——回退到通过 SceneTree
 	# 这里直接用全局名（自动加载脚本会在所有脚本上下文可见）。
 	if Engine.has_singleton("SaveManager"):

@@ -12,8 +12,8 @@ func _init() -> void:
 
 	var input_path: String = String(args["input"])
 	var write_back: bool = bool(args.get("write", false))
-	var max_pushes: int = int(args.get("max-pushes", 200))
-	var node_limit: int = int(args.get("node-limit", 2_000_000))
+	var max_pushes: int = int(args.get("max-pushes", 800))
+	var node_limit: int = int(args.get("node-limit", 5_000_000))
 	var files: Array[String] = []
 	_collect_json_files(input_path, files)
 	if files.is_empty():

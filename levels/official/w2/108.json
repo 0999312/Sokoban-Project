@@ -9,7 +9,11 @@
 		"source_index": 108,
 		"source_title": "Microban 108",
 		"verified_by_solver": false,
-		"world": 2
+		"world": 2,
+		"theme": {
+			"wall": "stone",
+			"floor": "dirt"
+		}
 	},
 	"name": "Microban 108",
 	"tiles": [

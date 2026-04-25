@@ -11,7 +11,11 @@
 		"source_index": 40.0,
 		"source_title": "Microban 40",
 		"verified_by_solver": true,
-		"world": 2.0
+		"world": 2.0,
+		"theme": {
+			"wall": "stone",
+			"floor": "dirt"
+		}
 	},
 	"name": "Microban 40",
 	"tiles": [

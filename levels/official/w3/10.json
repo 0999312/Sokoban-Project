@@ -9,7 +9,11 @@
 		"source_index": 10,
 		"source_title": "screen.10",
 		"verified_by_solver": false,
-		"world": 3
+		"world": 3,
+		"theme": {
+			"wall": "brick",
+			"floor": "stone"
+		}
 	},
 	"name": "screen.10",
 	"tiles": [

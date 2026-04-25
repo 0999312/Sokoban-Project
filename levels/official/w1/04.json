@@ -15,8 +15,8 @@
 			"two-boxes"
 		],
 		"theme": {
-			"floor": "grass",
-			"wall": "stone"
+			"wall": "stone",
+			"floor": "grass"
 		},
 		"verified_by_solver": true,
 		"world": 1.0

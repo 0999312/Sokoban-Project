@@ -71,16 +71,22 @@ static func validate(level: Level) -> Result:
 	if not r.ok:
 		return r
 
-	# 4. 连通性：玩家可达的格子集合需覆盖所有目标点
+	# 4. 连通性：玩家可达的格子集合需覆盖所有目标点。
+	#    静态 flood-fill 不能预见推箱子打开新通路的情况，
+	#    因此 unreachable goal 降级为 warning 而非 error。
 	var reachable := _flood_fill(level, level.player_start)
+	var unreachable_goals: Array[Vector2i] = []
 	for g in level.goal_positions:
 		if not reachable.has(g):
-			r.add_error("goal at %s unreachable from player" % g)
+			unreachable_goals.append(g)
+			r.add_warning("goal at %s unreachable from player" % g)
 
-	# 警告：箱子初始位置应在可达区域
 	for b in level.box_starts:
 		if not reachable.has(b):
 			r.add_warning("box at %s unreachable from player initially" % b)
+
+	if unreachable_goals.size() == level.goal_positions.size() and level.goal_count() > 0:
+		r.add_error("all %d goals unreachable from player; level likely corrupted" % unreachable_goals.size())
 
 	return r
 

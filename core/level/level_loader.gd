@@ -239,33 +239,34 @@ static func _decode_tile_rows(rows: Array, width: int, height: int) -> Dictionar
 		var line: String = rows[y] if y < rows.size() else ""
 		var row: Array = []
 		row.resize(width)
+		var max_x := mini(line.length(), width)
 		for x in width:
-			var ch := CHAR_OUTSIDE if x >= line.length() else line.substr(x, 1)
+			if x >= max_x:
+				row[x] = Cell.Type.OUTSIDE
+				continue
+			var ch := line[x]
+			if ch == CHAR_OUTSIDE or ch == CHAR_WALL or ch == CHAR_FLOOR:
+				match ch:
+					CHAR_WALL: row[x] = Cell.Type.WALL
+					CHAR_FLOOR: row[x] = Cell.Type.FLOOR
+					_: row[x] = Cell.Type.OUTSIDE
+				continue
 			var p := Vector2i(x, y)
-			# 优先识别"箱在目标"复合字符
 			if XSB_BOX_ON_GOAL_CHARS.has(ch):
 				var pair: Array = XSB_BOX_ON_GOAL_CHARS[ch]
 				row[x] = Cell.Type.GOAL
 				boxes.append(p); box_colors.append(int(pair[0]))
 				goals.append(p); goal_colors.append(int(pair[1]))
 				continue
-			# goal 字符（含中性槽）
 			if XSB_GOAL_COLOR_CHARS.has(ch):
 				row[x] = Cell.Type.GOAL
 				goals.append(p); goal_colors.append(int(XSB_GOAL_COLOR_CHARS[ch]))
 				continue
-			# box 字符
 			if XSB_BOX_COLOR_CHARS.has(ch):
 				row[x] = Cell.Type.FLOOR
 				boxes.append(p); box_colors.append(int(XSB_BOX_COLOR_CHARS[ch]))
 				continue
 			match ch:
-				CHAR_WALL:
-					row[x] = Cell.Type.WALL
-				CHAR_OUTSIDE:
-					row[x] = Cell.Type.OUTSIDE
-				CHAR_FLOOR:
-					row[x] = Cell.Type.FLOOR
 				CHAR_PLAYER:
 					row[x] = Cell.Type.FLOOR
 					player = p
@@ -274,7 +275,6 @@ static func _decode_tile_rows(rows: Array, width: int, height: int) -> Dictionar
 					goals.append(p); goal_colors.append(Cell.DEFAULT_COLOR)
 					player = p
 				_:
-					# 未知字符当成外部空区
 					row[x] = Cell.Type.OUTSIDE
 		tiles[y] = row
 	return {

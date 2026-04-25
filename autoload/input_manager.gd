@@ -208,7 +208,7 @@ func _make_key_mapping(key: int) -> GUIDEInputMapping:
 	var im := GUIDEInputMapping.new()
 	im.is_remappable = true
 	var input := GUIDEInputKey.new()
-	input.key = key
+	input.key = key as Key
 	im.input = input
 	im.triggers.append(GUIDETriggerPressed.new())
 	return im
@@ -217,7 +217,7 @@ func _make_joy_mapping(joy_button: int) -> GUIDEInputMapping:
 	var im := GUIDEInputMapping.new()
 	im.is_remappable = true
 	var input := GUIDEInputJoyButton.new()
-	input.button = joy_button
+	input.button = joy_button as JoyButton
 	im.input = input
 	im.triggers.append(GUIDETriggerPressed.new())
 	return im
@@ -394,11 +394,11 @@ func _spec_to_input_event(spec: Dictionary) -> InputEvent:
 		var key_code: int = int(spec["key"])
 		if key_code == KEY_NONE: return null
 		var ke := InputEventKey.new()
-		ke.physical_keycode = key_code
+		ke.physical_keycode = key_code as Key
 		return ke
 	if spec.has("joy"):
 		var jb := InputEventJoypadButton.new()
-		jb.button_index = int(spec["joy"])
+		jb.button_index = int(spec["joy"]) as JoyButton
 		return jb
 	return null
 

@@ -45,11 +45,11 @@ func _scan_official() -> void:
 		push_warning("[LevelLibrary] official root not found: %s" % OFFICIAL_ROOT)
 		return
 	dir.list_dir_begin()
-	var name : String = dir.get_next()
-	while name != "":
+	var _name : String = dir.get_next()
+	while _name != "":
 		if dir.current_is_dir() and not name.begins_with("."):
-			_scan_chapter("%s/%s" % [OFFICIAL_ROOT, name])
-		name = dir.get_next()
+			_scan_chapter("%s/%s" % [OFFICIAL_ROOT, _name])
+		_name = dir.get_next()
 	dir.list_dir_end()
 
 func _scan_chapter(chapter_dir: String) -> void:
