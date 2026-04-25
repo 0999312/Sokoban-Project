@@ -15,8 +15,17 @@ const BUS_UI := "UI"
 # 缺失总线只警告一次，避免日志刷屏
 static var _missing_bus_warned: Dictionary = {}
 
+static func _autoload(name: String) -> Node:
+	var main_loop := Engine.get_main_loop()
+	if main_loop == null or not (main_loop is SceneTree):
+		return null
+	return (main_loop as SceneTree).root.get_node_or_null(name)
+
 static func apply_all() -> void:
-	var s: Dictionary = SaveManager.profile.get("settings", {})
+	var save_manager := _autoload("SaveManager")
+	var s: Dictionary = {}
+	if save_manager != null:
+		s = save_manager.get("profile").get("settings", {})
 	apply_locale(s.get("locale", "zh_CN"))
 	apply_volume(BUS_MASTER, s.get("volume_master", 1.0))
 	apply_volume(BUS_MUSIC, s.get("volume_music", 0.8))
@@ -42,7 +51,9 @@ static func apply_one(key: String, value: Variant) -> void:
 			pass
 
 static func apply_locale(locale: String) -> void:
-	I18NManager.set_language(locale)
+	var i18n_manager := _autoload("I18NManager")
+	if i18n_manager != null:
+		i18n_manager.call("set_language", locale)
 
 static func apply_volume(bus_name: String, linear: float) -> void:
 	var idx := AudioServer.get_bus_index(bus_name)
