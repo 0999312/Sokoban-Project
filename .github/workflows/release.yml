@@ -9,7 +9,6 @@ on:
 env:
   GODOT_VERSION: "4.6.2"
   EXPORT_TEMPLATE_VERSION: "4.6.2.stable"
-  EXPORT_NAME: "Sokoban"
 
 jobs:
   test:
