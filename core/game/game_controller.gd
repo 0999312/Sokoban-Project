@@ -32,17 +32,24 @@ const MOVE_LOCK_MS := 60
 func _autoload(name: String) -> Node:
 	return get_node_or_null("/root/%s" % name)
 
+func _ensure_autoload(name: String, cached: Node) -> Node:
+	return cached if cached != null else _autoload(name)
+
+func _load_input_actions() -> void:
+	if _input_manager == null:
+		return
+	_undo_action = _input_manager.get("UNDO")
+	_redo_action = _input_manager.get("REDO")
+	_restart_action = _input_manager.get("RESTART")
+	_pause_action = _input_manager.get("PAUSE")
+
 func _ready() -> void:
-	_game_state = _autoload("GameState")
-	_level_library = _autoload("LevelLibrary")
-	_input_manager = _autoload("InputManager")
-	_save_manager = _autoload("SaveManager")
-	_sfx = _autoload("Sfx")
-	if _input_manager != null:
-		_undo_action = _input_manager.get("UNDO")
-		_redo_action = _input_manager.get("REDO")
-		_restart_action = _input_manager.get("RESTART")
-		_pause_action = _input_manager.get("PAUSE")
+	_game_state = _ensure_autoload("GameState", _game_state)
+	_level_library = _ensure_autoload("LevelLibrary", _level_library)
+	_input_manager = _ensure_autoload("InputManager", _input_manager)
+	_save_manager = _ensure_autoload("SaveManager", _save_manager)
+	_sfx = _ensure_autoload("Sfx", _sfx)
+	_load_input_actions()
 	view = get_node_or_null(board_view_path) as BoardView
 	hud = get_node_or_null(hud_path)
 	camera = get_node_or_null(camera_path) as GameCamera
@@ -62,13 +69,11 @@ func _connect_hud() -> void:
 		hud.restart_pressed.connect(_on_restart)
 
 func _load_current_level() -> void:
-	if _game_state == null:
-		_game_state = _autoload("GameState")
+	_game_state = _ensure_autoload("GameState", _game_state)
 	if _game_state == null:
 		push_error("[GameController] GameState autoload not found")
 		return
-	if _level_library == null:
-		_level_library = _autoload("LevelLibrary")
+	_level_library = _ensure_autoload("LevelLibrary", _level_library)
 	if _level_library == null:
 		push_error("[GameController] LevelLibrary autoload not found")
 		return
@@ -123,8 +128,7 @@ func _process(_dt: float) -> void:
 	# 暂停或胜利时禁用键盘输入
 	if get_tree().paused or board.is_won():
 		return
-	if _input_manager == null:
-		_input_manager = _autoload("InputManager")
+	_input_manager = _ensure_autoload("InputManager", _input_manager)
 	if _input_manager == null:
 		return
 	var dir: Vector2i = _input_manager.call("get_move_dir")
@@ -132,10 +136,7 @@ func _process(_dt: float) -> void:
 		_try_move(dir)
 		return
 	if _undo_action == "":
-		_undo_action = _input_manager.get("UNDO")
-		_redo_action = _input_manager.get("REDO")
-		_restart_action = _input_manager.get("RESTART")
-		_pause_action = _input_manager.get("PAUSE")
+		_load_input_actions()
 	if _input_manager.call("is_action_just_pressed", _undo_action):
 		_on_undo()
 	elif _input_manager.call("is_action_just_pressed", _redo_action):
@@ -203,8 +204,7 @@ func _on_won() -> void:
 		"time_ms": time_ms,
 		"stars": stars,
 	}
-	if _save_manager == null:
-		_save_manager = _autoload("SaveManager")
+	_save_manager = _ensure_autoload("SaveManager", _save_manager)
 	if _save_manager != null:
 		_save_manager.call("record_level_complete", level.id, stars, board.move_count, time_ms)
 	print("[GameController] WON %s in %d moves / %d pushes / %d ms (stars=%d)" % [
@@ -238,8 +238,7 @@ func _on_board_redone(cmd: BoardCommand) -> void:
 		_play_sfx("step")
 
 func _play_sfx(name: String) -> void:
-	if _sfx == null:
-		_sfx = _autoload("Sfx")
+	_sfx = _ensure_autoload("Sfx", _sfx)
 	if _sfx != null:
 		_sfx.call("play", name)
 
