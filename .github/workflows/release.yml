@@ -162,7 +162,7 @@ jobs:
               if [ -f "$f" ]; then
                 name=$(basename "$f")
                 size=$(du -h "$f" | cut -f1)
-                echo "- \`$name\` ($size)"
+                printf -- '- `%s` (%s)\n' "$name" "$size"
               fi
             done
             echo ""
