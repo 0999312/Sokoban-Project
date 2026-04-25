@@ -150,29 +150,31 @@ jobs:
       - name: Generate Release Notes
         id: notes
         run: |
-          echo 'release_body<<EOF' >> $GITHUB_OUTPUT
-          echo "## Sokoban Project ${{ github.ref_name }}" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "### Downloads" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          for f in artifacts/*; do
-            if [ -f "$f" ]; then
-              name=$(basename "$f")
-              size=$(du -h "$f" | cut -f1)
-              echo "- \`$name\` ($size)" >> $GITHUB_OUTPUT
+          {
+            echo 'release_body<<EOF'
+            echo "## Sokoban Project ${{ github.ref_name }}"
+            echo ""
+            echo "### Downloads"
+            echo ""
+            for f in artifacts/*; do
+              if [ -f "$f" ]; then
+                name=$(basename "$f")
+                size=$(du -h "$f" | cut -f1)
+                echo "- \`$name\` ($size)"
+              fi
+            done
+            echo ""
+            echo "### Changes"
+            echo ""
+            prev=$(git rev-list --tags --max-count=1 2>/dev/null || echo "")
+            if [ -n "$prev" ]; then
+              git log --oneline "$prev..HEAD" 2>/dev/null | sed 's/^/- /' || true
+            else
+              git log --oneline -20 2>/dev/null | sed 's/^/- /' || true
             fi
-          done
-          echo "" >> $GITHUB_OUTPUT
-          echo "### Changes" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          prev=$(git rev-list --tags --max-count=1 2>/dev/null || echo "")
-          if [ -n "$prev" ]; then
-            git log --oneline "$prev..HEAD" 2>/dev/null | sed 's/^/- /' >> $GITHUB_OUTPUT || true
-          else
-            git log --oneline -20 2>/dev/null | sed 's/^/- /' >> $GITHUB_OUTPUT || true
-          fi
-          echo "" >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
+            echo ""
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
