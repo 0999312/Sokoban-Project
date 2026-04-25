@@ -153,7 +153,7 @@ jobs:
         id: notes
         run: |
           {
-            echo 'release_body<<EOF'
+            echo 'release_body<<RELEASE_NOTES_EOF'
             echo "## Sokoban Project ${{ github.ref_name }}"
             echo ""
             echo "### Downloads"
@@ -175,7 +175,7 @@ jobs:
               git log --oneline -20 2>/dev/null | sed 's/^/- /' || true
             fi
             echo ""
-            echo 'EOF'
+            echo 'RELEASE_NOTES_EOF'
           } >> "$GITHUB_OUTPUT"
 
       - name: Create Release
