@@ -106,8 +106,7 @@ jobs:
       - name: Export ${{ matrix.name }}
         run: |
           mkdir -p "build/${{ matrix.export_dir }}"
-          EXPORT_DIR="$(readlink -f build)"
-          godot --headless --verbose --path . --export-release "${{ matrix.preset }}" "$EXPORT_DIR/${{ matrix.export_dir }}/${{ matrix.export_path }}"
+          godot --headless --verbose --path . --export-release "${{ matrix.preset }}" "build/${{ matrix.export_dir }}/${{ matrix.export_path }}"
 
       - name: Package ${{ matrix.name }}
         run: |
