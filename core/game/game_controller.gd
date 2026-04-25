@@ -27,6 +27,7 @@ var _undo_action: String = ""
 var _redo_action: String = ""
 var _restart_action: String = ""
 var _pause_action: String = ""
+var _input_actions_loaded: bool = false
 const MOVE_LOCK_MS := 60
 
 func _autoload(name: String) -> Node:
@@ -42,6 +43,7 @@ func _load_input_actions() -> void:
 	_redo_action = _input_manager.get("REDO")
 	_restart_action = _input_manager.get("RESTART")
 	_pause_action = _input_manager.get("PAUSE")
+	_input_actions_loaded = true
 
 func _ready() -> void:
 	_game_state = _ensure_autoload("GameState", _game_state)
@@ -135,7 +137,7 @@ func _process(_dt: float) -> void:
 	if dir != Vector2i.ZERO:
 		_try_move(dir)
 		return
-	if _undo_action == "":
+	if not _input_actions_loaded:
 		_load_input_actions()
 	if _input_manager.call("is_action_just_pressed", _undo_action):
 		_on_undo()
