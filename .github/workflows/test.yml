@@ -5,31 +5,45 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 env:
-  GODOT_VERSION: "4.6.2-stable"
+  GODOT_VERSION: "4.6.2"
+  EXPORT_TEMPLATE_VERSION: "4.6.2.stable"
 
 jobs:
   test:
     name: Headless Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    container:
+      image: barichello/godot-ci:4.6.2
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          lfs: true
 
-      - name: Download Godot
+      - name: Setup godot-ci
         run: |
-          wget -q "https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}/Godot_v${{ env.GODOT_VERSION }}_linux.x86_64.zip"
-          unzip -q Godot_v${{ env.GODOT_VERSION }}_linux.x86_64.zip
-          chmod +x godot.x86_64
-          sudo mv godot.x86_64 /usr/local/bin/godot
+          apt-get update
+          apt-get install -y --no-install-recommends libfontconfig1
+          mkdir -p "$HOME/.config" "$HOME/.local/share/godot/export_templates"
+          if [ -d /root/.config/godot ] && [ "$HOME" != "/root" ] && [ ! -e "$HOME/.config/godot" ]; then
+            cp -a /root/.config/godot "$HOME/.config/godot"
+          fi
+          if [ -d "/root/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}" ] && [ "$HOME" != "/root" ] && [ ! -e "$HOME/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}" ]; then
+            cp -a "/root/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}" "$HOME/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}"
+          fi
           godot --version
 
+      - name: Import project
+        run: godot --headless --editor --quit --path .
+
       - name: Smoke Tests
-        run: godot --headless --script res://tests/smoke_test.gd
+        run: godot --headless --path . --script res://tests/smoke_test.gd
 
       - name: Solver Tests
-        run: godot --headless --script res://tests/solver_test.gd
+        run: godot --headless --path . --script res://tests/solver_test.gd
 
       - name: Editor Tests
-        run: godot --headless --script res://tests/editor_test.gd
+        run: godot --headless --path . --script res://tests/editor_test.gd

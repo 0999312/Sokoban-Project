@@ -4,105 +4,129 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
 
 env:
-  GODOT_VERSION: "4.6.2-stable"
+  GODOT_VERSION: "4.6.2"
   EXPORT_TEMPLATE_VERSION: "4.6.2.stable"
+  EXPORT_NAME: "Sokoban"
 
 jobs:
   test:
     name: Run Headless Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    container:
+      image: barichello/godot-ci:4.6.2
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          lfs: true
 
-      - name: Download Godot
+      - name: Setup godot-ci
         run: |
-          wget -q "https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}/Godot_v${{ env.GODOT_VERSION }}_linux.x86_64.zip"
-          unzip -q Godot_v${{ env.GODOT_VERSION }}_linux.x86_64.zip
-          chmod +x godot.x86_64
-          sudo mv godot.x86_64 /usr/local/bin/godot
+          apt-get update
+          apt-get install -y --no-install-recommends libfontconfig1
+          mkdir -p "$HOME/.config" "$HOME/.local/share/godot/export_templates"
+          if [ -d /root/.config/godot ] && [ "$HOME" != "/root" ] && [ ! -e "$HOME/.config/godot" ]; then
+            cp -a /root/.config/godot "$HOME/.config/godot"
+          fi
+          if [ -d "/root/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}" ] && [ "$HOME" != "/root" ] && [ ! -e "$HOME/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}" ]; then
+            cp -a "/root/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}" "$HOME/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}"
+          fi
           godot --version
 
+      - name: Import project
+        run: godot --headless --editor --quit --path .
+
       - name: Smoke Tests
-        run: godot --headless --script res://tests/smoke_test.gd
+        run: godot --headless --path . --script res://tests/smoke_test.gd
 
       - name: Solver Tests
-        run: godot --headless --script res://tests/solver_test.gd
+        run: godot --headless --path . --script res://tests/solver_test.gd
 
       - name: Editor Tests
-        run: godot --headless --script res://tests/editor_test.gd
+        run: godot --headless --path . --script res://tests/editor_test.gd
 
   export:
     name: Export ${{ matrix.name }}
     needs: test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    container:
+      image: barichello/godot-ci:4.6.2
     strategy:
       fail-fast: false
       matrix:
         include:
           - name: Windows
             preset: "Windows Desktop"
-            out: "Sokoban_windows.exe"
-            suffix: windows-x86_64
+            export_dir: windows
+            export_path: "Sokoban.exe"
+            asset_name: "Sokoban-windows-x86_64.exe"
 
           - name: Linux
             preset: "Linux"
-            out: "Sokoban_linux.x86_64"
-            suffix: linux-x86_64
+            export_dir: linux
+            export_path: "Sokoban.x86_64"
+            asset_name: "Sokoban-linux-x86_64"
 
           - name: macOS
             preset: "macOS"
-            out: "Sokoban_macos.zip"
-            suffix: macos-x86_64
+            export_dir: macos
+            export_path: "Sokoban-macos.zip"
+            asset_name: "Sokoban-macos-x86_64.zip"
 
           - name: Web
             preset: "Web"
-            out: "Sokoban_web.zip"
-            suffix: web
+            export_dir: web
+            export_path: "index.html"
+            asset_name: "Sokoban-web.zip"
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          lfs: true
 
-      - name: Download Godot
+      - name: Setup godot-ci
         run: |
-          wget -q "https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}/Godot_v${{ env.GODOT_VERSION }}_linux.x86_64.zip"
-          unzip -q Godot_v${{ env.GODOT_VERSION }}_linux.x86_64.zip
-          chmod +x godot.x86_64
-          sudo mv godot.x86_64 /usr/local/bin/godot
+          apt-get update
+          apt-get install -y --no-install-recommends libfontconfig1
+          mkdir -p "$HOME/.config" "$HOME/.local/share/godot/export_templates"
+          if [ -d /root/.config/godot ] && [ "$HOME" != "/root" ] && [ ! -e "$HOME/.config/godot" ]; then
+            cp -a /root/.config/godot "$HOME/.config/godot"
+          fi
+          if [ -d "/root/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}" ] && [ "$HOME" != "/root" ] && [ ! -e "$HOME/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}" ]; then
+            cp -a "/root/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}" "$HOME/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}"
+          fi
           godot --version
 
-      - name: Install Export Templates
-        run: |
-          wget -q "https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}/Godot_v${{ env.GODOT_VERSION }}_export_templates.tpz"
-          mkdir -p ~/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}/
-          unzip -q Godot_v${{ env.GODOT_VERSION }}_export_templates.tpz -d ~/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}/
-          mv ~/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}/templates/* ~/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}/
-          rm -rf ~/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}/templates
+      - name: Import project
+        run: godot --headless --editor --quit --path .
 
       - name: Export ${{ matrix.name }}
         run: |
-          mkdir -p build
-          godot --headless --export-release "${{ matrix.preset }}" "../build/${{ matrix.out }}"
+          mkdir -p "build/${{ matrix.export_dir }}"
+          EXPORT_DIR="$(readlink -f build)"
+          godot --headless --verbose --path . --export-release "${{ matrix.preset }}" "$EXPORT_DIR/${{ matrix.export_dir }}/${{ matrix.export_path }}"
 
-      - name: Build Archive
+      - name: Package ${{ matrix.name }}
         run: |
-          cd build
-          file="${{ matrix.out }}"
-          if [ "${{ matrix.preset }}" = "Web" ]; then
-            basename="${file%.zip}"
-            if [ -d "$basename" ]; then
-              cd "$basename" && zip -r "../${file}" . && cd ..
-            fi
-          fi
+          case "${{ matrix.preset }}" in
+            "Web")
+              cd "build/${{ matrix.export_dir }}"
+              zip -r "../${{ matrix.asset_name }}" .
+              ;;
+            *)
+              cp "build/${{ matrix.export_dir }}/${{ matrix.export_path }}" "build/${{ matrix.asset_name }}"
+              ;;
+          esac
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Sokoban-${{ matrix.suffix }}
-          path: build/${{ matrix.out }}
+          name: ${{ matrix.asset_name }}
+          path: build/${{ matrix.asset_name }}
           if-no-files-found: error
 
   release:
