@@ -101,7 +101,7 @@ res://
 |------|------|------|
 | `Windows Desktop` | Windows (x86_64) | `.exe` |
 | `Linux` | Linux (x86_64) | 可执行文件 |
-| `macOS` | macOS (x86_64) | `.zip` |
+| `macOS` | macOS (Universal) | `.zip` |
 | `Web` | HTML5 / WASM | `.zip` |
 
 ### 自动发布流程
