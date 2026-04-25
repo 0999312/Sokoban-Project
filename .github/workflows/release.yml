@@ -1,0 +1,163 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  GODOT_VERSION: "4.6.2-stable"
+  EXPORT_TEMPLATE_VERSION: "4.6.2.stable"
+
+jobs:
+  test:
+    name: Run Headless Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download Godot
+        run: |
+          wget -q "https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}/Godot_v${{ env.GODOT_VERSION }}_linux.x86_64.zip"
+          unzip -q Godot_v${{ env.GODOT_VERSION }}_linux.x86_64.zip
+          chmod +x Godot_v${{ env.GODOT_VERSION }}_linux.x86_64
+          sudo mv Godot_v${{ env.GODOT_VERSION }}_linux.x86_64 /usr/local/bin/godot
+
+      - name: Smoke Tests
+        run: |
+          godot --headless --script res://tests/smoke_test.gd || exit 1
+          echo "::notice::smoke_test passed"
+
+      - name: Solver Tests
+        run: |
+          godot --headless --script res://tests/solver_test.gd || exit 1
+          echo "::notice::solver_test passed"
+
+      - name: Editor Tests
+        run: |
+          godot --headless --script res://tests/editor_test.gd || exit 1
+          echo "::notice::editor_test passed"
+
+  export:
+    name: Export ${{ matrix.name }}
+    needs: test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows
+            preset: "Windows Desktop"
+            out: "Sokoban_windows.exe"
+            suffix: windows-x86_64
+
+          - name: Linux
+            preset: "Linux"
+            out: "Sokoban_linux.x86_64"
+            suffix: linux-x86_64
+
+          - name: macOS
+            preset: "macOS"
+            out: "Sokoban_macos.zip"
+            suffix: macos-x86_64
+
+          - name: Web
+            preset: "Web"
+            out: "Sokoban_web.zip"
+            suffix: web
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download Godot
+        run: |
+          wget -q "https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}/Godot_v${{ env.GODOT_VERSION }}_linux.x86_64.zip"
+          unzip -q Godot_v${{ env.GODOT_VERSION }}_linux.x86_64.zip
+          chmod +x Godot_v${{ env.GODOT_VERSION }}_linux.x86_64
+          sudo mv Godot_v${{ env.GODOT_VERSION }}_linux.x86_64 /usr/local/bin/godot
+
+      - name: Install Export Templates
+        run: |
+          wget -q "https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}/Godot_v${{ env.GODOT_VERSION }}_export_templates.tpz"
+          mkdir -p ~/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}/
+          unzip -q Godot_v${{ env.GODOT_VERSION }}_export_templates.tpz -d ~/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}/
+          mv ~/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}/templates/* ~/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}/
+          rm -rf ~/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}/templates
+
+      - name: Export ${{ matrix.name }}
+        run: |
+          mkdir -p build
+          godot --headless --export-release "${{ matrix.preset }}" "../build/${{ matrix.out }}"
+
+      - name: Build Archive
+        run: |
+          cd build
+          file="${{ matrix.out }}"
+          if [ "${{ matrix.preset }}" = "Web" ]; then
+            basename="${file%.zip}"
+            if [ -d "$basename" ]; then
+              cd "$basename" && zip -r "../${file}" . && cd ..
+            fi
+          fi
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Sokoban-${{ matrix.suffix }}
+          path: build/${{ matrix.out }}
+          if-no-files-found: error
+
+  release:
+    name: Create Release
+    needs: export
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Generate Release Notes
+        id: notes
+        run: |
+          echo 'release_body<<EOF' >> $GITHUB_OUTPUT
+          echo "## Sokoban Project ${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "### Downloads" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          for f in artifacts/*; do
+            if [ -f "$f" ]; then
+              name=$(basename "$f")
+              size=$(du -h "$f" | cut -f1)
+              echo "- \`$name\` ($size)" >> $GITHUB_OUTPUT
+            fi
+          done
+          echo "" >> $GITHUB_OUTPUT
+          echo "### Changes" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          prev=$(git rev-list --tags --max-count=1 2>/dev/null || echo "")
+          if [ -n "$prev" ]; then
+            git log --oneline "$prev..HEAD" 2>/dev/null | sed 's/^/- /' >> $GITHUB_OUTPUT || true
+          else
+            git log --oneline -20 2>/dev/null | sed 's/^/- /' >> $GITHUB_OUTPUT || true
+          fi
+          echo "" >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Sokoban Project ${{ github.ref_name }}
+          body: ${{ steps.notes.outputs.release_body }}
+          files: artifacts/*
+          fail_on_unmatched_files: true

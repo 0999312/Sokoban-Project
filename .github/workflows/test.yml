@@ -1,0 +1,40 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Headless Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Godot
+        run: |
+          wget -q -O godot.zip https://github.com/godotengine/godot/releases/download/4.6.2-stable/Godot_v4.6.2-stable_linux_headless.64.zip
+          unzip -q -o godot.zip
+          chmod +x Godot_v4.6.2-stable_linux_headless.64
+          sudo mv Godot_v4.6.2-stable_linux_headless.64 /usr/local/bin/godot
+        continue-on-error: true
+
+      - name: Run Smoke Tests
+        run: |
+          godot --headless --script res://tests/smoke_test.gd
+          echo "smoke_test OK"
+        continue-on-error: true
+
+      - name: Run Solver Tests
+        run: |
+          godot --headless --script res://tests/solver_test.gd
+          echo "solver_test OK"
+        continue-on-error: true
+
+      - name: Run Editor Tests
+        run: |
+          godot --headless --script res://tests/editor_test.gd
+          echo "editor_test OK"

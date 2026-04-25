@@ -82,9 +82,39 @@ res://
 
 ## 协议与鸣谢
 
+[![status](https://github.com/0999312/Sokoban-Project/actions/workflows/test.yml/badge.svg)](https://github.com/0999312/Sokoban-Project/actions)
+
+## 协议与鸣谢
+
 - 代码：`MIT`
 - 关卡数据：`CC-BY 4.0`
 - 美术资源：见 `assets/` 内许可证说明（Kenney CC0）
 - 音乐（BGM）：[甘茶の音楽工房](https://amachamusic.chagasi.com/)（使用许可请参见该网站使用规约）
 - 音效：gdfxr（sfxr 生成工具）产出的 .sfxr 文件
 - 第三方插件：见各自 `addons/*/LICENSE`
+
+## 构建与发布
+
+### 导出预设
+
+| 预设 | 平台 | 格式 |
+|------|------|------|
+| `Windows Desktop` | Windows (x86_64) | `.exe` |
+| `Linux` | Linux (x86_64) | 可执行文件 |
+| `macOS` | macOS (x86_64) | `.zip` |
+| `Web` | HTML5 / WASM | `.zip` |
+
+### 自动发布流程
+
+打 tag 即触发 GitHub Actions 自动构建：
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+构建流程：
+1. ✅ 运行所有 headless 测试
+2. 📦 导出 Windows / Linux / macOS / Web 四平台
+3. 📋 自动生成 Release Notes（含 commit 列表）
+4. 🚀 发布到 GitHub Releases 附加二进制文件
