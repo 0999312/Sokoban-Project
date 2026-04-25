@@ -73,7 +73,7 @@ jobs:
             preset: "macOS"
             export_dir: macos
             export_path: "Sokoban-macos.zip"
-            asset_name: "Sokoban-macos-x86_64.zip"
+            asset_name: "Sokoban-macos-universal.zip"
 
           - name: Web
             preset: "Web"
