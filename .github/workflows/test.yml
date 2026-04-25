@@ -16,10 +16,11 @@ jobs:
 
       - name: Install Godot
         run: |
-          wget -q -O godot.zip https://github.com/godotengine/godot/releases/download/4.6.2-stable/Godot_v4.6.2-stable_linux_headless.64.zip
+          wget -q -O godot.zip https://github.com/godotengine/godot/releases/download/4.6.2-stable/Godot_v4.6.2-stable_linux.x86_64.zip
+
           unzip -q -o godot.zip
-          chmod +x Godot_v4.6.2-stable_linux_headless.64
-          sudo mv Godot_v4.6.2-stable_linux_headless.64 /usr/local/bin/godot
+          chmod +x Godot_v4.6.2-stable_linux.x86_64
+          sudo mv Godot_v4.6.2-stable_linux.x86_64 /usr/local/bin/godot
         continue-on-error: true
 
       - name: Run Smoke Tests
