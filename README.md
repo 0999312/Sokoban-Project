@@ -55,7 +55,7 @@ res://
 
 ## 开发与测试
 
-当前仓库提供 headless 自检脚本，后续会逐步补齐 `gdUnit4` 测试体系。
+当前仓库提供 headless 自检脚本，GitHub Actions 已切换为基于 `godot-ci` 容器镜像的执行方式，后续会逐步补齐 `gdUnit4` 测试体系。
 
 可直接运行：
 
@@ -113,7 +113,7 @@ git tag v1.0.0
 git push origin v1.0.0
 ```
 
-构建流程：
+构建流程（基于 `godot-ci`）：
 1. ✅ 运行所有 headless 测试
 2. 📦 导出 Windows / Linux / macOS / Web 四平台
 3. 📋 自动生成 Release Notes（含 commit 列表）
