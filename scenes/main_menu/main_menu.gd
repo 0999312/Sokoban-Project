@@ -6,12 +6,14 @@ extends Control
 @onready var btn_levels: Button = %BtnLevels
 @onready var btn_editor: Button = %BtnEditor
 @onready var btn_settings: Button = %BtnSettings
+@onready var btn_credits: Button = %BtnCredits
 @onready var btn_quit: Button = %BtnQuit
 @onready var lbl_status: Label = %LblStatus
 @onready var lbl_help: Label = %LblHelp
 @onready var settings_layer: CanvasLayer = $SettingsLayer
 
 const SETTINGS_PANEL_SCENE := preload("res://ui/panels/settings_panel.tscn")
+const CREDITS_PANEL_SCENE := preload("res://ui/panels/credits_panel.tscn")
 
 # Phase 5 P5-D: 浮动背景的箱子贴图
 const _BG_CRATES := [
@@ -29,6 +31,7 @@ func _ready() -> void:
 	btn_levels.pressed.connect(_on_levels)
 	btn_editor.pressed.connect(_on_editor)
 	btn_settings.pressed.connect(_on_settings)
+	btn_credits.pressed.connect(_on_credits)
 	btn_quit.pressed.connect(_on_quit)
 	_refresh_texts()
 	# 监听语言切换事件
@@ -56,6 +59,7 @@ func _refresh_input_hints() -> void:
 	btn_levels.tooltip_text = InputHint.with_label("menu.levels", "ui_accept")
 	btn_editor.tooltip_text = InputHint.with_label("menu.editor", "ui_accept")
 	btn_settings.tooltip_text = InputHint.with_label("menu.settings", "ui_accept")
+	btn_credits.tooltip_text = InputHint.with_label("menu.credits", "ui_accept")
 	btn_quit.tooltip_text = InputHint.with_label("menu.quit", "ui_cancel")
 	lbl_help.text = InputHint.main_menu_help_text()
 
@@ -65,6 +69,7 @@ func _refresh_texts() -> void:
 	btn_levels.text = tr("menu.levels")
 	btn_editor.text = tr("menu.editor")
 	btn_settings.text = tr("menu.settings")
+	btn_credits.text = tr("menu.credits")
 	btn_quit.text = tr("menu.quit")
 	var ver: String = ProjectSettings.get_setting("application/config/version", "?")
 	lbl_status.text = tr("menu.version_status").format([ver, LevelLibrary.get_level_count()])
@@ -84,6 +89,14 @@ func _on_settings() -> void:
 	if settings_layer.get_child_count() > 0:
 		return
 	var panel := SETTINGS_PANEL_SCENE.instantiate()
+	settings_layer.add_child(panel)
+	Sfx.attach_ui(panel)
+	panel.tree_exited.connect(func(): _refresh_input_hints())
+
+func _on_credits() -> void:
+	if settings_layer.get_child_count() > 0:
+		return
+	var panel := CREDITS_PANEL_SCENE.instantiate()
 	settings_layer.add_child(panel)
 	Sfx.attach_ui(panel)
 	panel.tree_exited.connect(func(): _refresh_input_hints())

@@ -1,245 +1,265 @@
 {
   "menu": {
-    "title": "搬箱計劃",
-    "play": "開始遊戲",
-    "levels": "關卡選擇",
-    "editor": "關卡編輯器",
-    "settings": "設定",
-    "quit": "退出遊戲",
-    "version_status": "v{0} · 已索引 {1} 關",
-    "help_dynamic": "導航：{0} {1}    確定：{2}    返回：{3}"
+	"title": "搬箱計劃",
+	"play": "開始遊戲",
+	"levels": "關卡選擇",
+	"editor": "關卡編輯器",
+	"settings": "設定",
+	"quit": "退出遊戲",
+	"credits": "製作人員",
+	"version_status": "v{0} · 已索引 {1} 關",
+	"help_dynamic": "導航：{0} {1}    確定：{2}    返回：{3}"
   },
   "level_select": {
-    "title": "關卡選擇",
-    "back": "返回",
-    "chapter_progress": "進度 {0}/{1}",
-    "best_steps": "最佳：{0} 步",
-    "no_record": "未挑戰",
-    "user_levels": "我的關卡",
-    "user_progress": "已儲存 {0} 關",
-    "user_empty_hint": "尚無自建關卡。回到主選單 → 關卡編輯器 來創建第一關吧！",
-    "help_dynamic": "導航：{0} {1} {2} {3}    確定：{4}    返回：{5}"
+	"title": "關卡選擇",
+	"back": "返回",
+	"chapter_progress": "進度 {0}/{1}",
+	"best_steps": "最佳：{0} 步",
+	"no_record": "未挑戰",
+	"user_levels": "我的關卡",
+	"user_progress": "已儲存 {0} 關",
+	"user_empty_hint": "尚無自建關卡。回到主選單 → 關卡編輯器 來創建第一關吧！",
+	"help_dynamic": "導航：{0} {1} {2} {3}    確定：{4}    返回：{5}"
   },
   "hud": {
-    "moves": "步數：{0}",
-    "pushes": "推數：{0}",
-    "time": "時間：{0}",
-    "undo": "撤銷",
-    "redo": "重做",
-    "restart": "重玩",
-    "pause": "暫停",
-    "help": "WASD/方向鍵 = 移動    Z = 撤銷    Y = 重做    R = 重玩    Esc = 暫停",
-    "help_dynamic": "移動：{0} {1} {2} {3}    撤銷：{4}    重做：{5}    重玩：{6}    暫停：{7}"
+	"moves": "步數：{0}",
+	"pushes": "推數：{0}",
+	"time": "時間：{0}",
+	"undo": "撤銷",
+	"redo": "重做",
+	"restart": "重玩",
+	"pause": "暫停",
+	"help": "WASD/方向鍵 = 移動    Z = 撤銷    Y = 重做    R = 重玩    Esc = 暫停",
+	"help_dynamic": "移動：{0} {1} {2} {3}    撤銷：{4}    重做：{5}    重玩：{6}    暫停：{7}"
   },
   "pause": {
-    "title": "已暫停",
-    "resume": "繼續",
-    "restart": "重玩",
-    "settings": "設定",
-    "menu": "返回主選單",
-    "help_dynamic": "導航：{0} {1}    確定：{2}    返回/繼續：{3}"
+	"title": "已暫停",
+	"resume": "繼續",
+	"restart": "重玩",
+	"settings": "設定",
+	"menu": "返回主選單",
+	"help_dynamic": "導航：{0} {1}    確定：{2}    返回/繼續：{3}"
   },
   "complete": {
-    "title": "通關！",
-    "stats": "步數：{0}    推數：{1}    時間：{2}",
-    "next": "下一關",
-    "retry": "重玩",
-    "menu": "返回選單"
+	"title": "通關！",
+	"stats": "步數：{0}    推數：{1}    時間：{2}",
+	"next": "下一關",
+	"retry": "重玩",
+	"menu": "返回選單"
   },
   "settings": {
-    "title": "設定",
-    "language": "語言",
-    "volume_master": "主音量",
-    "volume_music": "音樂",
-    "volume_sfx": "音效",
-    "volume_ui": "介面音效",
-    "fullscreen": "全螢幕",
-    "high_contrast": "高對比",
-    "reduce_motion": "減弱動畫",
-    "input_section": "鍵位設定",
-    "reset_bindings": "重設預設",
-    "back": "返回",
-    "apply": "套用",
-    "tab": {
-      "game": "遊戲設定",
-      "audio": "音量設定",
-      "input": "按鍵設定"
-    },
-    "input_col": {
-      "action": "操作",
-      "keyboard": "鍵盤",
-      "gamepad": "手把"
-    },
-    "input_group": {
-      "gameplay": "遊戲內操作（推箱時）",
-      "ui": "介面操作（選單中）"
-    }
-  },
-  "input": {
-    "action": {
-      "move_up":    "向上移動",
-      "move_down":  "向下移動",
-      "move_left":  "向左移動",
-      "move_right": "向右移動",
-      "undo":       "撤銷",
-      "redo":       "重做",
-      "restart":    "重玩",
-      "pause":      "暫停",
-      "ui_up":      "介面 ↑",
-      "ui_down":    "介面 ↓",
-      "ui_left":    "介面 ←",
-      "ui_right":   "介面 →",
-      "ui_accept":  "確定",
-      "ui_cancel":  "取消"
-    },
-    "rebind": {
-      "listening":      "請按鍵…",
-      "unbound":        "未綁定",
-      "conflict_title": "按鍵衝突",
-      "conflict":       "該按鍵已綁定到「{0}」。是否覆蓋？"
-    }
+	"title": "設定",
+	"language": "語言",
+	"volume_master": "主音量",
+	"volume_music": "音樂",
+	"volume_sfx": "音效",
+	"volume_ui": "介面音效",
+	"fullscreen": "全螢幕",
+	"high_contrast": "高對比",
+	"reduce_motion": "減弱動畫",
+	"input_section": "鍵位設定",
+	"reset_bindings": "重設預設",
+	"back": "返回",
+	"apply": "套用",
+	"tab": {
+	  "game": "遊戲設定",
+	  "audio": "音量設定",
+	  "input": "按鍵設定"
+	},
+	"input_col": {
+	  "action": "操作",
+	  "keyboard": "鍵盤",
+	  "gamepad": "手把"
+	},
+		"input_group": {
+		  "gameplay": "遊戲內操作（推箱時）",
+		  "editor": "編輯器操作（關卡編輯器）",
+		  "ui": "介面操作（選單中）"
+		}
+	  },
+	  "input": {
+		"action": {
+	  "move_up":    "向上移動",
+	  "move_down":  "向下移動",
+	  "move_left":  "向左移動",
+	  "move_right": "向右移動",
+	  "undo":       "撤銷",
+	  "redo":       "重做",
+	  "restart":    "重玩",
+		  "pause":      "暫停",
+		  "editor_toggle_board_mode": "切換棋盤編輯模式",
+		  "editor_paint": "編輯器放置/確認",
+		  "editor_erase": "編輯器擦除/取消",
+		  "editor_tool_prev": "上一個編輯工具",
+		  "editor_tool_next": "下一個編輯工具",
+		  "editor_color_prev": "上一個編輯顏色",
+		  "editor_color_next": "下一個編輯顏色",
+		  "editor_shape_cycle": "切換編輯形狀",
+		  "editor_pan_modifier": "編輯器平移修飾鍵",
+		  "editor_test_play": "編輯器測試關卡",
+		  "ui_up":      "介面 ↑",
+	  "ui_down":    "介面 ↓",
+	  "ui_left":    "介面 ←",
+	  "ui_right":   "介面 →",
+	  "ui_accept":  "確定",
+	  "ui_cancel":  "取消"
+	},
+	"rebind": {
+	  "listening":      "請按鍵…",
+	  "unbound":        "未綁定",
+	  "conflict_title": "按鍵衝突",
+	  "conflict":       "該按鍵已綁定到「{0}」。是否覆蓋？"
+	}
   },
   "common": {
-    "ok": "確定",
-    "cancel": "取消",
-    "yes": "是",
-    "no": "否",
-    "close": "關閉",
-    "coming_soon": "即將推出",
-    "error": "錯誤",
-    "info": "提示"
+	"ok": "確定",
+	"cancel": "取消",
+	"yes": "是",
+	"no": "否",
+	"close": "關閉",
+	"coming_soon": "即將推出",
+	"error": "錯誤",
+	"info": "提示"
   },
   "editor": {
-    "tool": {
-      "select": "選擇",
-      "eraser": "橡皮",
-      "wall": "牆",
-      "floor": "地板",
-      "goal": "目標",
-      "box": "箱子",
-      "player": "玩家"
-    },
-    "shape": {
-      "single": "單格",
-      "rect": "矩形",
-      "line": "直線"
-    },
-    "palette": {
-      "tools": "工具",
-      "shapes": "形狀",
-      "colors": "顏色（0=中性槽）",
-      "size": "尺寸",
-      "theme": "主題"
-    },
-    "top": {
-      "new": "新建",
-      "open": "開啟",
-      "save": "儲存",
-      "import": "匯入",
-      "export": "匯出",
-      "test": "測試",
-      "verify": "求解驗證",
-      "undo": "撤銷",
-      "redo": "重做",
-      "quit": "退出"
-    },
-    "meta": {
-      "title": "關卡資訊",
-      "name": "名稱",
-      "author": "作者",
-      "difficulty": "難度（1-5）",
-      "tags": "標籤（英文逗號分隔）",
-      "tags_placeholder": "標籤1,標籤2,標籤3",
-      "stats": "統計",
-      "stats_fmt": "箱子：{0}    目標：{1}    玩家：{2}"
-    },
-    "color": {
-      "neutral": "顏色 {0}（中性槽，可放任意色箱子）",
-      "colored": "顏色 {0}"
-    },
-    "status": {
-      "idle": "就緒",
-      "new": "已新建空白關卡",
-      "loaded": "已開啟：{0}",
-      "saved": "已儲存：{0}",
-      "load_failed": "載入失敗",
-      "import_failed": "匯入失敗",
-      "imported": "匯入成功",
-      "playtest": "測試中（按 ESC 退出）",
-      "verified": "已驗證：最優 {0} 推 / {1} 步",
-      "unsolvable": "無解或超時",
-      "cancelled": "已取消",
-      "undone": "已撤銷",
-      "redone": "已重做"
-    },
-    "dialog": {
-      "import": "匯入關卡",
-      "export": "匯出關卡",
-      "verify": "求解驗證",
-      "open": "開啟我的關卡",
-      "open_hint": "選擇一個本地用戶關卡：",
-      "confirm": "確認",
-      "discard_changes": "未儲存的修改將遺失，確定繼續？",
-      "saved_hint": "關卡已儲存到：{0}",
-      "verified": "求解成功：{0} 推 / {1} 步（展開 {2} 節點）",
-      "unsolvable": "求解未成功（無解或超時）",
-      "solving": "求解中…",
-      "solving_progress": "求解中… 節點={0}  深度={1}  ({2}ms)",
-      "cancelling": "正在取消…"
-    },
-    "import": {
-      "file": "從檔案",
-      "code": "分享碼",
-      "browse": "瀏覽…",
-      "file_path_placeholder": "尚未選擇檔案",
-      "file_hint": "支援 .json（本作格式）或 .xsb / .txt（標準 Sokoban 文字）。點 瀏覽… 選擇檔案。",
-      "code_hint": "貼上分享碼（Base64-CRC32）："
-    },
-    "export": {
-      "copy": "複製",
-      "save_file": "另存新檔…",
-      "share": "分享碼",
-      "share_hint": "把這串字元複製給朋友，對方在編輯器中 匯入→分享碼 即可載入本關：",
-      "thumbnail": "縮圖",
-      "thumbnail_hint": "匯出當前關卡的 PNG 縮圖（與編輯器視圖一致）。",
-      "save_thumbnail": "儲存 PNG…"
-    },
-    "playtest": {
-      "title": "[測試] {0}",
-      "exit": "退出測試 (Esc)",
-      "won": "✔ 通關 · 步數={0}  推數={1}"
-    },
-    "error": {
-      "invalid": "關卡校驗失敗：",
-      "save_failed": "儲存失敗"
-    }
+	"tool": {
+	  "select": "選擇",
+	  "eraser": "橡皮",
+	  "wall": "牆",
+	  "floor": "地板",
+	  "goal": "目標",
+	  "box": "箱子",
+	  "player": "玩家"
+	},
+	"shape": {
+	  "single": "單格",
+	  "rect": "矩形",
+	  "line": "直線"
+	},
+	"palette": {
+	  "tools": "工具",
+	  "shapes": "形狀",
+	  "colors": "顏色（0=中性槽）",
+	  "size": "尺寸",
+	  "theme": "主題"
+	},
+		"top": {
+		  "new": "新建",
+		  "open": "開啟",
+		  "save": "儲存",
+		  "import": "匯入",
+		  "export": "匯出",
+		  "board_mode": "進入棋盤編輯",
+		  "test": "測試",
+	  "verify": "求解驗證",
+	  "undo": "撤銷",
+	  "redo": "重做",
+	  "quit": "退出"
+	},
+	"meta": {
+	  "title": "關卡資訊",
+	  "name": "名稱",
+	  "author": "作者",
+	  "difficulty": "難度（1-5）",
+	  "tags": "標籤（英文逗號分隔）",
+	  "tags_placeholder": "標籤1,標籤2,標籤3",
+	  "stats": "統計",
+	  "stats_fmt": "箱子：{0}    目標：{1}    玩家：{2}"
+	},
+	"color": {
+	  "neutral": "顏色 {0}（中性槽，可放任意色箱子）",
+	  "colored": "顏色 {0}"
+	},
+		"status": {
+		  "idle": "就緒",
+		  "ui_mode": "手把 UI：用方向鍵/搖桿導航介面，按 A 確定，按 X 進入棋盤編輯",
+		  "pad_mode": "手把編輯：A 放置  B 擦除/取消  LB/RB 切工具  LS/RS 切顏色  Back 切形狀  Start 測試  X 退出",
+		  "pad_shape": "手把形狀：移動游標後再次按 A 確認",
+		  "new": "已新建空白關卡",
+	  "loaded": "已開啟：{0}",
+	  "saved": "已儲存：{0}",
+	  "load_failed": "載入失敗",
+	  "import_failed": "匯入失敗",
+	  "imported": "匯入成功",
+	  "playtest": "測試中（按 ESC 退出）",
+	  "verified": "已驗證：最優 {0} 推 / {1} 步",
+	  "unsolvable": "無解或超時",
+	  "cancelled": "已取消",
+	  "undone": "已撤銷",
+	  "redone": "已重做"
+	},
+	"dialog": {
+	  "import": "匯入關卡",
+	  "export": "匯出關卡",
+	  "verify": "求解驗證",
+	  "open": "開啟我的關卡",
+	  "open_hint": "選擇一個本地用戶關卡：",
+	  "confirm": "確認",
+	  "discard_changes": "未儲存的修改將遺失，確定繼續？",
+	  "saved_hint": "關卡已儲存到：{0}",
+	  "verified": "求解成功：{0} 推 / {1} 步（展開 {2} 節點）",
+	  "unsolvable": "求解未成功（無解或超時）",
+	  "solving": "求解中…",
+	  "solving_progress": "求解中… 節點={0}  深度={1}  ({2}ms)",
+	  "cancelling": "正在取消…"
+	},
+	"import": {
+	  "file": "從檔案",
+	  "code": "分享碼",
+	  "browse": "瀏覽…",
+	  "file_path_placeholder": "尚未選擇檔案",
+	  "file_hint": "支援 .json（本作格式）或 .xsb / .txt（標準 Sokoban 文字）。點 瀏覽… 選擇檔案。",
+	  "code_hint": "貼上分享碼（Base64-CRC32）："
+	},
+	"export": {
+	  "copy": "複製",
+	  "save_file": "另存新檔…",
+	  "share": "分享碼",
+	  "share_hint": "把這串字元複製給朋友，對方在編輯器中 匯入→分享碼 即可載入本關：",
+	  "thumbnail": "縮圖",
+	  "thumbnail_hint": "匯出當前關卡的 PNG 縮圖（與編輯器視圖一致）。",
+	  "save_thumbnail": "儲存 PNG…"
+	},
+	"playtest": {
+	  "title": "[測試] {0}",
+	  "exit": "退出測試 (Esc)",
+	  "won": "✔ 通關 · 步數={0}  推數={1}"
+	},
+	"error": {
+	  "invalid": "關卡校驗失敗：",
+	  "save_failed": "儲存失敗"
+	}
   },
   "toast": {
-    "saved": "已儲存",
-    "language_changed": "語言已切換"
+	"saved": "已儲存",
+	"language_changed": "語言已切換"
   },
   "chapter_names": {
-    "official-w1": "第一章 · 倉庫入門",
-    "official-w2": "第二章 · Microban",
-    "official-w3": "第三章 · XSB 精選"
+	"official-w1": "第一章 · 倉庫入門",
+	"official-w2": "第二章 · Microban",
+	"official-w3": "第三章 · XSB 精選"
   },
   "chapter_descriptions": {
-    "official-w1": "教學章節：移動、推箱、目標點、避免角落死鎖。",
-    "official-w2": "完整收錄 David W Skinner 的 Microban 關卡集（155 關）。",
-    "official-w3": "經典 XSB 關卡參考集（90 關），尺寸更大、解法更長。"
+	"official-w1": "教學章節：移動、推箱、目標點、避免角落死鎖。",
+	"official-w2": "完整收錄 David W Skinner 的 Microban 關卡集（155 關）。",
+	"official-w3": "經典 XSB 關卡參考集（90 關），尺寸更大、解法更長。"
   },
   "level_names": {
-    "official-w1-01": "第一步",
-    "official-w1-02": "轉彎",
-    "official-w1-03": "雙子",
-    "official-w1-04": "走廊",
-    "official-w1-05": "角落陷阱",
-    "official-w1-06": "色彩配對",
-    "official-w1-07": "中性之槽",
-    "official-w1-08": "齊頭並進",
-    "official-w1-09": "左右開弓",
-    "official-w1-10": "捨近求遠",
-    "official-w1-11": "三色一槽",
-    "official-w1-12": "三角調度"
+	"official-w1-01": "第一步",
+	"official-w1-02": "轉彎",
+	"official-w1-03": "雙子",
+	"official-w1-04": "走廊",
+	"official-w1-05": "角落陷阱",
+	"official-w1-06": "色彩配對",
+	"official-w1-07": "中性之槽",
+	"official-w1-08": "齊頭並進",
+	"official-w1-09": "左右開弓",
+	"official-w1-10": "捨近求遠",
+	"official-w1-11": "三色一槽",
+	"official-w1-12": "三角調度"
+  },
+  "credits": {
+	"title": "製作人員",
+	"content": "■ 開發\n   射命丸政\n\n■ 關卡設計\n  W1 · 倉庫入門 — 原創教學（12 關）\n  W2 · Microban — David W. Skinner（155 關）\n  W3 · XSB 精選 — 經典題集精選（90 關）\n\n■ 美術\n  Kenney（CC0）— 瓦片、角色精靈、箱子紋理\n\n■ 音樂\n  甘茶の音楽工房（https://amachamusic.chagasi.com/）\n\n■ 音效\n  gdfxr（sfxr 生成器）— 腳步、推箱、歸位、通關\n  ザ・マッチメイカァズ — 撤銷、UI 點擊\n\n■ 插件與框架\n  G.U.I.D.E. — Godot Unified Input Detection Engine\n  Sound Manager — Nathan Hoad\n  gdfxr — timothyqiu\n  Minecraft-Style-Framework — 射命丸政\n\n■ 字體\n  MiSans — ⼩⽶科技有限責任公司（Xiaomi Inc.）\n\n■ 引擎\n  Godot 4.6"
   }
 }

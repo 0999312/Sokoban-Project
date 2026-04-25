@@ -60,6 +60,19 @@ const _REBIND_GAMEPLAY := [
 	{ "key": "pause",      "i18n": "input.action.pause"      },
 ]
 
+const _REBIND_EDITOR := [
+	{ "key": "editor_toggle_board_mode", "i18n": "input.action.editor_toggle_board_mode" },
+	{ "key": "editor_paint",             "i18n": "input.action.editor_paint" },
+	{ "key": "editor_erase",             "i18n": "input.action.editor_erase" },
+	{ "key": "editor_tool_prev",         "i18n": "input.action.editor_tool_prev" },
+	{ "key": "editor_tool_next",         "i18n": "input.action.editor_tool_next" },
+	{ "key": "editor_color_prev",        "i18n": "input.action.editor_color_prev" },
+	{ "key": "editor_color_next",        "i18n": "input.action.editor_color_next" },
+	{ "key": "editor_shape_cycle",       "i18n": "input.action.editor_shape_cycle" },
+	{ "key": "editor_pan_modifier",      "i18n": "input.action.editor_pan_modifier" },
+	{ "key": "editor_test_play",         "i18n": "input.action.editor_test_play" },
+]
+
 const _REBIND_UI := [
 	{ "key": "ui_up",     "i18n": "input.action.ui_up"     },
 	{ "key": "ui_down",   "i18n": "input.action.ui_down"   },
@@ -69,11 +82,11 @@ const _REBIND_UI := [
 	{ "key": "ui_cancel", "i18n": "input.action.ui_cancel" },
 ]
 
-var _rebind_rows: Array = []      # { context: "gameplay"|"ui", action, i18n, name_lbl, btn_kb, btn_pad }
+var _rebind_rows: Array = []      # { context: "gameplay"|"editor"|"ui", action, i18n, name_lbl, btn_kb, btn_pad }
 var _listening_btn: Button = null
 var _listening_action: String = ""
 var _listening_slot: int = -1
-var _listening_context: String = ""   # "gameplay" | "ui"
+var _listening_context: String = ""   # "gameplay" | "editor" | "ui"
 var _pending_event: InputEvent = null
 
 func _ready() -> void:
@@ -218,6 +231,13 @@ func _build_rebind_rows() -> void:
 	# 分隔
 	var sep := HSeparator.new()
 	rebind_list.add_child(sep)
+	# 第二段：editor
+	_add_section_header("settings.input_group.editor")
+	for entry in _REBIND_EDITOR:
+		_add_rebind_row("editor", entry.key, entry.i18n)
+	# 分隔
+	sep = HSeparator.new()
+	rebind_list.add_child(sep)
 	# 第二段：UI
 	_add_section_header("settings.input_group.ui")
 	for entry in _REBIND_UI:
@@ -264,6 +284,8 @@ func _slot_label(ctx: String, action_name: String, slot: int) -> String:
 	var lbl: String = ""
 	if ctx == "ui":
 		lbl = InputManager.get_ui_binding_label(action_name, slot)
+	elif ctx == "editor":
+		lbl = InputManager.get_editor_binding_label(action_name, slot)
 	else:
 		lbl = InputManager.get_binding_label(action_name, slot)
 	if lbl == "":
@@ -327,6 +349,8 @@ func _apply_or_confirm(event: InputEvent) -> void:
 	var conflict: String = ""
 	if _listening_context == "ui":
 		conflict = InputManager.find_ui_binding_conflict(_listening_action, event)
+	elif _listening_context == "editor":
+		conflict = InputManager.find_editor_binding_conflict(_listening_action, event)
 	else:
 		conflict = InputManager.find_binding_conflict(_listening_action, event)
 	if conflict != "":
@@ -338,6 +362,8 @@ func _apply_or_confirm(event: InputEvent) -> void:
 func _apply_pending(event: InputEvent) -> void:
 	if _listening_context == "ui":
 		InputManager.set_ui_binding(_listening_action, _listening_slot, event)
+	elif _listening_context == "editor":
+		InputManager.set_editor_binding(_listening_action, _listening_slot, event)
 	else:
 		InputManager.set_binding(_listening_action, _listening_slot, event)
 	_persist_bindings()
@@ -358,6 +384,8 @@ func _show_conflict_dialog(other_action: String) -> void:
 	dlg.confirmed.connect(func():
 		if ctx == "ui":
 			InputManager.clear_ui_event_from_other(_listening_action, _pending_event)
+		elif ctx == "editor":
+			InputManager.clear_editor_event_from_other(_listening_action, _pending_event)
 		else:
 			InputManager.clear_event_from_other(_listening_action, _pending_event)
 		_apply_pending(_pending_event)
@@ -373,12 +401,14 @@ func _show_conflict_dialog(other_action: String) -> void:
 
 func _on_reset_bindings() -> void:
 	InputManager.reset_all_bindings()
+	InputManager.reset_all_editor_bindings()
 	InputManager.reset_all_ui_bindings()
 	_persist_bindings()
 	_refresh_rebind_labels()
 
 func _persist_bindings() -> void:
 	SaveManager.set_input_bindings(InputManager.serialize_bindings())
+	SaveManager.set_editor_input_bindings(InputManager.serialize_editor_bindings())
 	SaveManager.set_ui_input_bindings(InputManager.serialize_ui_bindings())
 
 func _refresh_rebind_labels() -> void:

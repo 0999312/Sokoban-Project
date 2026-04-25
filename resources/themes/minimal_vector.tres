@@ -1,11 +1,6 @@
 [gd_resource type="Theme" format=3 uid="uid://dnqtqv5en8bci"]
 
-[ext_resource type="FontFile" uid="uid://duofdnffr2373" path="res://assets/fonts/SmileySans-Oblique.otf" id="font_smiley"]
-
-[sub_resource type="FontVariation" id="FontVariation_default"]
-base_font = ExtResource("font_smiley")
-size = 16
-opentype_features = {}
+[ext_resource type="FontFile" uid="uid://cfxu5eeexvvfg" path="res://assets/fonts/MiSans-Semibold.ttf" id="font_main"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_disabled"]
 content_margin_left = 6.0
@@ -331,6 +326,9 @@ corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
+
+[sub_resource type="FontVariation" id="FontVariation_default"]
+base_font = ExtResource("font_main")
 
 [resource]
 default_font = SubResource("FontVariation_default")

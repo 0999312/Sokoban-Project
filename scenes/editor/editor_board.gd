@@ -22,10 +22,21 @@ var _draw_button: int = MOUSE_BUTTON_LEFT
 var _shape_preview_cells: Array = []   # 用于 RECT/LINE 预览
 var _hover_cell: Vector2i = Vector2i(-1, -1)
 var _streamed_changes: Array = []      # SINGLE 拖拽时的累计格集合（提交时会合并）
+var _is_panning: bool = false
+var _pan_button: int = MOUSE_BUTTON_NONE
+var _pan_offset: Vector2 = Vector2.ZERO
+var _pan_start_mouse: Vector2 = Vector2.ZERO
+var _pan_start_offset: Vector2 = Vector2.ZERO
+var _space_pan_held: bool = false
+var _gamepad_mode: bool = false
+var _gamepad_cursor: Vector2i = Vector2i(-1, -1)
+var _gamepad_shape_anchor: Vector2i = Vector2i(-1, -1)
 
 func set_model(m: EditorModel) -> void:
 	model = m
 	recenter()
+	if _gamepad_mode:
+		_ensure_gamepad_cursor_valid()
 	queue_redraw()
 
 func _ready() -> void:
@@ -43,8 +54,168 @@ func recenter() -> void:
 	var bw := model.width * TILE_SIZE
 	var bh := model.height * TILE_SIZE
 	_origin = Vector2((ps.x - bw) * 0.5, (ps.y - bh) * 0.5)
-	position = _origin
+	_pan_offset = Vector2.ZERO
+	_apply_position()
 	queue_redraw()
+
+func _apply_position() -> void:
+	position = _origin + _pan_offset
+
+func _get_host_rect() -> Rect2:
+	var parent := get_parent() as Control
+	if parent == null:
+		return Rect2()
+	return parent.get_global_rect()
+
+func _event_hits_host(event: InputEvent) -> bool:
+	if event is InputEventMouse:
+		return _get_host_rect().has_point((event as InputEventMouse).position)
+	return false
+
+func _update_pan(mouse_position: Vector2) -> void:
+	var parent := get_parent() as Control
+	if parent == null:
+		return
+	var ps := parent.size
+	var bw := model.width * TILE_SIZE
+	var bh := model.height * TILE_SIZE
+	var raw_pos := _origin + _pan_start_offset + (mouse_position - _pan_start_mouse)
+	var min_x := minf(0.0, ps.x - bw)
+	var max_x := maxf(0.0, ps.x - bw)
+	var min_y := minf(0.0, ps.y - bh)
+	var max_y := maxf(0.0, ps.y - bh)
+	position.x = clampf(raw_pos.x, min_x, max_x)
+	position.y = clampf(raw_pos.y, min_y, max_y)
+	_pan_offset = position - _origin
+
+func _clamp_board_position(raw_pos: Vector2) -> Vector2:
+	var parent := get_parent() as Control
+	if parent == null:
+		return raw_pos
+	var ps := parent.size
+	var bw := model.width * TILE_SIZE
+	var bh := model.height * TILE_SIZE
+	var min_x := minf(0.0, ps.x - bw)
+	var max_x := maxf(0.0, ps.x - bw)
+	var min_y := minf(0.0, ps.y - bh)
+	var max_y := maxf(0.0, ps.y - bh)
+	return Vector2(
+		clampf(raw_pos.x, min_x, max_x),
+		clampf(raw_pos.y, min_y, max_y)
+	)
+
+func _apply_board_position(raw_pos: Vector2) -> void:
+	position = _clamp_board_position(raw_pos)
+	_pan_offset = position - _origin
+
+func _ensure_gamepad_cursor_valid() -> void:
+	if model == null:
+		_gamepad_cursor = Vector2i(-1, -1)
+		_gamepad_shape_anchor = Vector2i(-1, -1)
+		return
+	if not model._in_bounds(_gamepad_cursor):
+		_gamepad_cursor = _find_initial_gamepad_cursor()
+	if _gamepad_shape_anchor != Vector2i(-1, -1) and not model._in_bounds(_gamepad_shape_anchor):
+		_gamepad_shape_anchor = Vector2i(-1, -1)
+
+func _find_initial_gamepad_cursor() -> Vector2i:
+	if _hover_cell != Vector2i(-1, -1) and model._in_bounds(_hover_cell):
+		return _hover_cell
+	if model.player_pos != Vector2i(-1, -1) and model._in_bounds(model.player_pos):
+		return model.player_pos
+	return Vector2i(clampi(model.width / 2, 0, model.width - 1), clampi(model.height / 2, 0, model.height - 1))
+
+func _ensure_cell_visible(cell: Vector2i) -> void:
+	var parent := get_parent() as Control
+	if parent == null or cell == Vector2i(-1, -1):
+		return
+	var margin := float(TILE_SIZE)
+	var target := position
+	var cell_min := position + Vector2(cell.x * TILE_SIZE, cell.y * TILE_SIZE)
+	var cell_max := cell_min + Vector2(TILE_SIZE, TILE_SIZE)
+	if cell_min.x < margin:
+		target.x += margin - cell_min.x
+	elif cell_max.x > parent.size.x - margin:
+		target.x -= cell_max.x - (parent.size.x - margin)
+	if cell_min.y < margin:
+		target.y += margin - cell_min.y
+	elif cell_max.y > parent.size.y - margin:
+		target.y -= cell_max.y - (parent.size.y - margin)
+	_apply_board_position(target)
+
+func set_gamepad_mode(enabled: bool) -> void:
+	_gamepad_mode = enabled
+	if enabled:
+		_ensure_gamepad_cursor_valid()
+		_ensure_cell_visible(_gamepad_cursor)
+	else:
+		_gamepad_shape_anchor = Vector2i(-1, -1)
+	queue_redraw()
+
+func has_gamepad_shape_anchor() -> bool:
+	return _gamepad_shape_anchor != Vector2i(-1, -1)
+
+func cancel_gamepad_shape_anchor() -> void:
+	_gamepad_shape_anchor = Vector2i(-1, -1)
+	queue_redraw()
+
+func move_gamepad_cursor(dir: Vector2i) -> void:
+	if not _gamepad_mode or dir == Vector2i.ZERO:
+		return
+	_ensure_gamepad_cursor_valid()
+	var next := Vector2i(
+		clampi(_gamepad_cursor.x + dir.x, 0, model.width - 1),
+		clampi(_gamepad_cursor.y + dir.y, 0, model.height - 1)
+	)
+	if next == _gamepad_cursor:
+		return
+	_gamepad_cursor = next
+	_ensure_cell_visible(_gamepad_cursor)
+	queue_redraw()
+
+func pan_by_pixels(delta: Vector2) -> void:
+	if model == null:
+		return
+	_apply_board_position(position + delta)
+	queue_redraw()
+
+func gamepad_apply_current_tool() -> void:
+	if not _gamepad_mode:
+		return
+	_ensure_gamepad_cursor_valid()
+	if editor.current_shape == editor.Shape.SINGLE:
+		_apply_now([_gamepad_cursor], false)
+	else:
+		if _gamepad_shape_anchor == Vector2i(-1, -1):
+			_gamepad_shape_anchor = _gamepad_cursor
+		else:
+			_apply_now(_compute_shape_cells(_gamepad_shape_anchor, _gamepad_cursor, editor.current_shape), false)
+			_gamepad_shape_anchor = Vector2i(-1, -1)
+	queue_redraw()
+
+func gamepad_erase_at_cursor() -> void:
+	if not _gamepad_mode:
+		return
+	if _gamepad_shape_anchor != Vector2i(-1, -1):
+		_gamepad_shape_anchor = Vector2i(-1, -1)
+		queue_redraw()
+		return
+	_ensure_gamepad_cursor_valid()
+	_apply_now([_gamepad_cursor], true)
+	queue_redraw()
+
+func _begin_pan(button: int, mouse_position: Vector2) -> void:
+	if _is_drawing:
+		_cancel_drawing()
+	_is_panning = true
+	_pan_button = button
+	_pan_start_mouse = mouse_position
+	_pan_start_offset = _pan_offset
+
+func _end_pan(button: int) -> void:
+	if _is_panning and _pan_button == button:
+		_is_panning = false
+		_pan_button = MOUSE_BUTTON_NONE
 
 func _gui_to_cell(local_pos: Vector2) -> Vector2i:
 	# local_pos 是相对本节点的坐标（已减去 _origin）
@@ -57,11 +228,36 @@ func _input(event: InputEvent) -> void:
 		return
 	if editor != null and editor.has_method("has_blocking_overlay") and editor.has_blocking_overlay():
 		return
+	if event.is_action_pressed("editor_pan_modifier"):
+		_space_pan_held = true
+	elif event.is_action_released("editor_pan_modifier"):
+		_space_pan_held = false
+		if _is_panning and _pan_button == MOUSE_BUTTON_LEFT:
+			_end_pan(MOUSE_BUTTON_LEFT)
 	if event is InputEventMouseButton:
 		var mb := event as InputEventMouseButton
-		var local: Vector2 = get_local_mouse_position()
+		var hits_host := _event_hits_host(event)
+		var local: Vector2 = to_local(mb.position)
+		if mb.button_index == MOUSE_BUTTON_MIDDLE:
+			if mb.pressed:
+				if not hits_host:
+					return
+				_begin_pan(MOUSE_BUTTON_MIDDLE, mb.position)
+				get_viewport().set_input_as_handled()
+			else:
+				if _is_panning and _pan_button == MOUSE_BUTTON_MIDDLE:
+					_end_pan(MOUSE_BUTTON_MIDDLE)
+					get_viewport().set_input_as_handled()
 		if mb.button_index == MOUSE_BUTTON_LEFT or mb.button_index == MOUSE_BUTTON_RIGHT:
 			if mb.pressed:
+				if not hits_host:
+					return
+				if mb.button_index == MOUSE_BUTTON_LEFT and _space_pan_held:
+					_begin_pan(MOUSE_BUTTON_LEFT, mb.position)
+					get_viewport().set_input_as_handled()
+					return
+				if _is_panning:
+					return
 				if not _hit_test(local):
 					return
 				_is_drawing = true
@@ -74,12 +270,28 @@ func _input(event: InputEvent) -> void:
 				queue_redraw()
 				get_viewport().set_input_as_handled()
 			else:
+				if _is_panning and mb.button_index == _pan_button:
+					_end_pan(mb.button_index)
+					get_viewport().set_input_as_handled()
+					return
 				if _is_drawing and mb.button_index == _draw_button:
 					_finish_drawing()
 					queue_redraw()
 					get_viewport().set_input_as_handled()
 	elif event is InputEventMouseMotion:
-		var local2: Vector2 = get_local_mouse_position()
+		var mm := event as InputEventMouseMotion
+		var hits_host := _event_hits_host(event)
+		var local2: Vector2 = to_local(mm.position)
+		if _is_panning:
+			_update_pan(mm.position)
+			queue_redraw()
+			get_viewport().set_input_as_handled()
+			return
+		if not hits_host:
+			if _hover_cell != Vector2i(-1, -1):
+				_hover_cell = Vector2i(-1, -1)
+				queue_redraw()
+			return
 		var c := _gui_to_cell(local2)
 		_hover_cell = c if _hit_test(local2) else Vector2i(-1, -1)
 		if _is_drawing:
@@ -102,6 +314,12 @@ func _apply_or_preview(c: Vector2i, _is_first: bool) -> void:
 		_apply_now(cells, is_right)
 	else:
 		_shape_preview_cells = _compute_shape_cells(_draw_start, c, shape)
+
+func _cancel_drawing() -> void:
+	_is_drawing = false
+	_shape_preview_cells.clear()
+	_streamed_changes.clear()
+	queue_redraw()
 
 func _finish_drawing() -> void:
 	var is_right := (_draw_button == MOUSE_BUTTON_RIGHT)
@@ -172,6 +390,9 @@ const COLOR_HOVER := Color(1, 1, 1, 0.18)
 const COLOR_PREVIEW := Color(0.4, 0.9, 1.0, 0.30)
 const COLOR_PLAYER := Color(0.30, 0.60, 0.95)
 const COLOR_PLAYER_BORDER := Color(0.10, 0.30, 0.55)
+const COLOR_GAMEPAD_CURSOR := Color(1.0, 0.35, 0.85, 1.0)
+const COLOR_GAMEPAD_CURSOR_FILL := Color(1.0, 0.35, 0.85, 0.16)
+const COLOR_GAMEPAD_ANCHOR := Color(1.0, 0.8, 0.25, 1.0)
 
 const SWATCH_BY_COLOR := {
 	0: Color(0.55, 0.55, 0.55),
@@ -237,6 +458,14 @@ func _draw() -> void:
 	if _is_drawing and not _shape_preview_cells.is_empty():
 		for c in _shape_preview_cells:
 			draw_rect(Rect2(c.x * ts, c.y * ts, ts, ts), COLOR_PREVIEW, true)
+	if _gamepad_mode:
+		if _gamepad_shape_anchor != Vector2i(-1, -1) and editor.current_shape != editor.Shape.SINGLE:
+			for c in _compute_shape_cells(_gamepad_shape_anchor, _gamepad_cursor, editor.current_shape):
+				draw_rect(Rect2(c.x * ts, c.y * ts, ts, ts), COLOR_PREVIEW, true)
+			draw_rect(Rect2(_gamepad_shape_anchor.x * ts, _gamepad_shape_anchor.y * ts, ts, ts), COLOR_GAMEPAD_ANCHOR, false, 3.0)
+		if _gamepad_cursor != Vector2i(-1, -1):
+			draw_rect(Rect2(_gamepad_cursor.x * ts, _gamepad_cursor.y * ts, ts, ts), COLOR_GAMEPAD_CURSOR_FILL, true)
+			draw_rect(Rect2(_gamepad_cursor.x * ts, _gamepad_cursor.y * ts, ts, ts), COLOR_GAMEPAD_CURSOR, false, 3.0)
 
 	# Border
 	draw_rect(Rect2(0, 0, model.width * ts, model.height * ts), Color(1, 1, 1, 0.4), false, 2.0)

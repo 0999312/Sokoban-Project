@@ -25,8 +25,9 @@ func _ready() -> void:
 	# 等一帧，确保 SaveManager 完成 load_profile()
 	await get_tree().process_frame
 	SettingsApplier.apply_all()
-	# 应用持久化的输入绑定（gameplay + UI）
+	# 应用持久化的输入绑定（gameplay + editor + UI）
 	InputManager.deserialize_bindings(SaveManager.get_input_bindings())
+	InputManager.deserialize_editor_bindings(SaveManager.get_editor_input_bindings())
 	InputManager.deserialize_ui_bindings(SaveManager.get_ui_input_bindings())
 	# 替换默认 Label 为 Splash 画面
 	var splash_root := _build_splash()

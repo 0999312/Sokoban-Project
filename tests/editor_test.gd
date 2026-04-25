@@ -25,6 +25,7 @@ func _init() -> void:
 	failed += _run("ShareCode tamper detection", _t_share_tamper)
 	failed += _run("UserLevelStore.make_new_id unique", _t_make_id_unique)
 	failed += _run("EditorModel resize preserves cells", _t_resize_preserve)
+	failed += _run("EditorBoard pan works regardless of board size", _t_board_pan_unconditional)
 	if failed > 0:
 		printerr("[EditorTest] %d test(s) failed" % failed)
 		quit(1)
@@ -241,4 +242,25 @@ func _t_resize_preserve() -> bool:
 	m.resize(5, 5, false)
 	if m.boxes.has(Vector2i(5, 4)):
 		printerr("    out-of-bounds box not pruned"); return false
+	return true
+
+func _t_board_pan_unconditional() -> bool:
+	var host := Control.new()
+	host.size = Vector2(400, 300)
+	var board: Node2D = load("res://scenes/editor/editor_board.gd").new()
+	host.add_child(board)
+	var model := EditorModel.new(4, 3)
+	board.set_model(model)
+	var before: Vector2 = board.position
+	board.pan_by_pixels(Vector2(40, 20))
+	var after_small: Vector2 = board.position
+	if after_small == before:
+		printerr("    board did not pan for small board")
+		return false
+	model.resize(20, 16, false)
+	board.set_model(model)
+	board.pan_by_pixels(Vector2(-1000, -1000))
+	if board.position.x > 0.0 or board.position.y > 0.0:
+		printerr("    board pan was not clamped inside host")
+		return false
 	return true

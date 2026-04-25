@@ -1,0 +1,100 @@
+name: Publish to itch.io
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+env:
+  ITCH_USER: syameimaruzheng
+  ITCH_GAME: sokoban-project
+  EXPORT_TEMPLATE_VERSION: "4.6.2.stable"
+
+jobs:
+  publish:
+    name: Publish ${{ matrix.name }} to itch.io
+    runs-on: ubuntu-24.04
+    container:
+      image: barichello/godot-ci:4.6.2
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows
+            preset: "Windows Desktop"
+            export_dir: windows
+            export_path: "Sokoban.exe"
+            channel: windows
+            push_path: "build/windows"
+          - name: Linux
+            preset: "Linux"
+            export_dir: linux
+            export_path: "Sokoban.x86_64"
+            channel: linux
+            push_path: "build/linux"
+          - name: macOS
+            preset: "macOS"
+            export_dir: macos
+            export_path: "Sokoban-macos.zip"
+            channel: macos
+            push_path: "build/macos/Sokoban-macos.zip"
+          - name: Web
+            preset: "Web"
+            export_dir: web
+            export_path: "index.html"
+            channel: web
+            push_path: "build/web"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Setup godot-ci
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends libfontconfig1 zip
+          mkdir -p "$HOME/.config" "$HOME/.local/share/godot/export_templates"
+          if [ -d /root/.config/godot ] && [ "$HOME" != "/root" ] && [ ! -e "$HOME/.config/godot" ]; then
+            cp -a /root/.config/godot "$HOME/.config/godot"
+          fi
+          if [ -d "/root/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}" ] && [ "$HOME" != "/root" ] && [ ! -e "$HOME/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}" ]; then
+            cp -a "/root/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}" "$HOME/.local/share/godot/export_templates/${{ env.EXPORT_TEMPLATE_VERSION }}"
+          fi
+          godot --version
+
+      - name: Import project
+        run: godot --headless --editor --quit --path .
+
+      - name: Resolve release version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            echo "value=${{ github.event.release.tag_name }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=manual-${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Export ${{ matrix.name }}
+        run: |
+          mkdir -p "build/${{ matrix.export_dir }}"
+          godot --headless --verbose --path . --export-release "${{ matrix.preset }}" "build/${{ matrix.export_dir }}/${{ matrix.export_path }}"
+
+      - name: Package macOS zip
+        if: matrix.channel == 'macos'
+        run: |
+          if [ -d "build/${{ matrix.export_dir }}/Sokoban.app" ]; then
+            cd "build/${{ matrix.export_dir }}"
+            zip -r "Sokoban-macos.zip" "Sokoban.app"
+          fi
+
+      - name: setup-butler
+        uses: remarkablegames/setup-butler@v3.0.0
+
+      - name: Push to itch.io
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+        run: |
+          butler push "${{ matrix.push_path }}" "${{ env.ITCH_USER }}/${{ env.ITCH_GAME }}:${{ matrix.channel }}" --userversion "${{ steps.version.outputs.value }}"

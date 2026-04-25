@@ -39,6 +39,10 @@ const PlaytestScript = preload("res://scenes/editor/playtest.gd")
 enum Tool { SELECT, ERASER, WALL, FLOOR, GOAL, BOX, PLAYER }
 enum Shape { SINGLE, RECT, LINE }
 
+const GP_AXIS_DEADZONE := 0.45
+const GP_REPEAT_DELAY := 0.18
+const GP_PAN_SPEED := 700.0
+
 const TOOL_LABELS := {
 	Tool.SELECT: "editor.tool.select",
 	Tool.ERASER: "editor.tool.eraser",
@@ -62,6 +66,8 @@ var current_tool: int = Tool.WALL
 var current_shape: int = Shape.SINGLE
 var current_color: int = Cell.DEFAULT_COLOR    # 0..5
 var _suppress_size_signal: bool = false        # 加载关卡时临时屏蔽 SpinBox 反向触发 resize
+var _gamepad_board_mode: bool = false
+var _gamepad_move_cooldown: float = 0.0
 
 # UI refs
 var board: Node2D                  # EditorBoard
@@ -83,6 +89,8 @@ var stats_label: Label
 var btn_save: Button
 var btn_test: Button
 var btn_verify: Button
+var _root_vbox: VBoxContainer
+var _board_focus_btn: Button
 
 func _ready() -> void:
 	model = EditorModel.new(8, 6)
@@ -121,15 +129,15 @@ func _apply_starter_template() -> void:
 
 func _build_ui() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	var root_v := VBoxContainer.new()
-	root_v.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(root_v)
+	_root_vbox = VBoxContainer.new()
+	_root_vbox.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(_root_vbox)
 
 	# Top bar
 	var top := HBoxContainer.new()
 	top.add_theme_constant_override("separation", 6)
 	top.custom_minimum_size = Vector2(0, 40)
-	root_v.add_child(top)
+	_root_vbox.add_child(top)
 	var btn_new := Button.new(); btn_new.pressed.connect(_on_new); top.add_child(btn_new); _label_keyed(btn_new, "editor.top.new")
 	var btn_open := Button.new(); btn_open.pressed.connect(_on_open); top.add_child(btn_open); _label_keyed(btn_open, "editor.top.open")
 	btn_save = Button.new(); btn_save.pressed.connect(_on_save); top.add_child(btn_save); _label_keyed(btn_save, "editor.top.save")
@@ -151,7 +159,7 @@ func _build_ui() -> void:
 	mid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	mid.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	mid.add_theme_constant_override("separation", 4)
-	root_v.add_child(mid)
+	_root_vbox.add_child(mid)
 
 	# Left palette (放进 ScrollContainer 防止小窗口下被裁切)
 	var left_inner := _build_palette()
@@ -168,7 +176,27 @@ func _build_ui() -> void:
 	board_host.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	board_host.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	board_host.clip_contents = true
+	board_host.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	mid.add_child(board_host)
+	var board_ui := VBoxContainer.new()
+	board_ui.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	board_ui.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	board_host.add_child(board_ui)
+	_board_focus_btn = Button.new()
+	_board_focus_btn.focus_mode = Control.FOCUS_ALL
+	_board_focus_btn.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_board_focus_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	_board_focus_btn.text = ""
+	_board_focus_btn.flat = true
+	_board_focus_btn.self_modulate = Color(1, 1, 1, 0.0)
+	_board_focus_btn.custom_minimum_size = Vector2(0, 28)
+	_board_focus_btn.pressed.connect(func(): _set_gamepad_board_mode(true))
+	board_ui.add_child(_board_focus_btn)
+	var board_fill := Control.new()
+	board_fill.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	board_fill.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	board_fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	board_ui.add_child(board_fill)
 	board = EditorBoardScript.new()
 	board.editor = self
 	board.set_model(model)
@@ -187,7 +215,7 @@ func _build_ui() -> void:
 	# Status bar
 	status_label = Label.new()
 	status_label.custom_minimum_size = Vector2(0, 24)
-	root_v.add_child(status_label)
+	_root_vbox.add_child(status_label)
 
 	dialog_layer = CanvasLayer.new()
 	add_child(dialog_layer)
@@ -210,6 +238,7 @@ func _build_palette() -> Control:
 	for t in [Tool.SELECT, Tool.ERASER, Tool.WALL, Tool.FLOOR, Tool.GOAL, Tool.BOX, Tool.PLAYER]:
 		var b := Button.new()
 		b.toggle_mode = true
+		b.focus_mode = Control.FOCUS_ALL
 		b.set_meta("i18n_key", TOOL_LABELS[t])
 		b.custom_minimum_size = Vector2(50, 36)
 		b.pressed.connect(func(): _set_tool(t))
@@ -221,6 +250,7 @@ func _build_palette() -> Control:
 	for s in [Shape.SINGLE, Shape.RECT, Shape.LINE]:
 		var b := Button.new()
 		b.toggle_mode = true
+		b.focus_mode = Control.FOCUS_ALL
 		b.set_meta("i18n_key", SHAPE_LABELS[s])
 		b.custom_minimum_size = Vector2(60, 28)
 		b.pressed.connect(func(): _set_shape(s))
@@ -241,6 +271,7 @@ func _build_palette() -> Control:
 	for c in range(0, Cell.MAX_COLOR + 1):
 		var b := Button.new()
 		b.toggle_mode = true
+		b.focus_mode = Control.FOCUS_ALL
 		b.text = str(c) if c > 0 else "·"
 		# 通过 meta 标记 tooltip i18n key（在 _refresh_texts 中应用）
 		b.set_meta("i18n_tooltip_key", "editor.color.neutral" if c == 0 else "editor.color.colored")
@@ -254,6 +285,7 @@ func _build_palette() -> Control:
 	var lbl_size := Label.new(); lbl_size.set_meta("i18n_key", "editor.palette.size"); v.add_child(lbl_size)
 	var hb_size := HBoxContainer.new(); v.add_child(hb_size)
 	size_w_spin = SpinBox.new()
+	size_w_spin.focus_mode = Control.FOCUS_ALL
 	size_w_spin.min_value = EditorModel.MIN_SIZE
 	size_w_spin.max_value = EditorModel.MAX_SIZE
 	size_w_spin.value = model.width
@@ -261,6 +293,7 @@ func _build_palette() -> Control:
 	hb_size.add_child(size_w_spin)
 	var lblx := Label.new(); lblx.text = "x"; hb_size.add_child(lblx)
 	size_h_spin = SpinBox.new()
+	size_h_spin.focus_mode = Control.FOCUS_ALL
 	size_h_spin.min_value = EditorModel.MIN_SIZE
 	size_h_spin.max_value = EditorModel.MAX_SIZE
 	size_h_spin.value = model.height
@@ -269,11 +302,13 @@ func _build_palette() -> Control:
 	# Theme
 	var lbl_theme := Label.new(); lbl_theme.set_meta("i18n_key", "editor.palette.theme"); v.add_child(lbl_theme)
 	theme_wall_btn = OptionButton.new()
+	theme_wall_btn.focus_mode = Control.FOCUS_ALL
 	for w in Level.ALLOWED_WALL_THEMES:
 		theme_wall_btn.add_item(w)
 	theme_wall_btn.item_selected.connect(func(i): model.meta["wall_theme"] = Level.ALLOWED_WALL_THEMES[i]; _mark_dirty(); board.queue_redraw())
 	v.add_child(theme_wall_btn)
 	theme_floor_btn = OptionButton.new()
+	theme_floor_btn.focus_mode = Control.FOCUS_ALL
 	for f in Level.ALLOWED_FLOOR_THEMES:
 		theme_floor_btn.add_item(f)
 	theme_floor_btn.item_selected.connect(func(i): model.meta["floor_theme"] = Level.ALLOWED_FLOOR_THEMES[i]; _mark_dirty(); board.queue_redraw())
@@ -289,22 +324,26 @@ func _build_meta_panel() -> Control:
 
 	var lbl_name := Label.new(); lbl_name.set_meta("i18n_key", "editor.meta.name"); v.add_child(lbl_name)
 	meta_name_edit = LineEdit.new(); meta_name_edit.text = String(model.meta.get("name", ""))
+	meta_name_edit.focus_mode = Control.FOCUS_ALL
 	meta_name_edit.text_changed.connect(func(t): model.meta["name"] = t; _mark_dirty())
 	v.add_child(meta_name_edit)
 
 	var lbl_author := Label.new(); lbl_author.set_meta("i18n_key", "editor.meta.author"); v.add_child(lbl_author)
 	meta_author_edit = LineEdit.new(); meta_author_edit.text = String(model.meta.get("author", ""))
+	meta_author_edit.focus_mode = Control.FOCUS_ALL
 	meta_author_edit.text_changed.connect(func(t): model.meta["author"] = t; _mark_dirty())
 	v.add_child(meta_author_edit)
 
 	var lbl_diff := Label.new(); lbl_diff.set_meta("i18n_key", "editor.meta.difficulty"); v.add_child(lbl_diff)
 	meta_difficulty_spin = SpinBox.new()
+	meta_difficulty_spin.focus_mode = Control.FOCUS_ALL
 	meta_difficulty_spin.min_value = 1; meta_difficulty_spin.max_value = 5; meta_difficulty_spin.value = int(model.meta.get("difficulty", 1))
 	meta_difficulty_spin.value_changed.connect(func(v): model.meta["difficulty"] = int(v); _mark_dirty())
 	v.add_child(meta_difficulty_spin)
 
 	var lbl_tags := Label.new(); lbl_tags.set_meta("i18n_key", "editor.meta.tags"); v.add_child(lbl_tags)
 	meta_tags_edit = LineEdit.new()
+	meta_tags_edit.focus_mode = Control.FOCUS_ALL
 	meta_tags_edit.set_meta("i18n_placeholder_key", "editor.meta.tags_placeholder")
 	meta_tags_edit.text = ",".join(model.meta.get("tags", []) as Array)
 	meta_tags_edit.text_changed.connect(_on_tags_changed)
@@ -369,15 +408,30 @@ func _refresh_all() -> void:
 	theme_wall_btn.select(Level.ALLOWED_WALL_THEMES.find(String(model.meta.get("wall_theme", "brick"))))
 	theme_floor_btn.select(Level.ALLOWED_FLOOR_THEMES.find(String(model.meta.get("floor_theme", "grass"))))
 	board.set_model(model)
+	if board != null and board.has_method("set_gamepad_mode"):
+		board.set_gamepad_mode(_gamepad_board_mode)
 	board.queue_redraw()
 	_refresh_stats()
+	_refresh_status_text()
 	_refresh_texts()
 
 func _refresh_texts() -> void:
 	# Walk children, replace text for nodes carrying i18n_key meta
 	_apply_i18n_recursive(self)
-	if status_label != null:
-		status_label.text = tr("editor.status.idle")
+	if _board_focus_btn != null:
+		_board_focus_btn.text = tr("editor.top.board_mode")
+	_refresh_status_text()
+
+func _refresh_status_text() -> void:
+	if status_label == null:
+		return
+	if _gamepad_board_mode:
+		var mode_hint := tr("editor.status.pad_mode")
+		if current_shape != Shape.SINGLE and board != null and board.has_method("has_gamepad_shape_anchor") and board.has_gamepad_shape_anchor():
+			mode_hint = tr("editor.status.pad_shape")
+		status_label.text = mode_hint
+	else:
+		status_label.text = tr("editor.status.ui_mode") if InputManager.is_using_gamepad() else tr("editor.status.idle")
 
 func _apply_i18n_recursive(n: Node) -> void:
 	if n.has_meta("i18n_key"):
@@ -410,6 +464,139 @@ func _mark_dirty() -> void:
 func set_status(text: String) -> void:
 	if status_label != null:
 		status_label.text = text
+
+func _set_gamepad_board_mode(enabled: bool) -> void:
+	_gamepad_board_mode = enabled
+	_gamepad_move_cooldown = 0.0
+	if enabled and current_tool == Tool.SELECT:
+		_set_tool(Tool.WALL)
+	if enabled:
+		var focused := get_viewport().gui_get_focus_owner()
+		if focused != null:
+			focused.release_focus()
+	elif _board_focus_btn != null:
+		_board_focus_btn.grab_focus.call_deferred()
+	if board != null and board.has_method("set_gamepad_mode"):
+		board.set_gamepad_mode(enabled)
+	_refresh_status_text()
+
+func _toggle_gamepad_board_mode() -> void:
+	_set_gamepad_board_mode(not _gamepad_board_mode)
+
+func _cycle_tool(step: int) -> void:
+	var tools := [Tool.ERASER, Tool.WALL, Tool.FLOOR, Tool.GOAL, Tool.BOX, Tool.PLAYER]
+	var idx := tools.find(current_tool)
+	if idx == -1:
+		idx = tools.find(Tool.WALL)
+	idx = posmod(idx + step, tools.size())
+	_set_tool(tools[idx])
+	_refresh_status_text()
+
+
+func _cycle_shape(step: int) -> void:
+	var shapes := [Shape.SINGLE, Shape.RECT, Shape.LINE]
+	var idx := shapes.find(current_shape)
+	if idx == -1:
+		idx = 0
+	idx = posmod(idx + step, shapes.size())
+	_set_shape(shapes[idx])
+	if _gamepad_board_mode and board != null and board.has_method("cancel_gamepad_shape_anchor"):
+		board.cancel_gamepad_shape_anchor()
+	_refresh_status_text()
+
+func _cycle_color(step: int) -> void:
+	var min_color := 0 if current_tool == Tool.GOAL else 1
+	var max_color := Cell.MAX_COLOR
+	if current_tool not in [Tool.GOAL, Tool.BOX]:
+		return
+	var next := current_color + step
+	if next < min_color:
+		next = max_color
+	elif next > max_color:
+		next = min_color
+	_set_color(next)
+	_refresh_status_text()
+
+func _get_gamepad_move_dir() -> Vector2i:
+	var vec := Vector2(
+		Input.get_joy_axis(0, JOY_AXIS_LEFT_X),
+		Input.get_joy_axis(0, JOY_AXIS_LEFT_Y)
+	)
+	if absf(vec.x) < GP_AXIS_DEADZONE:
+		vec.x = 0.0
+	if absf(vec.y) < GP_AXIS_DEADZONE:
+		vec.y = 0.0
+	if vec == Vector2.ZERO:
+		if Input.is_action_pressed("ui_left"):
+			return Vector2i.LEFT
+		if Input.is_action_pressed("ui_right"):
+			return Vector2i.RIGHT
+		if Input.is_action_pressed("ui_up"):
+			return Vector2i.UP
+		if Input.is_action_pressed("ui_down"):
+			return Vector2i.DOWN
+		return Vector2i.ZERO
+	if absf(vec.x) >= absf(vec.y):
+		return Vector2i.RIGHT if vec.x > 0.0 else Vector2i.LEFT
+	return Vector2i.DOWN if vec.y > 0.0 else Vector2i.UP
+
+func _get_gamepad_pan_axis() -> Vector2:
+	var vec := Vector2(
+		Input.get_joy_axis(0, JOY_AXIS_LEFT_X),
+		Input.get_joy_axis(0, JOY_AXIS_LEFT_Y)
+	)
+	if absf(vec.x) < GP_AXIS_DEADZONE:
+		vec.x = 0.0
+	if absf(vec.y) < GP_AXIS_DEADZONE:
+		vec.y = 0.0
+	if vec == Vector2.ZERO:
+		if Input.is_action_pressed("ui_left"):
+			vec.x = -1.0
+		elif Input.is_action_pressed("ui_right"):
+			vec.x = 1.0
+		if Input.is_action_pressed("ui_up"):
+			vec.y = -1.0
+		elif Input.is_action_pressed("ui_down"):
+			vec.y = 1.0
+	return vec
+
+func _handle_gamepad_board_mode(delta: float) -> void:
+	if not _gamepad_board_mode or has_blocking_overlay() or board == null:
+		return
+	if Input.is_action_just_pressed(InputManager.EDITOR_TEST):
+		_on_test_play()
+		return
+	if Input.is_action_just_pressed(InputManager.EDITOR_TOOL_PREV):
+		_cycle_tool(-1)
+	if Input.is_action_just_pressed(InputManager.EDITOR_TOOL_NEXT):
+		_cycle_tool(1)
+	if Input.is_action_just_pressed(InputManager.EDITOR_COLOR_PREV):
+		_cycle_color(-1)
+	if Input.is_action_just_pressed(InputManager.EDITOR_COLOR_NEXT):
+		_cycle_color(1)
+	if Input.is_action_just_pressed(InputManager.EDITOR_SHAPE_CYCLE):
+		_cycle_shape(1)
+	if Input.is_action_just_pressed(InputManager.EDITOR_PAINT):
+		board.gamepad_apply_current_tool()
+		_refresh_status_text()
+	if Input.is_action_just_pressed(InputManager.EDITOR_ERASE):
+		board.gamepad_erase_at_cursor()
+		_refresh_status_text()
+	var move_dir := _get_gamepad_move_dir()
+	if move_dir == Vector2i.ZERO:
+		_gamepad_move_cooldown = 0.0
+		return
+	_gamepad_move_cooldown -= delta
+	if _gamepad_move_cooldown > 0.0:
+		return
+	if Input.is_action_pressed(InputManager.EDITOR_PAN_MOD):
+		var pan_axis := _get_gamepad_pan_axis()
+		if pan_axis != Vector2.ZERO:
+			board.pan_by_pixels(pan_axis * GP_PAN_SPEED * delta)
+		_gamepad_move_cooldown = 0.0
+	else:
+		board.move_gamepad_cursor(move_dir)
+		_gamepad_move_cooldown = GP_REPEAT_DELAY
 
 # ---------------------------- 工具应用 ----------------------------
 
@@ -601,6 +788,7 @@ func _on_export() -> void:
 
 func _on_test_play() -> void:
 	# 验证关卡（玩家+箱目数+连通），通过则进入嵌入 Playtest
+	_set_gamepad_board_mode(false)
 	var lvl := model.to_level()
 	var v := LevelValidator.validate(lvl)
 	if not v.ok:
@@ -613,6 +801,7 @@ func _on_test_play() -> void:
 	set_status(tr("editor.status.playtest"))
 
 func _on_verify() -> void:
+	_set_gamepad_board_mode(false)
 	var lvl := model.to_level()
 	var v := LevelValidator.validate(lvl)
 	if not v.ok:
@@ -697,10 +886,19 @@ func _show_message_dialog(title_text: String, msg: String) -> void:
 
 # ---------------------------- Playtest 回调 ----------------------------
 
+func set_ui_enabled(enabled: bool) -> void:
+	if _root_vbox != null:
+		_root_vbox.process_mode = PROCESS_MODE_INHERIT if enabled else PROCESS_MODE_DISABLED
+		for child in _root_vbox.get_children():
+			if child is Control:
+				child.process_mode = PROCESS_MODE_INHERIT if enabled else PROCESS_MODE_DISABLED
+	if enabled:
+		_refresh_status_text()
+
 func close_playtest() -> void:
 	for c in playtest_layer.get_children():
 		c.queue_free()
-	set_status(tr("editor.status.idle"))
+	_refresh_status_text()
 
 func has_blocking_overlay() -> bool:
 	return (dialog_layer != null and dialog_layer.get_child_count() > 0) \
@@ -708,6 +906,18 @@ func has_blocking_overlay() -> bool:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if has_blocking_overlay():
+		return
+	if event.is_action_pressed(InputManager.EDITOR_TOGGLE_BOARD_MODE):
+		_toggle_gamepad_board_mode()
+		get_viewport().set_input_as_handled()
+		return
+	if _gamepad_board_mode and event.is_action_pressed("ui_cancel"):
+		if board != null and board.has_method("has_gamepad_shape_anchor") and board.has_gamepad_shape_anchor():
+			board.cancel_gamepad_shape_anchor()
+			_refresh_status_text()
+		else:
+			_set_gamepad_board_mode(false)
+		get_viewport().set_input_as_handled()
 		return
 	# 全局快捷键：ctrl-z / ctrl-y
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -724,3 +934,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif k.ctrl_pressed and k.keycode == KEY_S:
 			_on_save()
 			get_viewport().set_input_as_handled()
+
+func _process(delta: float) -> void:
+	_handle_gamepad_board_mode(delta)

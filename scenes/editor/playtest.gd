@@ -23,12 +23,18 @@ func start_level(p_level: Level) -> void:
 	if is_inside_tree():
 		_build_ui()
 		_init_board()
+		_disable_editor_ui()
 	# 否则等待 _ready 触发 _do_start
 
 func _ready() -> void:
 	if level != null and board == null:
 		_build_ui()
 		_init_board()
+	_disable_editor_ui()
+
+func _disable_editor_ui() -> void:
+	if editor != null and editor.has_method("set_ui_enabled"):
+		editor.set_ui_enabled(false)
 
 func _build_ui() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -66,6 +72,7 @@ func _build_ui() -> void:
 	board_host = Control.new()
 	board_host.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	board_host.offset_top = 60
+	board_host.clip_contents = true
 	add_child(board_host)
 
 func _init_board() -> void:
@@ -74,9 +81,8 @@ func _init_board() -> void:
 	view = BoardViewScript.new()
 	board_host.add_child(view)
 	view.bind(board)
-	# 居中
 	await get_tree().process_frame
-	_center()
+	_snap_camera_to_player()
 
 func _center() -> void:
 	if view == null: return
@@ -84,9 +90,35 @@ func _center() -> void:
 	var bs := view.get_pixel_size()
 	view.position = (sz - bs) * 0.5
 
+func _snap_camera_to_player() -> void:
+	if view == null or board == null: return
+	var target := _calc_camera_target()
+	view.position = target
+
+func _follow_player() -> void:
+	if view == null or board == null: return
+	var target := _calc_camera_target()
+	view.position = view.position.lerp(target, minf(1.0, 10.0 * get_process_delta_time()))
+
+func _calc_camera_target() -> Vector2:
+	var board_size := view.get_pixel_size()
+	var host_size := board_host.size
+	if board_size.x <= host_size.x and board_size.y <= host_size.y:
+		return (host_size - board_size) * 0.5
+	var player_grid := board.player_pos
+	var player_center := Vector2(
+		player_grid.x * BoardViewScript.TILE_SIZE + BoardViewScript.TILE_SIZE * 0.5,
+		player_grid.y * BoardViewScript.TILE_SIZE + BoardViewScript.TILE_SIZE * 0.5
+	)
+	var desired := host_size * 0.5 - player_center
+	desired.x = clampf(desired.x, host_size.x - board_size.x, 0.0)
+	desired.y = clampf(desired.y, host_size.y - board_size.y, 0.0)
+	return desired
+
 func _on_restart() -> void:
 	board.restart()
 	status_label.text = ""
+	_snap_camera_to_player.call_deferred()
 
 func _on_won() -> void:
 	status_label.text = tr("editor.playtest.won").format([board.move_count, board.push_count])
@@ -97,13 +129,19 @@ func _process(_dt: float) -> void:
 	var dir := InputManager.get_move_dir()
 	if dir != Vector2i.ZERO:
 		board.try_move(dir)
+		_snap_camera_to_player()
 		return
 	if InputManager.is_action_just_pressed(InputManager.UNDO):
 		board.undo()
+		_snap_camera_to_player()
 	elif InputManager.is_action_just_pressed(InputManager.REDO):
 		board.redo()
+		_snap_camera_to_player()
 	elif InputManager.is_action_just_pressed(InputManager.RESTART):
 		_on_restart()
+		_snap_camera_to_player()
+	else:
+		_follow_player()
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -112,5 +150,7 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 func _exit() -> void:
+	if editor != null and editor.has_method("set_ui_enabled"):
+		editor.set_ui_enabled(true)
 	if editor != null and editor.has_method("close_playtest"):
 		editor.close_playtest()

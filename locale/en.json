@@ -1,245 +1,265 @@
 {
   "menu": {
-    "title": "Sokoban Project",
-    "play": "Play",
-    "levels": "Levels",
-    "editor": "Level Editor",
-    "settings": "Settings",
-    "quit": "Quit",
-    "version_status": "v{0} · {1} levels indexed",
-    "help_dynamic": "Navigate: {0} {1}    Confirm: {2}    Back: {3}"
+	"title": "Sokoban Project",
+	"play": "Play",
+	"levels": "Levels",
+	"editor": "Level Editor",
+	"settings": "Settings",
+	"quit": "Quit",
+	"credits": "Credits",
+	"version_status": "v{0} · {1} levels indexed",
+	"help_dynamic": "Navigate: {0} {1}    Confirm: {2}    Back: {3}"
   },
   "level_select": {
-    "title": "Level Select",
-    "back": "Back",
-    "chapter_progress": "Progress {0}/{1}",
-    "best_steps": "Best: {0} moves",
-    "no_record": "Not played",
-    "user_levels": "My Levels",
-    "user_progress": "{0} saved",
-    "user_empty_hint": "No user levels yet. Go back to Main Menu → Level Editor to create one!",
-    "help_dynamic": "Navigate: {0} {1} {2} {3}    Confirm: {4}    Back: {5}"
+	"title": "Level Select",
+	"back": "Back",
+	"chapter_progress": "Progress {0}/{1}",
+	"best_steps": "Best: {0} moves",
+	"no_record": "Not played",
+	"user_levels": "My Levels",
+	"user_progress": "{0} saved",
+	"user_empty_hint": "No user levels yet. Go back to Main Menu → Level Editor to create one!",
+	"help_dynamic": "Navigate: {0} {1} {2} {3}    Confirm: {4}    Back: {5}"
   },
   "hud": {
-    "moves": "Moves: {0}",
-    "pushes": "Pushes: {0}",
-    "time": "Time: {0}",
-    "undo": "Undo",
-    "redo": "Redo",
-    "restart": "Restart",
-    "pause": "Pause",
-    "help": "WASD/Arrows = Move    Z = Undo    Y = Redo    R = Restart    Esc = Pause",
-    "help_dynamic": "Move: {0} {1} {2} {3}    Undo: {4}    Redo: {5}    Restart: {6}    Pause: {7}"
+	"moves": "Moves: {0}",
+	"pushes": "Pushes: {0}",
+	"time": "Time: {0}",
+	"undo": "Undo",
+	"redo": "Redo",
+	"restart": "Restart",
+	"pause": "Pause",
+	"help": "WASD/Arrows = Move    Z = Undo    Y = Redo    R = Restart    Esc = Pause",
+	"help_dynamic": "Move: {0} {1} {2} {3}    Undo: {4}    Redo: {5}    Restart: {6}    Pause: {7}"
   },
   "pause": {
-    "title": "Paused",
-    "resume": "Resume",
-    "restart": "Restart",
-    "settings": "Settings",
-    "menu": "Main Menu",
-    "help_dynamic": "Navigate: {0} {1}    Confirm: {2}    Back/Resume: {3}"
+	"title": "Paused",
+	"resume": "Resume",
+	"restart": "Restart",
+	"settings": "Settings",
+	"menu": "Main Menu",
+	"help_dynamic": "Navigate: {0} {1}    Confirm: {2}    Back/Resume: {3}"
   },
   "complete": {
-    "title": "Level Complete!",
-    "stats": "Moves: {0}    Pushes: {1}    Time: {2}",
-    "next": "Next",
-    "retry": "Retry",
-    "menu": "Menu"
+	"title": "Level Complete!",
+	"stats": "Moves: {0}    Pushes: {1}    Time: {2}",
+	"next": "Next",
+	"retry": "Retry",
+	"menu": "Menu"
   },
   "settings": {
-    "title": "Settings",
-    "language": "Language",
-    "volume_master": "Master",
-    "volume_music": "Music",
-    "volume_sfx": "SFX",
-    "volume_ui": "UI",
-    "fullscreen": "Fullscreen",
-    "high_contrast": "High Contrast",
-    "reduce_motion": "Reduce Motion",
-    "input_section": "Input Bindings",
-    "reset_bindings": "Reset Defaults",
-    "back": "Back",
-    "apply": "Apply",
-    "tab": {
-      "game": "Game",
-      "audio": "Audio",
-      "input": "Input"
-    },
-    "input_col": {
-      "action": "Action",
-      "keyboard": "Keyboard",
-      "gamepad": "Gamepad"
-    },
-    "input_group": {
-      "gameplay": "Gameplay (during a level)",
-      "ui": "UI (in menus)"
-    }
-  },
-  "input": {
-    "action": {
-      "move_up":    "Move Up",
-      "move_down":  "Move Down",
-      "move_left":  "Move Left",
-      "move_right": "Move Right",
-      "undo":       "Undo",
-      "redo":       "Redo",
-      "restart":    "Restart",
-      "pause":      "Pause",
-      "ui_up":      "UI ↑",
-      "ui_down":    "UI ↓",
-      "ui_left":    "UI ←",
-      "ui_right":   "UI →",
-      "ui_accept":  "Accept",
-      "ui_cancel":  "Cancel"
-    },
-    "rebind": {
-      "listening":      "Press a key…",
-      "unbound":        "Unbound",
-      "conflict_title": "Binding Conflict",
-      "conflict":       "This input is already bound to \"{0}\". Override?"
-    }
+	"title": "Settings",
+	"language": "Language",
+	"volume_master": "Master",
+	"volume_music": "Music",
+	"volume_sfx": "SFX",
+	"volume_ui": "UI",
+	"fullscreen": "Fullscreen",
+	"high_contrast": "High Contrast",
+	"reduce_motion": "Reduce Motion",
+	"input_section": "Input Bindings",
+	"reset_bindings": "Reset Defaults",
+	"back": "Back",
+	"apply": "Apply",
+	"tab": {
+	  "game": "Game",
+	  "audio": "Audio",
+	  "input": "Input"
+	},
+	"input_col": {
+	  "action": "Action",
+	  "keyboard": "Keyboard",
+	  "gamepad": "Gamepad"
+	},
+		"input_group": {
+		  "gameplay": "Gameplay (during a level)",
+		  "editor": "Editor (level editor)",
+		  "ui": "UI (in menus)"
+		}
+	  },
+	  "input": {
+		"action": {
+	  "move_up":    "Move Up",
+	  "move_down":  "Move Down",
+	  "move_left":  "Move Left",
+	  "move_right": "Move Right",
+	  "undo":       "Undo",
+	  "redo":       "Redo",
+	  "restart":    "Restart",
+		  "pause":      "Pause",
+		  "editor_toggle_board_mode": "Toggle board edit mode",
+		  "editor_paint": "Editor paint/confirm",
+		  "editor_erase": "Editor erase/cancel",
+		  "editor_tool_prev": "Previous editor tool",
+		  "editor_tool_next": "Next editor tool",
+		  "editor_color_prev": "Previous editor color",
+		  "editor_color_next": "Next editor color",
+		  "editor_shape_cycle": "Cycle editor shape",
+		  "editor_pan_modifier": "Editor pan modifier",
+		  "editor_test_play": "Editor test play",
+		  "ui_up":      "UI ↑",
+	  "ui_down":    "UI ↓",
+	  "ui_left":    "UI ←",
+	  "ui_right":   "UI →",
+	  "ui_accept":  "Accept",
+	  "ui_cancel":  "Cancel"
+	},
+	"rebind": {
+	  "listening":      "Press a key…",
+	  "unbound":        "Unbound",
+	  "conflict_title": "Binding Conflict",
+	  "conflict":       "This input is already bound to \"{0}\". Override?"
+	}
   },
   "common": {
-    "ok": "OK",
-    "cancel": "Cancel",
-    "yes": "Yes",
-    "no": "No",
-    "close": "Close",
-    "coming_soon": "Coming Soon",
-    "error": "Error",
-    "info": "Info"
+	"ok": "OK",
+	"cancel": "Cancel",
+	"yes": "Yes",
+	"no": "No",
+	"close": "Close",
+	"coming_soon": "Coming Soon",
+	"error": "Error",
+	"info": "Info"
   },
   "editor": {
-    "tool": {
-      "select": "Select",
-      "eraser": "Eraser",
-      "wall": "Wall",
-      "floor": "Floor",
-      "goal": "Goal",
-      "box": "Box",
-      "player": "Player"
-    },
-    "shape": {
-      "single": "Single",
-      "rect": "Rect",
-      "line": "Line"
-    },
-    "palette": {
-      "tools": "Tools",
-      "shapes": "Shapes",
-      "colors": "Colors (0=neutral)",
-      "size": "Size",
-      "theme": "Theme"
-    },
-    "top": {
-      "new": "New",
-      "open": "Open",
-      "save": "Save",
-      "import": "Import",
-      "export": "Export",
-      "test": "Test",
-      "verify": "Verify (Solver)",
-      "undo": "Undo",
-      "redo": "Redo",
-      "quit": "Quit"
-    },
-    "meta": {
-      "title": "Level Info",
-      "name": "Name",
-      "author": "Author",
-      "difficulty": "Difficulty (1-5)",
-      "tags": "Tags (comma separated)",
-      "tags_placeholder": "tag1,tag2,tag3",
-      "stats": "Stats",
-      "stats_fmt": "Boxes: {0}    Goals: {1}    Player: {2}"
-    },
-    "color": {
-      "neutral": "Color {0} (neutral slot, accepts any color)",
-      "colored": "Color {0}"
-    },
-    "status": {
-      "idle": "Ready",
-      "new": "Created blank level",
-      "loaded": "Opened: {0}",
-      "saved": "Saved: {0}",
-      "load_failed": "Load failed",
-      "import_failed": "Import failed",
-      "imported": "Imported successfully",
-      "playtest": "Playtesting (press ESC to exit)",
-      "verified": "Verified: {0} pushes / {1} moves (optimal)",
-      "unsolvable": "Unsolvable or timed out",
-      "cancelled": "Cancelled",
-      "undone": "Undone",
-      "redone": "Redone"
-    },
-    "dialog": {
-      "import": "Import Level",
-      "export": "Export Level",
-      "verify": "Verify with Solver",
-      "open": "Open My Level",
-      "open_hint": "Pick a local user level:",
-      "confirm": "Confirm",
-      "discard_changes": "Unsaved changes will be lost. Continue?",
-      "saved_hint": "Level saved at: {0}",
-      "verified": "Solved: {0} pushes / {1} moves ({2} nodes expanded)",
-      "unsolvable": "Could not solve (no solution or timeout)",
-      "solving": "Solving...",
-      "solving_progress": "Solving... nodes={0}  bound={1}  ({2}ms)",
-      "cancelling": "Cancelling..."
-    },
-    "import": {
-      "file": "From File",
-      "code": "Share Code",
-      "browse": "Browse...",
-      "file_path_placeholder": "No file selected",
-      "file_hint": "Accepts .json (this game's format) or .xsb / .txt (standard Sokoban text). Click Browse... to pick a file.",
-      "code_hint": "Paste share code (Base64-CRC32):"
-    },
-    "export": {
-      "copy": "Copy",
-      "save_file": "Save as file...",
-      "share": "Share Code",
-      "share_hint": "Copy this string to share. The recipient pastes it under Import → Share Code in their editor:",
-      "thumbnail": "Thumbnail",
-      "thumbnail_hint": "Export the current level as a PNG thumbnail (matches the editor view).",
-      "save_thumbnail": "Save PNG..."
-    },
-    "playtest": {
-      "title": "[Playtest] {0}",
-      "exit": "Exit (Esc)",
-      "won": "✔ Won · moves={0}  pushes={1}"
-    },
-    "error": {
-      "invalid": "Level validation failed:",
-      "save_failed": "Save failed"
-    }
+	"tool": {
+	  "select": "Select",
+	  "eraser": "Eraser",
+	  "wall": "Wall",
+	  "floor": "Floor",
+	  "goal": "Goal",
+	  "box": "Box",
+	  "player": "Player"
+	},
+	"shape": {
+	  "single": "Single",
+	  "rect": "Rect",
+	  "line": "Line"
+	},
+	"palette": {
+	  "tools": "Tools",
+	  "shapes": "Shapes",
+	  "colors": "Colors (0=neutral)",
+	  "size": "Size",
+	  "theme": "Theme"
+	},
+		"top": {
+		  "new": "New",
+		  "open": "Open",
+		  "save": "Save",
+		  "import": "Import",
+		  "export": "Export",
+		  "board_mode": "Enter Board Edit",
+		  "test": "Test",
+	  "verify": "Verify (Solver)",
+	  "undo": "Undo",
+	  "redo": "Redo",
+	  "quit": "Quit"
+	},
+	"meta": {
+	  "title": "Level Info",
+	  "name": "Name",
+	  "author": "Author",
+	  "difficulty": "Difficulty (1-5)",
+	  "tags": "Tags (comma separated)",
+	  "tags_placeholder": "tag1,tag2,tag3",
+	  "stats": "Stats",
+	  "stats_fmt": "Boxes: {0}    Goals: {1}    Player: {2}"
+	},
+	"color": {
+	  "neutral": "Color {0} (neutral slot, accepts any color)",
+	  "colored": "Color {0}"
+	},
+		"status": {
+		  "idle": "Ready",
+		  "ui_mode": "Pad UI: navigate with stick/D-pad, press A to confirm, press X to enter board edit",
+		  "pad_mode": "Pad Edit: A Paint  B Erase/Cancel  LB/RB Tool  LS/RS Color  Back Shape  Start Test  X Exit",
+		  "pad_shape": "Pad Shape: Move cursor and press A again to confirm",
+		  "new": "Created blank level",
+	  "loaded": "Opened: {0}",
+	  "saved": "Saved: {0}",
+	  "load_failed": "Load failed",
+	  "import_failed": "Import failed",
+	  "imported": "Imported successfully",
+	  "playtest": "Playtesting (press ESC to exit)",
+	  "verified": "Verified: {0} pushes / {1} moves (optimal)",
+	  "unsolvable": "Unsolvable or timed out",
+	  "cancelled": "Cancelled",
+	  "undone": "Undone",
+	  "redone": "Redone"
+	},
+	"dialog": {
+	  "import": "Import Level",
+	  "export": "Export Level",
+	  "verify": "Verify with Solver",
+	  "open": "Open My Level",
+	  "open_hint": "Pick a local user level:",
+	  "confirm": "Confirm",
+	  "discard_changes": "Unsaved changes will be lost. Continue?",
+	  "saved_hint": "Level saved at: {0}",
+	  "verified": "Solved: {0} pushes / {1} moves ({2} nodes expanded)",
+	  "unsolvable": "Could not solve (no solution or timeout)",
+	  "solving": "Solving...",
+	  "solving_progress": "Solving... nodes={0}  bound={1}  ({2}ms)",
+	  "cancelling": "Cancelling..."
+	},
+	"import": {
+	  "file": "From File",
+	  "code": "Share Code",
+	  "browse": "Browse...",
+	  "file_path_placeholder": "No file selected",
+	  "file_hint": "Accepts .json (this game's format) or .xsb / .txt (standard Sokoban text). Click Browse... to pick a file.",
+	  "code_hint": "Paste share code (Base64-CRC32):"
+	},
+	"export": {
+	  "copy": "Copy",
+	  "save_file": "Save as file...",
+	  "share": "Share Code",
+	  "share_hint": "Copy this string to share. The recipient pastes it under Import → Share Code in their editor:",
+	  "thumbnail": "Thumbnail",
+	  "thumbnail_hint": "Export the current level as a PNG thumbnail (matches the editor view).",
+	  "save_thumbnail": "Save PNG..."
+	},
+	"playtest": {
+	  "title": "[Playtest] {0}",
+	  "exit": "Exit (Esc)",
+	  "won": "✔ Won · moves={0}  pushes={1}"
+	},
+	"error": {
+	  "invalid": "Level validation failed:",
+	  "save_failed": "Save failed"
+	}
   },
   "toast": {
-    "saved": "Saved",
-    "language_changed": "Language changed"
+	"saved": "Saved",
+	"language_changed": "Language changed"
   },
   "chapter_names": {
-    "official-w1": "Chapter 1 · Warehouse Basics",
-    "official-w2": "Chapter 2 · Microban",
-    "official-w3": "Chapter 3 · XSB Classics"
+	"official-w1": "Chapter 1 · Warehouse Basics",
+	"official-w2": "Chapter 2 · Microban",
+	"official-w3": "Chapter 3 · XSB Classics"
   },
   "chapter_descriptions": {
-    "official-w1": "Tutorial chapter: movement, pushing, goals, corner deadlock awareness.",
-    "official-w2": "Full Microban collection by David W Skinner (155 levels).",
-    "official-w3": "Classic XSB reference set (90 levels) with larger boards and longer solutions."
+	"official-w1": "Tutorial chapter: movement, pushing, goals, corner deadlock awareness.",
+	"official-w2": "Full Microban collection by David W Skinner (155 levels).",
+	"official-w3": "Classic XSB reference set (90 levels) with larger boards and longer solutions."
   },
   "level_names": {
-    "official-w1-01": "First Step",
-    "official-w1-02": "Around the Corner",
-    "official-w1-03": "Twins",
-    "official-w1-04": "The Hallway",
-    "official-w1-05": "Corner Trap",
-    "official-w1-06": "Color Match",
-    "official-w1-07": "Neutral Slot",
-    "official-w1-08": "Side by Side",
-    "official-w1-09": "Left and Right",
-    "official-w1-10": "The Long Way",
-    "official-w1-11": "Three Colors, One Slot",
-    "official-w1-12": "Triangle Run"
+	"official-w1-01": "First Step",
+	"official-w1-02": "Around the Corner",
+	"official-w1-03": "Twins",
+	"official-w1-04": "The Hallway",
+	"official-w1-05": "Corner Trap",
+	"official-w1-06": "Color Match",
+	"official-w1-07": "Neutral Slot",
+	"official-w1-08": "Side by Side",
+	"official-w1-09": "Left and Right",
+	"official-w1-10": "The Long Way",
+	"official-w1-11": "Three Colors, One Slot",
+	"official-w1-12": "Triangle Run"
+  },
+  "credits": {
+	"title": "Credits",
+	"content": "■ Development\n   Syameimaru Zheng\n\n■ Level Design\n  W1 · Warehouse Basics — Original tutorials (12)\n  W2 · Microban — David W. Skinner (155)\n  W3 · XSB Classics — Curated classics (90)\n\n■ Art\n  Kenney (CC0) — Tileset, player sprites, crate textures\n\n■ Music\n  甘茶の音楽工房 (https://amachamusic.chagasi.com/)\n\n■ Sound Effects\n  gdfxr (sfxr generator) — Step, push, crate_done, level_complete\n  ザ・マッチメイカァズ (The Matchmakers) — Undo, UI click\n\n■ Plugins\n  G.U.I.D.E. — Godot Unified Input Detection Engine\n  Sound Manager — Nathan Hoad\n  gdfxr — timothyqiu\n  Minecraft-Style-Framework — Syameimaru Zheng\n\n■ Font\n  MiSans — Xiaomi Inc.\n\n■ Engine\n  Godot 4.6"
   }
 }

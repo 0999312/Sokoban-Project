@@ -90,7 +90,7 @@ res://
 - 关卡数据：`CC-BY 4.0`
 - 美术资源：见 `assets/` 内许可证说明（Kenney CC0）
 - 音乐（BGM）：[甘茶の音楽工房](https://amachamusic.chagasi.com/)（使用许可请参见该网站使用规约）
-- 音效：gdfxr（sfxr 生成工具）产出的 .sfxr 文件
+- 音效：gdfxr（sfxr 生成工具）产出的 .sfxr 文件；ザ・マッチメイカァズ（The Matchmakers）
 - 第三方插件：见各自 `addons/*/LICENSE`
 
 ## 构建与发布
@@ -109,8 +109,8 @@ res://
 打 tag 即触发 GitHub Actions 自动构建：
 
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+git tag v1.0.1
+git push origin v1.0.1
 ```
 
 构建流程（基于 `godot-ci`）：

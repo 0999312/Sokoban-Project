@@ -72,6 +72,12 @@ custom_minimum_size = Vector2(240, 48)
 layout_mode = 2
 text = "Settings"
 
+[node name="BtnCredits" type="Button" parent="Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 48)
+layout_mode = 2
+text = "Credits"
+
 [node name="BtnQuit" type="Button" parent="Buttons"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(240, 48)

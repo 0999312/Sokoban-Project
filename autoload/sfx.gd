@@ -15,7 +15,7 @@ extends Node
 ## SFX 来源：gdfxr（sfxr 生成工具）
 ##   step.sfxr, push.sfxr, crate_done.sfxr, level_complete.sfxr
 ## UI SFX 来源：
-##   undo.mp3, ui_click.mp3
+##   undo.mp3, ui_click.mp3 — ザ・マッチメイカァズ (The Matchmakers)
 const _SFX_PATHS := {
 	"step":           "res://assets/sounds/step.sfxr",
 	"push":           "res://assets/sounds/push.sfxr",

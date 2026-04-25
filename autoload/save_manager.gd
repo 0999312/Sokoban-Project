@@ -31,6 +31,7 @@ func _default_profile() -> Dictionary:
 		"stats": { "total_steps": 0, "total_time_ms": 0, "completed_levels": 0 },
 		"user_levels_index": [],
 		"input_bindings": {},      # P5-F: gameplay 绑定，见 InputManager.serialize_bindings()
+		"editor_input_bindings": {}, # 编辑器绑定，见 InputManager.serialize_editor_bindings()
 		"ui_input_bindings": {},   # UI 绑定，见 InputManager.serialize_ui_bindings()
 	}
 
@@ -86,6 +87,8 @@ func load_profile() -> void:
 		profile["stats"] = { "total_steps": 0, "total_time_ms": 0, "completed_levels": 0 }
 	if typeof(profile.get("input_bindings")) != TYPE_DICTIONARY:
 		profile["input_bindings"] = {}
+	if typeof(profile.get("editor_input_bindings")) != TYPE_DICTIONARY:
+		profile["editor_input_bindings"] = {}
 	if typeof(profile.get("ui_input_bindings")) != TYPE_DICTIONARY:
 		profile["ui_input_bindings"] = {}
 	if typeof(profile.get("user_levels_index")) != TYPE_ARRAY:
@@ -123,6 +126,8 @@ func _migrate(data: Dictionary) -> Dictionary:
 	if v < 2:
 		if not data.has("input_bindings"):
 			data["input_bindings"] = {}
+		if not data.has("editor_input_bindings"):
+			data["editor_input_bindings"] = {}
 	if v != CURRENT_VERSION:
 		data["version"] = CURRENT_VERSION
 	return data
@@ -186,6 +191,13 @@ func get_input_bindings() -> Dictionary:
 
 func set_input_bindings(bindings: Dictionary) -> void:
 	profile["input_bindings"] = bindings
+	save_profile()
+
+func get_editor_input_bindings() -> Dictionary:
+	return profile.get("editor_input_bindings", {})
+
+func set_editor_input_bindings(bindings: Dictionary) -> void:
+	profile["editor_input_bindings"] = bindings
 	save_profile()
 
 func get_ui_input_bindings() -> Dictionary:
