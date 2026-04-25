@@ -21,23 +21,18 @@ jobs:
         run: |
           wget -q "https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}/Godot_v${{ env.GODOT_VERSION }}_linux.x86_64.zip"
           unzip -q Godot_v${{ env.GODOT_VERSION }}_linux.x86_64.zip
-          chmod +x Godot_v${{ env.GODOT_VERSION }}_linux.x86_64
-          sudo mv Godot_v${{ env.GODOT_VERSION }}_linux.x86_64 /usr/local/bin/godot
+          chmod +x godot.x86_64
+          sudo mv godot.x86_64 /usr/local/bin/godot
+          godot --version
 
       - name: Smoke Tests
-        run: |
-          godot --headless --script res://tests/smoke_test.gd || exit 1
-          echo "::notice::smoke_test passed"
+        run: godot --headless --script res://tests/smoke_test.gd
 
       - name: Solver Tests
-        run: |
-          godot --headless --script res://tests/solver_test.gd || exit 1
-          echo "::notice::solver_test passed"
+        run: godot --headless --script res://tests/solver_test.gd
 
       - name: Editor Tests
-        run: |
-          godot --headless --script res://tests/editor_test.gd || exit 1
-          echo "::notice::editor_test passed"
+        run: godot --headless --script res://tests/editor_test.gd
 
   export:
     name: Export ${{ matrix.name }}
@@ -75,8 +70,9 @@ jobs:
         run: |
           wget -q "https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}/Godot_v${{ env.GODOT_VERSION }}_linux.x86_64.zip"
           unzip -q Godot_v${{ env.GODOT_VERSION }}_linux.x86_64.zip
-          chmod +x Godot_v${{ env.GODOT_VERSION }}_linux.x86_64
-          sudo mv Godot_v${{ env.GODOT_VERSION }}_linux.x86_64 /usr/local/bin/godot
+          chmod +x godot.x86_64
+          sudo mv godot.x86_64 /usr/local/bin/godot
+          godot --version
 
       - name: Install Export Templates
         run: |
